@@ -171,7 +171,8 @@ export default function PinEntryScreen() {
   const handleLogin = () => {
     if (pin.length === maxPinLength) {
       console.log('PIN entered:', pin);
-      // Navigate to next screen or handle login
+      // Navigate to home screen
+      navigate('/home');
     }
   };
 
