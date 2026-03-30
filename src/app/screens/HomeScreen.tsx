@@ -14,6 +14,7 @@ import {
   LogOut,
   ChevronDown,
 } from 'lucide-react';
+import Group191Header from '../components/Group191Header';
 
 function DecorativeHeader() {
   return (
@@ -119,60 +120,7 @@ export default function HomeScreen() {
         {/* Header Section */}
         <div className="absolute h-[260px] left-0 top-0 w-full">
           <DecorativeHeader />
-
-          {/* Header Content */}
-          <div className="relative z-10 px-6 pt-6 flex items-center justify-between h-16">
-            <button className="p-2 hover:bg-white/10 rounded-lg transition-all">
-              <Menu size={24} className="text-white" />
-            </button>
-            <h1 className="text-white text-2xl font-semibold">Home</h1>
-            <button className="p-2 hover:bg-white/10 rounded-lg transition-all">
-              <RefreshCw size={24} className="text-white" />
-            </button>
-          </div>
-
-          {/* Balance Cards */}
-          <div className="relative z-10 px-6 pt-4 space-y-3">
-            {/* Savings Card */}
-            <div className="bg-white/12 backdrop-blur-md rounded-2xl p-4 border border-white/15 hover:bg-white/15 transition-all">
-              <p className="text-white/85 text-sm font-medium mb-2">Saving:</p>
-              <div className="flex items-center justify-between">
-                <p className="text-white text-lg font-bold">
-                  {savingsVisible ? '****' : '500,000.00 ETB'}
-                </p>
-                <button
-                  onClick={() => setSavingsVisible(!savingsVisible)}
-                  className="p-2 hover:bg-white/10 rounded-lg transition-all"
-                >
-                  {savingsVisible ? (
-                    <EyeOff size={20} className="text-white" />
-                  ) : (
-                    <Eye size={20} className="text-white" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Balance Card */}
-            <div className="bg-white/12 backdrop-blur-md rounded-2xl p-4 border border-white/15 hover:bg-white/15 transition-all">
-              <p className="text-white/85 text-sm font-medium mb-2">Balance:</p>
-              <div className="flex items-center justify-between">
-                <p className="text-white text-lg font-bold">
-                  {balanceVisible ? '****' : '1,250,000.00 ETB'}
-                </p>
-                <button
-                  onClick={() => setBalanceVisible(!balanceVisible)}
-                  className="p-2 hover:bg-white/10 rounded-lg transition-all"
-                >
-                  {balanceVisible ? (
-                    <EyeOff size={20} className="text-white" />
-                  ) : (
-                    <Eye size={20} className="text-white" />
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
+          <Group191Header onMenuClick={() => {}} onRefreshClick={() => {}} />
         </div>
 
         {/* Quick Actions Section - Group 192 */}
