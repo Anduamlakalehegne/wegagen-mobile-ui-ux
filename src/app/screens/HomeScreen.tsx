@@ -56,16 +56,28 @@ function QuickActionButton({ icon, label, isActive = false, onClick }: QuickActi
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center gap-2 p-3 rounded-2xl transition-all duration-300 transform ${
-        isActive
-          ? 'bg-[#FF8F12] text-white shadow-lg shadow-[#FF8F12]/40 scale-105'
-          : 'bg-[#FFF6EC] text-[#004360] hover:shadow-md hover:shadow-black/10 active:scale-95'
-      }`}
+      className="flex flex-col items-center gap-1 transition-all duration-200 cursor-pointer"
     >
-      <div className={`p-2.5 rounded-lg transition-all ${isActive ? 'bg-white/20' : 'bg-white/70'}`}>
-        {icon}
+      {/* Icon Container */}
+      <div
+        className={`w-[53.17px] h-[51.75px] flex items-center justify-center rounded-[6px] transition-all duration-200 ${
+          isActive
+            ? 'bg-[#FF8F12]'
+            : 'bg-[#FFF6EC]'
+        }`}
+      >
+        <div className="w-[28.36px] h-[27.6px] flex items-center justify-center">
+          {isActive ? (
+            <div className="text-white">{icon}</div>
+          ) : (
+            <div className="text-[#FF6B0B]">{icon}</div>
+          )}
+        </div>
       </div>
-      <span className="text-xs font-semibold text-center leading-tight">{label}</span>
+      {/* Label */}
+      <span className="text-[12px] font-semibold text-[#004360] text-center leading-[15px] mt-1">
+        {label}
+      </span>
     </button>
   );
 }
@@ -163,29 +175,38 @@ export default function HomeScreen() {
           </div>
         </div>
 
-        {/* Quick Actions Section */}
-        <div className="absolute top-[200px] left-0 right-0 px-6 z-20">
-          <div className="bg-white rounded-3xl shadow-2xl shadow-black/15 p-6">
-            <div className="grid grid-cols-4 gap-2.5">
+        {/* Quick Actions Section - Group 192 */}
+        <div className="absolute top-[199px] left-3 z-20 w-[336px]">
+          {/* Rectangle 2 - White background with shadow */}
+          <div className="bg-white rounded-[12px] shadow-[0px_4px_12px_rgba(0,0,0,0.2)] px-6 py-5">
+            {/* Group 124 - Action buttons grid */}
+            <div className="flex justify-between items-center gap-3 h-[69px]">
+              {/* Transfer Button - Active state */}
               <QuickActionButton
                 icon={<ArrowRight size={24} />}
                 label="Transfer"
-                isActive={activeAction === 'transfer'}
+                isActive={true}
                 onClick={() => setActiveAction('transfer')}
               />
+              {/* Payment Button */}
               <QuickActionButton
                 icon={<CreditCard size={24} />}
                 label="Payment"
+                isActive={false}
                 onClick={() => setActiveAction('payment')}
               />
+              {/* Top-up Button */}
               <QuickActionButton
                 icon={<TrendingUp size={24} />}
                 label="Top-up"
+                isActive={false}
                 onClick={() => setActiveAction('topup')}
               />
+              {/* Other Button */}
               <QuickActionButton
                 icon={<Plus size={24} />}
                 label="Other"
+                isActive={false}
                 onClick={() => setActiveAction('other')}
               />
             </div>
