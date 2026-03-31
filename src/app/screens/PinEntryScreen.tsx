@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Delete, LogIn } from 'lucide-react';
+import { Delete, LogIn, ChevronLeft } from 'lucide-react';
 import svgPaths from "../../imports/svg-agh5fqnfsc";
 
 function DecorativeElements() {
@@ -15,43 +15,43 @@ function DecorativeElements() {
           </g>
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-12.63%_85.56%_112.5%_13.61%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 3 1">
           <path d={svgPaths.p38b97480} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-14.63%_68.33%_113.88%_21.11%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 38 6">
           <path d={svgPaths.p195fd840} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-12.63%_85.56%_101.13%_-3.06%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 63 92">
           <path d={svgPaths.pe64d880} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-14.63%_47.22%_107.75%_36.39%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 59 55">
           <path d={svgPaths.p29ab6700} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-14.63%_68.33%_107.75%_13.61%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 65 55">
           <path d={svgPaths.p338a3800} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-8%_75.28%_101.25%_12.22%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 45 54">
           <path d={svgPaths.p6f70f80} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-8.13%_48.06%_105%_39.17%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 46 25">
           <path d={svgPaths.p408edd2} fill="var(--fill-0, #FF8F12)" />
@@ -115,11 +115,10 @@ interface PinDotProps {
 function PinDot({ filled }: PinDotProps) {
   return (
     <div
-      className={`w-[16px] h-[16px] rounded-full border-2 transition-all duration-300 ${
-        filled
-          ? 'bg-[#ff6b0b] border-[#ff6b0b] scale-110'
-          : 'bg-transparent border-[#ff6b0b]'
-      }`}
+      className={`w-[16px] h-[16px] rounded-full border-2 transition-all duration-300 ${filled
+        ? 'bg-[#ff6b0b] border-[#ff6b0b] scale-110'
+        : 'bg-transparent border-[#ff6b0b]'
+        }`}
     />
   );
 }
@@ -171,77 +170,110 @@ export default function PinEntryScreen() {
   const handleLogin = () => {
     if (pin.length === maxPinLength) {
       console.log('PIN entered:', pin);
-      // Navigate to next screen or handle login
+      navigate('/home');
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white relative w-[412px] h-[917px] overflow-hidden shadow-2xl" data-name="PIN Entry Screen">
-        {/* Header Section with Brand Color */}
-        <div className="absolute bg-[#ff6b0b] h-[220px] left-0 top-0 w-full shadow-lg">
-          <DecorativeElements />
-          <LogoSection />
+    <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="PIN Entry Screen">
+      {/* 1:1 Elite Header Background Layer */}
+      <div className="absolute top-0 left-0 right-0 h-[220px] overflow-hidden z-0">
+        <img
+          src="/Mask group (1).png"
+          alt="Header Background"
+          className="w-full h-full object-cover -translate-y-2 opacity-110"
+        />
+      </div>
+
+      {/* Brand Header with Top-aligned Navigation */}
+      <div className="relative z-20 px-8 h-[220px] flex flex-col items-center">
+        {/* Absolute Top Navigation Buttons (Exactly like Home Page) */}
+        <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
+          <button
+            onClick={() => navigate('/quick-actions')}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90"
+          >
+            <ChevronLeft size={22} strokeWidth={3} />
+          </button>
+          <div className="w-10" />
         </div>
 
-        {/* Main Content Card */}
-        <div className="absolute bg-white h-[calc(100%-180px)] left-0 rounded-tl-[24px] rounded-tr-[24px] top-[180px] w-full shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
-          <div className="px-8 py-10 flex flex-col items-center">
-            {/* Title */}
-            <h2 className="text-[#004360] text-[16px] font-medium mb-8">
-              Enter PIN
-            </h2>
+        {/* Centered Logo (Kept at Original Position) */}
+        <div className="pt-16">
+          <img
+            src="/LogoSVG 1 (1).png"
+            alt="Wegagen Bank"
+            className="h-10 object-contain drop-shadow-lg"
+          />
+        </div>
+      </div>
 
-            {/* PIN Dots */}
-            <div className="flex gap-4 mb-16">
-              {[...Array(maxPinLength)].map((_, index) => (
-                <PinDot key={index} filled={index < pin.length} />
-              ))}
+      {/* Main Glassmorphic Card (Keeping Padding & Rounding Enhancements) */}
+      <div className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar">
+        <div className="px-8 py-10 flex flex-col items-center h-full">
+          {/* Welcome Title */}
+          <div className="mb-8 text-center px-4 font-sans">
+            <h1 className="text-[#004360] text-[28px] font-semibold tracking-tight leading-tight mb-2">
+              Enter Pin
+            </h1>
+            <p className="text-[#004360]/60 text-[13px] font-medium leading-relaxed opacity-80">
+              Enter your secure login pin to continue
+            </p>
+          </div>
+
+          {/* PIN Dots (Refined) */}
+          <div className="flex gap-5 mb-10">
+            {[...Array(maxPinLength)].map((_, index) => (
+              <div
+                key={index}
+                className={`w-3.5 h-3.5 rounded-full border-2 transition-all duration-300 ${index < pin.length
+                  ? 'bg-[#FF8F12] border-[#FF8F12] scale-125 shadow-[0_0_10px_rgba(255,143,18,0.4)]'
+                  : 'bg-transparent border-gray-200'
+                  }`}
+              />
+            ))}
+          </div>
+
+          {/* Numeric Keypad (Elite Styling) */}
+          <div className="grid grid-cols-3 gap-x-8 gap-y-4 mb-10 w-full max-w-[280px]">
+            {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((num) => (
+              <button
+                key={num}
+                onClick={() => handleNumberClick(num)}
+                className="w-16 h-16 rounded-full bg-orange-50/50 flex items-center justify-center text-[22px] text-[#004360] font-semibold shadow-sm border border-orange-100/50 transition-all duration-200 active:scale-95 active:bg-[#FF8F12] active:text-white active:shadow-lg"
+              >
+                {num}
+              </button>
+            ))}
+            <div className="flex items-center justify-center">
+              <button
+                onClick={handleDelete}
+                className="w-16 h-16 rounded-full flex items-center justify-center text-[#FF8F12] transition-all duration-300 active:scale-90 opacity-80"
+              >
+                <Delete size={24} strokeWidth={2.5} />
+              </button>
             </div>
+            <button
+              onClick={() => handleNumberClick('0')}
+              className="w-16 h-16 rounded-full bg-orange-50/50 flex items-center justify-center text-[22px] text-[#004360] font-semibold shadow-sm border border-orange-100/50 transition-all duration-200 active:scale-95 active:bg-[#FF8F12] active:text-white active:shadow-lg"
+            >
+              0
+            </button>
+            <div className="w-16 h-16"></div>
+          </div>
 
-            {/* Numeric Keypad */}
-            <div className="flex flex-col gap-5 mb-8">
-              {/* Row 1: 1, 2, 3 */}
-              <div className="flex gap-8 justify-center">
-                <NumericButton value="1" onClick={() => handleNumberClick('1')} />
-                <NumericButton value="2" onClick={() => handleNumberClick('2')} />
-                <NumericButton value="3" onClick={() => handleNumberClick('3')} />
-              </div>
-
-              {/* Row 2: 4, 5, 6 */}
-              <div className="flex gap-8 justify-center">
-                <NumericButton value="4" onClick={() => handleNumberClick('4')} />
-                <NumericButton value="5" onClick={() => handleNumberClick('5')} />
-                <NumericButton value="6" onClick={() => handleNumberClick('6')} />
-              </div>
-
-              {/* Row 3: 7, 8, 9 */}
-              <div className="flex gap-8 justify-center">
-                <NumericButton value="7" onClick={() => handleNumberClick('7')} />
-                <NumericButton value="8" onClick={() => handleNumberClick('8')} />
-                <NumericButton value="9" onClick={() => handleNumberClick('9')} />
-              </div>
-
-              {/* Row 4: Delete, 0, Empty */}
-              <div className="flex gap-8 justify-center">
-                <DeleteButton onClick={handleDelete} />
-                <NumericButton value="0" onClick={() => handleNumberClick('0')} />
-                <div className="w-[64px]"></div> {/* Empty space for symmetry */}
-              </div>
-            </div>
-
-            {/* Login Button */}
+          {/* Primary Action Button */}
+          <div className="w-full mt-auto">
             <button
               onClick={handleLogin}
               disabled={pin.length !== maxPinLength}
-              className={`mt-8 flex items-center gap-2 px-8 py-4 rounded-[16px] transition-all duration-300 ${
-                pin.length === maxPinLength
-                  ? 'bg-[#ff6b0b] text-white shadow-[0_6px_20px_rgba(255,107,11,0.3)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.4)] hover:scale-[1.02] active:scale-[0.98]'
-                  : 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
-              }`}
+              className={`w-full flex items-center justify-center gap-2 py-4 rounded-[16px] transition-all duration-300 text-[16px] font-semibold shadow-lg ${pin.length === maxPinLength
+                ? 'bg-[#FF8F12] text-white shadow-[0_6px_20px_rgba(255,143,18,0.3)] hover:shadow-[0_8px_24px_rgba(255,143,18,0.4)] active:scale-95'
+                : 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
+                }`}
             >
-              <span className="text-[16px] font-medium">Login</span>
-              <LogIn size={20} strokeWidth={2.5} />
+              LOGIN
+              <LogIn size={20} strokeWidth={3} className="text-white/80" />
             </button>
           </div>
         </div>
