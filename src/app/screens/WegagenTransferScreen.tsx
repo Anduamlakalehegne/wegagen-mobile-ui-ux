@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { motion, useReducedMotion } from 'motion/react';
 import {
   ChevronLeft,
   RefreshCw,
@@ -18,6 +19,7 @@ export default function WegagenTransferScreen() {
   const [showAccDropdown, setShowAccDropdown] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isModalExiting, setIsModalExiting] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   const openModal = () => {
     setShowConfirmModal(true);
@@ -39,7 +41,7 @@ export default function WegagenTransferScreen() {
   return (
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Wegagen Transfer Screen">
       {/* 1:1 Elite Header Background Layer */}
-      <div className="absolute top-0 left-0 right-0 h-[220px] overflow-hidden z-0">
+      <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
           src="/Mask group (1).png"
           alt="Header Background"
@@ -74,11 +76,20 @@ export default function WegagenTransferScreen() {
       </div>
 
       {/* Main Glassmorphic Form Card (ONLY PADDING & ROUNDING ENHANCEMENTS) */}
-      <div className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-10">
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
+        animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+        transition={{
+          duration: reduceMotion ? 0 : 0.46,
+          ease: [0.22, 1, 0.36, 1],
+          delay: reduceMotion ? 0 : 0.04,
+        }}
+        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-10"
+      >
         <div className="p-4 pt-10">
-          <div className="space-y-3 px-2">
+          <div className="space-y-4">
             {/* Field: Select Account */}
-            <div className="space-y-2.5 relative">
+            <div className="space-y-2 relative">
               <label className="text-[#004360] text-[13px] font-bold ml-1">Select Account</label>
               <button
                 onClick={() => setShowAccDropdown(!showAccDropdown)}
@@ -126,7 +137,7 @@ export default function WegagenTransferScreen() {
             </div>
 
             {/* Field: Beneficiary Account */}
-            <div className="space-y-2.5">
+            <div className="space-y-2">
               <label className="text-[#004360] text-[13px] font-bold ml-1">Beneficiary Account</label>
               <div className="relative group">
                 <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
@@ -141,7 +152,7 @@ export default function WegagenTransferScreen() {
             </div>
 
             {/* Field: Enter Amount */}
-            <div className="space-y-2.5">
+            <div className="space-y-2">
               <label className="text-[#004360] text-[13px] font-bold ml-1">Enter Amount</label>
               <div className="relative group">
                 <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
@@ -158,7 +169,7 @@ export default function WegagenTransferScreen() {
             </div>
 
             {/* Field: Enter Reason */}
-            <div className="space-y-2.5">
+            <div className="space-y-2">
               <label className="text-[#004360] text-[13px] font-bold ml-1">Enter Reason</label>
               <div className="relative group">
                 <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
@@ -183,7 +194,7 @@ export default function WegagenTransferScreen() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* High-Fidelity Confirmation Modal Overlay */}
       {showConfirmModal && (

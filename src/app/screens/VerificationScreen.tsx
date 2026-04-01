@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { Shield, ArrowLeft, RefreshCw } from 'lucide-react';
 import { OTPInput, SlotProps } from 'input-otp';
+import { motion, useReducedMotion } from 'motion/react';
 
 function Slot(props: SlotProps) {
   return (
@@ -28,6 +29,8 @@ export default function VerificationScreen() {
   const [otp, setOtp] = useState('');
   const [countdown, setCountdown] = useState(60);
   const [canResend, setCanResend] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (countdown > 0) {
@@ -39,10 +42,15 @@ export default function VerificationScreen() {
   }, [countdown]);
 
   const handleVerify = () => {
-    if (otp.length === 4) {
+    if (otp.length !== 4 || isTransitioning) return;
+
+    setIsTransitioning(true);
+    const transitionDurationMs = reduceMotion ? 0 : 260;
+
+    window.setTimeout(() => {
       console.log('Verifying OTP:', otp);
       navigate('/quick-actions');
-    }
+    }, transitionDurationMs);
   };
 
   const handleResend = () => {
@@ -57,7 +65,7 @@ export default function VerificationScreen() {
   return (
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Verification Screen">
       {/* 1:1 Elite Header Background Layer */}
-      <div className="absolute top-0 left-0 right-0 h-[220px] overflow-hidden z-0">
+      <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
           src="/Mask group (1).png"
           alt="Header Background"
@@ -89,7 +97,22 @@ export default function VerificationScreen() {
       </div>
 
       {/* Main Glassmorphic Verification Card (Keeping Padding & Rounding Enhancements) */}
-      <div className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30">
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
+        animate={
+          reduceMotion
+            ? undefined
+            : isTransitioning
+              ? { opacity: 0, y: -18, scale: 0.99, filter: 'blur(2px)' }
+              : { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+        }
+        transition={{
+          duration: reduceMotion ? 0 : isTransitioning ? 0.26 : 0.46,
+          ease: isTransitioning ? [0.4, 0, 1, 1] : [0.22, 1, 0.36, 1],
+          delay: reduceMotion || isTransitioning ? 0 : 0.04,
+        }}
+        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30"
+      >
         <div className="px-8 py-10">
           {/* Security Icon */}
           <div className="flex justify-center mb-6">
@@ -146,7 +169,7 @@ export default function VerificationScreen() {
           {/* Verify Button */}
           <button
             onClick={handleVerify}
-            disabled={otp.length !== 4}
+          disabled={otp.length !== 4 || isTransitioning}
             className={`w-full flex items-center justify-center gap-2 py-4 rounded-[16px] transition-all duration-300 text-[16px] font-medium ${otp.length === 4
               ? 'bg-[#FF8F12] text-white shadow-[0_6px_20px_rgba(255,107,11,0.3)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.4)] hover:scale-[1.02] active:scale-[0.98]'
               : 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
@@ -168,7 +191,7 @@ export default function VerificationScreen() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

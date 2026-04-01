@@ -1,22 +1,28 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ArrowRight, Smartphone } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 
 export default function WelcomeScreen() {
   const navigate = useNavigate();
   const [mobileNumber, setMobileNumber] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   const handleStart = () => {
-    if (mobileNumber.trim()) {
-      navigate('/verify');
-    }
+    if (!mobileNumber.trim() || isTransitioning) return;
+
+    setIsTransitioning(true);
+
+    const transitionDurationMs = reduceMotion ? 0 : 260;
+    window.setTimeout(() => navigate('/verify'), transitionDurationMs);
   };
 
   return (
     <div className="bg-white relative w-full h-full overflow-hidden" data-name="Welcome Screen">
       {/* --- NEW HEADER SECTION (KWPT) WITH SLIGHT TOP ADJUSTMENT --- */}
-      <div className="absolute top-0 left-0 right-0 h-[220px] overflow-hidden z-0">
+      <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
           src="/Mask group (1).png"
           alt="Header Background"
@@ -34,7 +40,21 @@ export default function WelcomeScreen() {
       {/* ------------------------------- */}
 
       {/* --- REVERTED BELOW SECTION WITH PADDING & ROUNDING ENHANCEMENTS --- */}
-      <div className="absolute bg-white h-[calc(100%-200px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30">
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 26, scale: 0.985 }}
+        animate={
+          reduceMotion
+            ? undefined
+            : isTransitioning
+              ? { opacity: 0, y: -18, scale: 0.99, filter: 'blur(2px)' }
+              : { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+        }
+        transition={{
+          duration: reduceMotion ? 0 : isTransitioning ? 0.26 : 0.42,
+          ease: isTransitioning ? [0.4, 0, 1, 1] : [0.22, 1, 0.36, 1],
+        }}
+        className="absolute bg-white h-[calc(100%-200px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30"
+      >
         <div className="px-8 py-10">
           {/* Welcome Section */}
           <div className="mb-12">
@@ -81,7 +101,7 @@ export default function WelcomeScreen() {
           <div className="flex justify-end">
             <button
               onClick={handleStart}
-              disabled={!mobileNumber.trim()}
+              disabled={!mobileNumber.trim() || isTransitioning}
               className={`mt-4 flex items-center gap-2 px-8 py-4 rounded-[16px] transition-all duration-300 ${mobileNumber.trim()
                 ? 'bg-[#FF8F12] text-white shadow-[0_6px_20px_rgba(255,107,11,0.3)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.4)] hover:scale-[1.02] active:scale-[0.98]'
                 : 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
@@ -112,7 +132,7 @@ export default function WelcomeScreen() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
       {/* ------------------------------ */}
     </div>
   );

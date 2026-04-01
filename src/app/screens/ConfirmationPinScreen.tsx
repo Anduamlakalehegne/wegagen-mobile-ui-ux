@@ -1,6 +1,7 @@
 import { Delete, LogIn, ChevronLeft } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { motion, useReducedMotion } from 'motion/react';
 import svgPaths from "../../imports/svg-agh5fqnfsc";
 
 function DecorativeElements() {
@@ -15,43 +16,43 @@ function DecorativeElements() {
           </g>
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-12.63%_85.56%_112.5%_13.61%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 3 1">
           <path d={svgPaths.p38b97480} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-14.63%_68.33%_113.88%_21.11%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 38 6">
           <path d={svgPaths.p195fd840} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-12.63%_85.56%_101.13%_-3.06%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 63 92">
           <path d={svgPaths.pe64d880} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-14.63%_47.22%_107.75%_36.39%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 59 55">
           <path d={svgPaths.p29ab6700} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-14.63%_68.33%_107.75%_13.61%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 65 55">
           <path d={svgPaths.p338a3800} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-8%_75.28%_101.25%_12.22%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 45 54">
           <path d={svgPaths.p6f70f80} fill="var(--fill-0, #FF8F12)" />
         </svg>
       </div>
-      
+
       <div className="absolute inset-[-8.13%_48.06%_105%_39.17%] opacity-60">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 46 25">
           <path d={svgPaths.p408edd2} fill="var(--fill-0, #FF8F12)" />
@@ -115,11 +116,10 @@ interface PinDotProps {
 function PinDot({ filled }: PinDotProps) {
   return (
     <div
-      className={`w-[16px] h-[16px] rounded-full border-2 transition-all duration-300 ${
-        filled
-          ? 'bg-[#ff6b0b] border-[#ff6b0b] scale-110'
-          : 'bg-transparent border-[#ff6b0b]'
-      }`}
+      className={`w-[16px] h-[16px] rounded-full border-2 transition-all duration-300 ${filled
+        ? 'bg-[#ff6b0b] border-[#ff6b0b] scale-110'
+        : 'bg-transparent border-[#ff6b0b]'
+        }`}
     />
   );
 }
@@ -155,21 +155,23 @@ export default function ConfirmationPinScreen() {
   const navigate = useNavigate();
   const [pin, setPin] = useState('');
   const maxPinLength = 4;
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    if (pin.length === maxPinLength) {
-      // Auto-confirm once the last digit is entered
-      const timer = setTimeout(() => {
-        navigate('/transfer-success');
-      }, 400);
-      return () => clearTimeout(timer);
+  const triggerAutoConfirm = (nextPin: string) => {
+    if (nextPin.length === maxPinLength && !isTransitioning) {
+      setIsTransitioning(true);
+      const transitionDurationMs = reduceMotion ? 0 : 260;
+      window.setTimeout(() => navigate('/transfer-success'), transitionDurationMs);
     }
-  }, [pin, navigate]);
+  };
 
   const handleNumberClick = (num: string) => {
-    if (pin.length < maxPinLength) {
-      setPin(pin + num);
-    }
+    if (pin.length >= maxPinLength || isTransitioning) return;
+
+    const nextPin = pin + num;
+    setPin(nextPin);
+    triggerAutoConfirm(nextPin);
   };
 
   const handleDelete = () => {
@@ -181,7 +183,7 @@ export default function ConfirmationPinScreen() {
   return (
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Confirmation PIN Screen">
       {/* 1:1 Elite Header Background Layer */}
-      <div className="absolute top-0 left-0 right-0 h-[220px] overflow-hidden z-0">
+      <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
           src="/Mask group (1).png"
           alt="Header Background"
@@ -213,7 +215,22 @@ export default function ConfirmationPinScreen() {
       </div>
 
       {/* Main Glassmorphic Card (Keeping Padding & Rounding Enhancements) */}
-      <div className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar">
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
+        animate={
+          reduceMotion
+            ? undefined
+            : isTransitioning
+              ? { opacity: 0, y: -18, scale: 0.99, filter: 'blur(2px)' }
+              : { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+        }
+        transition={{
+          duration: reduceMotion ? 0 : isTransitioning ? 0.26 : 0.46,
+          ease: isTransitioning ? [0.4, 0, 1, 1] : [0.22, 1, 0.36, 1],
+          delay: reduceMotion || isTransitioning ? 0 : 0.04,
+        }}
+        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar"
+      >
         <div className="px-8 py-10 flex flex-col items-center h-full">
           {/* Welcome Title */}
           <div className="mb-8 text-center px-4 font-sans">
@@ -231,8 +248,8 @@ export default function ConfirmationPinScreen() {
               <div
                 key={index}
                 className={`w-3.5 h-3.5 rounded-full border-2 transition-all duration-300 ${index < pin.length
-                    ? 'bg-[#FF8F12] border-[#FF8F12] scale-125 shadow-[0_0_10px_rgba(255,143,18,0.4)]'
-                    : 'bg-transparent border-gray-200'
+                  ? 'bg-[#FF8F12] border-[#FF8F12] scale-125 shadow-[0_0_10px_rgba(255,143,18,0.4)]'
+                  : 'bg-transparent border-gray-200'
                   }`}
               />
             ))}
@@ -271,7 +288,7 @@ export default function ConfirmationPinScreen() {
             Secure Payment Gateway
           </p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

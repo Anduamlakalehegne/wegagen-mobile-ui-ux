@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router';
+import { motion, useReducedMotion } from 'motion/react';
+import React, { useState } from 'react';
 import {
   ArrowLeftRight,
   MapPin,
@@ -33,6 +35,8 @@ function QuickActionItem({ icon, label, onClick }: QuickActionProps) {
 
 export default function QuickActionsScreen() {
   const navigate = useNavigate();
+  const reduceMotion = useReducedMotion();
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const quickActions = [
     {
@@ -68,13 +72,17 @@ export default function QuickActionsScreen() {
   ];
 
   const handleLogin = () => {
-    navigate('/pin-entry');
+    if (isTransitioning) return;
+
+    setIsTransitioning(true);
+    const transitionDurationMs = reduceMotion ? 0 : 260;
+    window.setTimeout(() => navigate('/pin-entry'), transitionDurationMs);
   };
 
   return (
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Quick Actions Screen">
       {/* 1:1 Elite Header Background Layer */}
-      <div className="absolute top-0 left-0 right-0 h-[220px] overflow-hidden z-0">
+      <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
           src="/Mask group (1).png"
           alt="Header Background"
@@ -92,7 +100,22 @@ export default function QuickActionsScreen() {
       </div>
 
       {/* Main Glassmorphic Card (Keeping Padding & Rounding Enhancements) */}
-      <div className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30">
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
+        animate={
+          reduceMotion
+            ? undefined
+            : isTransitioning
+              ? { opacity: 0, y: -18, scale: 0.99, filter: 'blur(2px)' }
+              : { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+        }
+        transition={{
+          duration: reduceMotion ? 0 : isTransitioning ? 0.26 : 0.46,
+          ease: isTransitioning ? [0.4, 0, 1, 1] : [0.22, 1, 0.36, 1],
+          delay: reduceMotion || isTransitioning ? 0 : 0.04,
+        }}
+        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30"
+      >
         <div className="px-8 py-10">
           {/* Welcome Section */}
           <div className="mb-10 text-center">
@@ -119,6 +142,7 @@ export default function QuickActionsScreen() {
           <div className="flex flex-col items-center gap-4">
             <button
               onClick={handleLogin}
+              disabled={isTransitioning}
               className="w-full max-w-[280px] flex items-center justify-center gap-2 py-4 rounded-[16px] bg-[#FF8F12] text-white shadow-[0_6px_20px_rgba(255,143,18,0.3)] hover:shadow-[0_8px_24px_rgba(255,143,18,0.4)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               <span className="text-[16px] font-medium">Login</span>
@@ -136,7 +160,7 @@ export default function QuickActionsScreen() {
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

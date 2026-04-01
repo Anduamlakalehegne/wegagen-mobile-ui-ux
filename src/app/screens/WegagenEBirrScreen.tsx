@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { motion, useReducedMotion } from 'motion/react';
 import {
   ChevronLeft,
   RefreshCw,
@@ -20,6 +21,7 @@ export default function WegagenEBirrScreen() {
   const [showBankDropdown, setShowBankDropdown] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isModalExiting, setIsModalExiting] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   const openModal = () => {
     setShowConfirmModal(true);
@@ -40,26 +42,54 @@ export default function WegagenEBirrScreen() {
   ];
 
   return (
-    <div className="bg-[#fcfcfc] relative flex flex-col font-sans h-full overflow-hidden" data-name="Wegagen EBirr Screen">
-      {/* 1:1 Elite Header */}
-      <div className="absolute top-0 left-0 right-0 h-[180px] bg-[#ff6b0b] z-0">
-        <div className="relative z-10 p-5 flex items-center justify-between text-white mt-4">
+    <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Wegagen EBirr Screen">
+      {/* 1:1 Elite Header Background Layer */}
+      <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
+        <img
+          src="/Mask group (1).png"
+          alt="Header Background"
+          className="w-full h-full object-cover -translate-y-2 opacity-110"
+        />
+      </div>
+
+      {/* Brand Header with Top-aligned Navigation */}
+      <div className="relative z-20 px-8 h-[220px] flex flex-col items-center">
+        {/* Absolute Top Navigation Buttons (Exactly like Home Page) */}
+        <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
           <button
-            onClick={() => navigate(-1)}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all active:scale-90"
+            onClick={() => navigate('/home')}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90"
           >
             <ChevronLeft size={22} strokeWidth={3} />
           </button>
-          <h1 className="text-[18px] font-bold tracking-tight">Transfer to Wegagen EBirr</h1>
-          <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all active:scale-90">
+          <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90">
             <RefreshCw size={18} strokeWidth={3} />
           </button>
         </div>
+
+        {/* Centered Logo & Title Group (Kept at Original Positions) */}
+        <div className="pt-16 flex flex-col items-center">
+          <img
+            src="/LogoSVG 1 (1).png"
+            alt="Wegagen Bank"
+            className="h-10 object-contain drop-shadow-lg"
+          />
+          <h2 className="text-white text-[15px] font-bold tracking-tight mt-6 opacity-90">To Wegagen EBirr</h2>
+        </div>
       </div>
 
-      {/* Modern High-Fidelity Form Card */}
-      <div className="relative z-10 flex-1 px-4 mt-33 overflow-y-auto no-scrollbar pb-10">
-        <div className="bg-white rounded-[32px] p-4 pt-10 shadow-[0_15px_45px_rgba(0,0,0,0.06)]">
+      {/* Main Glassmorphic Card (Padding & Rounding Enhancements) */}
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
+        animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+        transition={{
+          duration: reduceMotion ? 0 : 0.46,
+          ease: [0.22, 1, 0.36, 1],
+          delay: reduceMotion ? 0 : 0.04,
+        }}
+        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-10"
+      >
+        <div className="p-4 pt-10">
 
           <div className="space-y-4">
             {/* Field: Select Bank */}
@@ -169,7 +199,7 @@ export default function WegagenEBirrScreen() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Liquid Glass Confirmation Modal Overlay */}
       {showConfirmModal && (

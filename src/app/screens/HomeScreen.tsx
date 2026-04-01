@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { motion, useReducedMotion } from 'motion/react';
 import {
   Menu,
   RefreshCw,
@@ -208,6 +209,15 @@ export default function HomeScreen() {
   const [isGridView, setIsGridView] = useState(false);
   const [selectedAccIdx, setSelectedAccIdx] = useState(0);
   const [showAccDropdown, setShowAccDropdown] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const reduceMotion = useReducedMotion();
+
+  const navigateWithTransition = (path: string) => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    const transitionDurationMs = reduceMotion ? 0 : 260;
+    window.setTimeout(() => navigate(path), transitionDurationMs);
+  };
 
   const accounts = [
     { type: "SAVING", number: "0911121314156", balance: "125,110.90" },
@@ -221,7 +231,7 @@ export default function HomeScreen() {
       icon: <ArrowLeftRight size={24} strokeWidth={2} className="text-white" />,
       label: "Transfer",
       bgColor: "bg-[#FF8F12]",
-      onClick: () => navigate("/transfer"),
+      onClick: () => navigateWithTransition("/transfer"),
     },
     {
       icon: <CreditCard size={24} strokeWidth={2} className="text-[#ff6b0b]" />,
@@ -248,19 +258,19 @@ export default function HomeScreen() {
       icon: <img src="/Group 82.png" alt="Wegagen Bank" className="w-[28px] h-[28px] object-contain" />,
       title: "To Wegagen Bank Account",
       iconBgColor: "bg-[#FFF6EC]",
-      onClick: () => navigate("/transfer"),
+      onClick: () => navigateWithTransition("/transfer"),
     },
     {
       icon: <img src="/Ebirr_Logo 1.png" alt="EBirr" className="w-[28px] h-[28px] object-contain" />,
       title: "To Wegagen EBirr",
       iconBgColor: "bg-[#FFF6EC]",
-      onClick: () => navigate("/ebirr-transfer"),
+      onClick: () => navigateWithTransition("/ebirr-transfer"),
     },
     {
       icon: <Landmark size={20} strokeWidth={2} className="text-[#ff6b0b]" />,
       title: "To Other Bank Account",
       iconBgColor: "bg-[#FFF6EC]",
-      onClick: () => navigate("/other-bank-transfer"),
+      onClick: () => navigateWithTransition("/other-bank-transfer"),
     },
     {
       icon: <Wallet size={20} strokeWidth={2} className="text-[#ff6b0b]" />,
@@ -382,7 +392,22 @@ export default function HomeScreen() {
       </div>
 
       {/* Main Content Container (Middle Layer) */}
-      <div className="absolute top-[200px] left-0 right-0 bottom-0 flex flex-col z-10">
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
+        animate={
+          reduceMotion
+            ? undefined
+            : isTransitioning
+              ? { opacity: 0, y: -18, scale: 0.99, filter: 'blur(2px)' }
+              : { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+        }
+        transition={{
+          duration: reduceMotion ? 0 : isTransitioning ? 0.26 : 0.46,
+          ease: isTransitioning ? [0.4, 0, 1, 1] : [0.22, 1, 0.36, 1],
+          delay: reduceMotion || isTransitioning ? 0 : 0.04,
+        }}
+        className="absolute top-[200px] left-0 right-0 bottom-0 flex flex-col z-10"
+      >
         {/* Sticky Section: Quick Actions & View All */}
         <div className="px-4 flex-none z-10">
           {/* Quick Actions Card */}
@@ -438,7 +463,7 @@ export default function HomeScreen() {
           {/* Dynamic Ad Slider */}
           <AdSlider />
         </div>
-      </div>
+      </motion.div>
 
       {/* Floating Sticky Bottom Navigation */}
       <div className="absolute bottom-[10px] left-[16px] right-[16px] h-[58px] bg-[#FF8F12] rounded-[25px] shadow-[0_8px_30px_rgba(0,0,0,0.2)] flex items-center justify-around px-1 z-30">
@@ -461,7 +486,7 @@ export default function HomeScreen() {
         <NavItem
           icon={<LogOut size={20} strokeWidth={2} className="text-white" />}
           label="Logout"
-          onClick={() => navigate('/')}
+          onClick={() => navigateWithTransition('/')}
         />
       </div>
     </div>

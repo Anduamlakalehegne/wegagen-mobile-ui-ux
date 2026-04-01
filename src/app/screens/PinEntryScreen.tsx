@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Delete, LogIn, ChevronLeft } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 import svgPaths from "../../imports/svg-agh5fqnfsc";
 
 function DecorativeElements() {
@@ -154,6 +155,8 @@ export default function PinEntryScreen() {
   const navigate = useNavigate();
   const [pin, setPin] = useState('');
   const maxPinLength = 4;
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   const handleNumberClick = (num: string) => {
     if (pin.length < maxPinLength) {
@@ -168,16 +171,21 @@ export default function PinEntryScreen() {
   };
 
   const handleLogin = () => {
-    if (pin.length === maxPinLength) {
+    if (pin.length !== maxPinLength || isTransitioning) return;
+
+    setIsTransitioning(true);
+    const transitionDurationMs = reduceMotion ? 0 : 260;
+
+    window.setTimeout(() => {
       console.log('PIN entered:', pin);
       navigate('/home');
-    }
+    }, transitionDurationMs);
   };
 
   return (
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="PIN Entry Screen">
       {/* 1:1 Elite Header Background Layer */}
-      <div className="absolute top-0 left-0 right-0 h-[220px] overflow-hidden z-0">
+      <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
           src="/Mask group (1).png"
           alt="Header Background"
@@ -209,7 +217,22 @@ export default function PinEntryScreen() {
       </div>
 
       {/* Main Glassmorphic Card (Keeping Padding & Rounding Enhancements) */}
-      <div className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar">
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
+        animate={
+          reduceMotion
+            ? undefined
+            : isTransitioning
+              ? { opacity: 0, y: -18, scale: 0.99, filter: 'blur(2px)' }
+              : { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+        }
+        transition={{
+          duration: reduceMotion ? 0 : isTransitioning ? 0.26 : 0.46,
+          ease: isTransitioning ? [0.4, 0, 1, 1] : [0.22, 1, 0.36, 1],
+          delay: reduceMotion || isTransitioning ? 0 : 0.04,
+        }}
+        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar"
+      >
         <div className="px-8 py-10 flex flex-col items-center h-full">
           {/* Welcome Title */}
           <div className="mb-8 text-center px-4 font-sans">
@@ -266,7 +289,7 @@ export default function PinEntryScreen() {
           <div className="w-full mt-auto">
             <button
               onClick={handleLogin}
-              disabled={pin.length !== maxPinLength}
+              disabled={pin.length !== maxPinLength || isTransitioning}
               className={`w-full flex items-center justify-center gap-2 py-4 rounded-[16px] transition-all duration-300 text-[16px] font-semibold shadow-lg ${pin.length === maxPinLength
                 ? 'bg-[#FF8F12] text-white shadow-[0_6px_20px_rgba(255,143,18,0.3)] hover:shadow-[0_8px_24px_rgba(255,143,18,0.4)] active:scale-95'
                 : 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
@@ -277,7 +300,7 @@ export default function PinEntryScreen() {
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

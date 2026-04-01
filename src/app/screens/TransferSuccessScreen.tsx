@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { CheckCircle2, Download, Share2, Home } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 
 export default function TransferSuccessScreen() {
    const navigate = useNavigate();
    const [showContent, setShowContent] = useState(false);
    const [showOverlay, setShowOverlay] = useState(true);
+   const [isTransitioning, setIsTransitioning] = useState(false);
+   const reduceMotion = useReducedMotion();
 
    useEffect(() => {
       // Trigger staggered animation on mount
@@ -26,6 +29,13 @@ export default function TransferSuccessScreen() {
       amount: "5,000.00"
    };
 
+   const handleFinished = () => {
+      if (isTransitioning) return;
+      setIsTransitioning(true);
+      const transitionDurationMs = reduceMotion ? 0 : 260;
+      window.setTimeout(() => navigate('/home'), transitionDurationMs);
+   };
+
    return (
       <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Success Screen">
          {/* Celebratory Light Burst Overlay */}
@@ -35,7 +45,7 @@ export default function TransferSuccessScreen() {
          </div>
 
          {/* 1:1 Elite Header Background Layer */}
-         <div className="absolute top-0 left-0 right-0 h-[220px] overflow-hidden z-0">
+         <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
             <img
                src="/Mask group (1).png"
                alt="Header Background"
@@ -56,7 +66,22 @@ export default function TransferSuccessScreen() {
          </div>
 
          {/* Main Receipt Content (ONLY PADDING & ROUNDING ENHANCEMENTS) */}
-         <div className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-8 transition-all cubic-bezier(0.34,1.56,0.64,1) duration-700">
+         <motion.div
+            initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
+            animate={
+               reduceMotion
+                  ? undefined
+                  : isTransitioning
+                     ? { opacity: 0, y: -18, scale: 0.99, filter: 'blur(2px)' }
+                     : { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+            }
+            transition={{
+               duration: reduceMotion ? 0 : isTransitioning ? 0.26 : 0.46,
+               ease: isTransitioning ? [0.4, 0, 1, 1] : [0.22, 1, 0.36, 1],
+               delay: reduceMotion || isTransitioning ? 0 : 0.04,
+            }}
+            className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-8 transition-all cubic-bezier(0.34,1.56,0.64,1) duration-700"
+         >
             <div className={`p-5 pt-4 flex flex-col items-center h-full transition-all duration-700 ${showContent ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
 
                {/* Pop-in Success Glower with Glow Overlay */}
@@ -73,7 +98,7 @@ export default function TransferSuccessScreen() {
                </p>
 
                {/* Amount Box */}
-               <div className="w-full py-4 rounded-[20px] flex flex-col items-center mb-5">
+               <div className="w-full py-4 rounded-[20px] flex flex-col items-center mb-2">
                   <span className="text-[#004360]/70 text-[11px] font-black uppercase tracking-widest mb-1">Total Amount</span>
                   <p className="text-[#004360] text-[26px] font-black tracking-tighter leading-none">
                      {transactionData.amount} <span className="text-[14px] opacity-80">ETB</span>
@@ -99,7 +124,7 @@ export default function TransferSuccessScreen() {
                </div>
 
                {/* Shorter Action Controls */}
-               <div className="w-full flex gap-3 mb-8">
+               <div className="w-full flex gap-3 mb-6">
                   <button className="flex-1 h-12 bg-white border-1 border-[#ff6b0b] text-[#ff6b0b] rounded-[15px] font-black text-[14px] flex items-center justify-center gap-2 active:scale-95 transition-all shadow-sm">
                      <Download size={18} strokeWidth={3} />
                      PDF
@@ -112,7 +137,8 @@ export default function TransferSuccessScreen() {
 
                {/* Finished Button */}
                <button
-                  onClick={() => navigate('/home')}
+                  onClick={handleFinished}
+                  disabled={isTransitioning}
                   className="w-full h-14 bg-[#ff6b0b] text-white rounded-[18px] font-black text-[16px] flex items-center justify-center shadow-[0_12px_30px_rgba(255,107,11,0.25)] active:scale-95 transition-all mb-6"
                >
                   Finished
@@ -127,7 +153,7 @@ export default function TransferSuccessScreen() {
                   />
                </div>
             </div>
-         </div>
+         </motion.div>
       </div>
    );
 }
