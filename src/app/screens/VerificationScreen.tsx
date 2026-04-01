@@ -169,7 +169,7 @@ export default function VerificationScreen() {
           {/* Verify Button */}
           <button
             onClick={handleVerify}
-          disabled={otp.length !== 4 || isTransitioning}
+            disabled={otp.length !== 4 || isTransitioning}
             className={`w-full flex items-center justify-center gap-2 py-4 rounded-[16px] transition-all duration-300 text-[16px] font-medium ${otp.length === 4
               ? 'bg-[#FF8F12] text-white shadow-[0_6px_20px_rgba(255,107,11,0.3)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.4)] hover:scale-[1.02] active:scale-[0.98]'
               : 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
@@ -189,6 +189,13 @@ export default function VerificationScreen() {
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* Branding Footer */}
+          <div className="pt-4 border-t border-gray-50 flex flex-col items-center">
+            <p className="text-[#004360]/20 text-[9px] font-black uppercase tracking-[0.2em]">
+              Copyright © 2026 Wegagen Bank S.C
+            </p>
           </div>
         </div>
       </motion.div>

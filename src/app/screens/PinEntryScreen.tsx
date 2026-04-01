@@ -299,6 +299,13 @@ export default function PinEntryScreen() {
               <LogIn size={20} strokeWidth={3} className="text-white/80" />
             </button>
           </div>
+
+          {/* Branding Footer */}
+          <div className="pt-6 border-t border-gray-50 flex flex-col items-center">
+            <p className="text-[#004360]/20 text-[9px] font-black uppercase tracking-[0.2em]">
+              Copyright © 2026 Wegagen Bank S.C
+            </p>
+          </div>
         </div>
       </motion.div>
     </div>

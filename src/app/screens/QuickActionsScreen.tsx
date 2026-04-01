@@ -154,9 +154,9 @@ export default function QuickActionsScreen() {
           </div>
 
           {/* Branding Footer */}
-          <div className="mt-28 pt-6 border-t border-gray-50 flex flex-col items-center">
+          <div className="mt-28 pt-4 border-t border-gray-50 flex flex-col items-center">
             <p className="text-[#004360]/20 text-[9px] font-black uppercase tracking-[0.2em]">
-              Copyright © Wegagen Bank S.C
+              Copyright © 2026 Wegagen Bank S.C
             </p>
           </div>
         </div>
