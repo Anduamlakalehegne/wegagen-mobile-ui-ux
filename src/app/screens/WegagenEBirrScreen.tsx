@@ -97,7 +97,7 @@ export default function WegagenEBirrScreen() {
               <label className="text-[#004360] text-[13px] font-bold ml-1">Select Bank</label>
               <button
                 onClick={() => setShowBankDropdown(!showBankDropdown)}
-                className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] px-2 py-3 focus:ring-4 focus:ring-orange-50 transition-all group"
+                className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] px-2 py-2 focus:ring-4 focus:ring-orange-50 transition-all group"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] shrink-0">

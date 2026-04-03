@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { motion, useReducedMotion } from 'motion/react';
 import {
   ChevronLeft,
@@ -9,38 +9,34 @@ import {
   User,
   Banknote,
   FileText,
-  ArrowRight
 } from 'lucide-react';
 
-export default function WegagenTransferScreen() {
+export default function WalletTransferFormScreen() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const walletTitle = queryParams.get('title') || 'Wallet Transfer';
+  const walletLogo = queryParams.get('logo') || '/Ebirr_Logo 1.png';
+
+  const isMF = walletTitle.toLowerCase().includes('awach') || walletTitle.toLowerCase().includes('sacco');
+
   const [amount, setAmount] = useState('');
   const [selectedAccIdx, setSelectedAccIdx] = useState(-1);
   const [showAccDropdown, setShowAccDropdown] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [isModalExiting, setIsModalExiting] = useState(false);
   const reduceMotion = useReducedMotion();
-
-  const openModal = () => {
-    setShowConfirmModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalExiting(true);
-    setTimeout(() => {
-      setShowConfirmModal(false);
-      setIsModalExiting(false);
-    }, 320); // Faster duration match for exit animation
-  };
 
   const accounts = [
     { type: "SAVING", number: "0911121314156", balance: "125,110.90" },
     { type: "CHECKING", number: "0922232425267", balance: "45,210.50" }
   ];
 
+  const handleTransfer = () => {
+    navigate('/confirm-pin');
+  };
+
   return (
-    <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Wegagen Transfer Screen">
-      {/* 1:1 Elite Header Background Layer */}
+    <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Wallet Transfer Form Screen">
+      {/* 1:1 Elite Header Background */}
       <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
           src="/Mask group (1).png"
@@ -49,9 +45,8 @@ export default function WegagenTransferScreen() {
         />
       </div>
 
-      {/* Brand Header with Top-aligned Navigation */}
+      {/* Brand Header */}
       <div className="relative z-20 px-8 h-[220px] flex flex-col items-center">
-        {/* Absolute Top Navigation Buttons (Exactly like Home Page) */}
         <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
           <button
             onClick={() => navigate(-1)}
@@ -64,18 +59,17 @@ export default function WegagenTransferScreen() {
           </button>
         </div>
 
-        {/* Centered Logo & Title Group (Kept at Original Positions) */}
         <div className="pt-16 flex flex-col items-center">
           <img
             src="/LogoSVG 1 (1).png"
             alt="Wegagen Bank"
             className="h-10 object-contain drop-shadow-lg"
           />
-          <h2 className="text-white text-[15px] font-bold tracking-tight mt-6 opacity-90">To Wegagen Bank Account</h2>
+          <h2 className="text-white text-[15px] font-bold tracking-tight mt-6 opacity-90">{walletTitle}</h2>
         </div>
       </div>
 
-      {/* Main Glassmorphic Form Card (ONLY PADDING & ROUNDING ENHANCEMENTS) */}
+      {/* Main Form Card - Pixel-perfect replication of WegagenTransferScreen */}
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
         animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
@@ -86,8 +80,19 @@ export default function WegagenTransferScreen() {
         }}
         className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-4"
       >
-        <div className="p-4 pb-0 pt-5">
-          <div className="space-y-3">
+        <div className="p-4 pb-0 pt-4">
+          <div className="space-y-2">
+
+            {/* Wallet Context Header */}
+            <div className="flex items-center gap-3 bg-[#fff9f4] border border-orange-100 rounded-[16px] px-3 py-2 mb-1">
+               <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-sm border border-orange-50 overflow-hidden">
+                  <div className="flex items-center justify-center w-full h-full">
+                     <img src={walletLogo} alt="" className={`${walletTitle.toLowerCase().includes('awach') ? 'w-[64px] h-[64px] scale-[2.4]' : 'w-6 h-6'} object-contain`} />
+                  </div>
+               </div>
+               <span className="text-[#004360] text-[13px] font-bold">{walletTitle}</span>
+            </div>
+
             {/* Field: Select Account */}
             <div className="space-y-2 relative">
               <label className="text-[#004360] text-[13px] font-bold ml-1">Select Account</label>
@@ -106,7 +111,6 @@ export default function WegagenTransferScreen() {
                 <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showAccDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
               </button>
 
-              {/* Account Dropdown Overlay */}
               {showAccDropdown && (
                 <>
                   <div className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]" onClick={() => setShowAccDropdown(false)} />
@@ -136,16 +140,16 @@ export default function WegagenTransferScreen() {
               )}
             </div>
 
-            {/* Field: Beneficiary Account */}
+            {/* Field: Destination (Wallet or MF Number) */}
             <div className="space-y-2">
-              <label className="text-[#004360] text-[13px] font-bold ml-1">Beneficiary Account</label>
+              <label className="text-[#004360] text-[13px] font-bold ml-1">{isMF ? 'Account Number' : 'Wallet Number'}</label>
               <div className="relative group">
                 <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
                   <User size={18} strokeWidth={2.5} />
                 </div>
                 <input
                   type="text"
-                  placeholder="Enter beneficiary account number"
+                  placeholder={isMF ? "Enter destination account number" : "Enter receiver phone number"}
                   className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all"
                 />
               </div>
@@ -183,52 +187,42 @@ export default function WegagenTransferScreen() {
               </div>
             </div>
 
-            {/* Transfer Button - Matches Image Shape/Color */}
-            <div className="pt-3 pb-2">
+            {/* Transfer Button - Replicated Shape/Style */}
+            <div className="pt-2">
               <button
-                onClick={openModal}
-                className="w-full h-[48px] bg-[#ff8f12] hover:bg-[#ff6b0b] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98] transition-all"
+                onClick={handleTransfer}
+                className="w-full h-[42px] bg-[#ff8f12] hover:bg-[#ff6b0b] text-white rounded-[20px] font-black text-[15px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98] transition-all"
               >
                 Transfer
               </button>
             </div>
 
-            {/* ─── Recent Transactions ─── */}
+            {/* Recent Transactions - Replicated Section */}
             <div className="pt-1">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-[#004360] text-[13px] font-black tracking-tight">Recent Transactions</h3>
+                <h3 className="text-[#004360] text-[13px] font-black tracking-tight tracking-tight">Recent {isMF ? 'Activity' : 'Wallet Activity'}</h3>
                 <button className="text-[#ff8f12] text-[11px] font-bold hover:underline transition-all">See All</button>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1">
                 {[
-                  { type: "Deposit", name: "Abebe Kebede", amount: "+200.00", date: "Mon April 12 2026 20:26", isCredit: true },
-                  { type: "Transfer", name: "Tigist Alemu", amount: "-500.00", date: "Mon April 12 2026 18:14", isCredit: false },
-                  { type: "Deposit", name: "Yohannes Tadesse", amount: "+1,200.00", date: "Sun April 11 2026 09:45", isCredit: true },
-                ].map((tx, idx) => (
+                  { type: isMF ? "Transfer" : "Top-up", name: "Telebirr Wallet", amount: "-150.00", date: "Mon April 12 2026 14:20", isCredit: false, icon: "/telebirr 1.png" },
+                  { type: isMF ? "Payment" : "Receive", name: "EBirr Wallet", amount: "+450.00", date: "Mon April 12 2026 10:15", isCredit: true, icon: "/Ebirr_Logo 1.png" },
+                  { type: isMF ? "Transfer" : "Top-up", name: "Telebirr Agent", amount: "-300.00", date: "Sun April 11 2026 18:45", isCredit: false, icon: "/telebirr 1.png" },
+                ].slice(0, 3).map((tx, idx) => (
                   <div
                     key={idx}
                     className="flex items-center gap-2 py-1.5 px-3 bg-white border border-gray-50 rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.08)] hover:bg-[#fffdfb] active:scale-[0.98] transition-all duration-300 cursor-pointer group"
                   >
-                    {/* Direction Icon */}
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 ${tx.isCredit ? 'bg-green-50' : 'bg-red-50'}`}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={tx.isCredit ? '#16a34a' : '#ff6b0b'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        {tx.isCredit
-                          ? <><path d="M12 19V5" /><path d="m5 12 7 7 7-7" /></>
-                          : <><path d="M12 5v14" /><path d="m19 12-7-7-7 7" /></>
-                        }
-                      </svg>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border border-gray-50 bg-gray-50/50`}>
+                      <img src={tx.icon} alt="" className="w-5 h-5 object-contain" />
                     </div>
-
-                    {/* Label & Name */}
                     <div className="flex-1 min-w-0">
-                      <p className="text-[#ff8f12] text-[12px] font-black leading-none mb-0.5">{tx.type}</p>
+                      <p className="text-[#ff8f12] text-[12px] font-black leading-none mb-1">{tx.type}</p>
                       <p className="text-[#004360] text-[12px] font-semibold truncate">{tx.name}</p>
                     </div>
-
-                    {/* Amount & Date */}
                     <div className="text-right shrink-0">
-                      <p className={`text-[13px] font-black leading-none mb-0.5 ${tx.isCredit ? 'text-green-600' : 'text-[#e05a0b]'}`}>
+                      <p className={`text-[13px] font-black leading-none mb-1 ${tx.isCredit ? 'text-green-600' : 'text-[#e05a0b]'}`}>
                         {tx.amount} ETB
                       </p>
                       <p className="text-[#004360]/30 text-[9px] font-semibold whitespace-nowrap">{tx.date}</p>
@@ -241,78 +235,6 @@ export default function WegagenTransferScreen() {
           </div>
         </div>
       </motion.div>
-
-      {/* High-Fidelity Confirmation Modal Overlay */}
-      {showConfirmModal && (
-        <div className={`absolute inset-0 z-[200] flex items-end justify-center ${isModalExiting ? "transition-opacity duration-300 opacity-0" : "animate-in fade-in duration-300"}`}>
-          {/* Advanced Seamless Backdrop */}
-          <div
-            className={`absolute inset-0 bg-[#004360]/10 transition-all duration-300 ease-out ${isModalExiting ? "opacity-0 backdrop-blur-none" : "opacity-100 backdrop-blur-[12px] animate-in fade-in fill-mode-both"
-              }`}
-            style={{ transitionProperty: 'opacity, backdrop-filter, -webkit-backdrop-filter' }}
-            onClick={handleCloseModal}
-          />
-
-          {/* Liquid Glass Modal Container */}
-          <div
-            className={`relative w-full bg-white rounded-t-[44px] overflow-hidden shadow-[0_-15px_80px_rgba(0,0,0,0.15)] transition-transform duration-300 ease-out transform ${isModalExiting ? "translate-y-full" : "translate-y-0 animate-in slide-in-from-bottom-full"
-              }`}
-          >
-            {/* Modal Handle Pin */}
-            <div className="w-12 h-1.5 bg-gray-100 rounded-full mx-auto mt-3 mb-1" />
-
-            <div className="p-6 pb-2 pt-5 flex flex-col items-center">
-              {/* Success Brand Glower */}
-              <div className="relative mb-2 scale-90">
-                <div className="w-18 h-18 rounded-full bg-orange-50 flex items-center justify-center text-[#ff6b0b] relative z-10 border border-orange-100">
-                  <div className="w-11 h-11 rounded-full bg-[#ff6b0b] shadow-[0_8px_20px_rgba(255,107,11,0.3)] flex items-center justify-center text-white">
-                    <RefreshCw size={22} strokeWidth={3} className="animate-spin-slow" />
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-[#ff6b0b] blur-[30px] opacity-10 rounded-full scale-125" />
-              </div>
-
-              <h2 className="text-[#053d57] text-[17px] font-black tracking-tight mb-5">Confirm Your Transfer</h2>
-
-              {/* High-Contrast Transaction Details */}
-              <div className="w-full space-y-3 mb-6 px-2">
-                {[
-                  { label: "Recipient", value: "Fikir T." },
-                  { label: "Debit Account", value: selectedAccIdx !== -1 ? accounts[selectedAccIdx].number : "0911128513141" },
-                  { label: "Credit Account", value: "092258758742" },
-                  { label: "Amount", value: `${amount || "10,000"} ETB` },
-                  { label: "Remark", value: "Transfer" }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center justify-between border-b border-gray-50 pb-2">
-                    <span className="text-gray-400 text-[12px] font-bold">{item.label}</span>
-                    <span className="text-[#053d57] text-[12px] font-black">{item.value}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Compact Horizontal Buttons */}
-              <div className="w-full flex gap-3 pb-6">
-                <button
-                  onClick={handleCloseModal}
-                  className="flex-1 h-[48px] bg-gray-50 text-gray-400 rounded-[15px] font-bold text-[15px] active:scale-95 transition-all"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => {
-                    handleCloseModal();
-                    // Navigate to Transfer PIN Confirmation
-                    setTimeout(() => navigate('/confirm-pin'), 350);
-                  }}
-                  className="flex-1 h-[48px] bg-[#ff6b0b] text-white rounded-[15px] font-black text-[16px] shadow-[0_10px_30px_rgba(255,107,11,0.25)] active:scale-95 transition-all"
-                >
-                  Confirm
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

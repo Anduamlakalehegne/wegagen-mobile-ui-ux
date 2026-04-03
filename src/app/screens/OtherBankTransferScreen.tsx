@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { motion, useReducedMotion } from 'motion/react';
 import {
   ChevronLeft,
+  ChevronDown,
   RefreshCw,
   Search,
   Wallet,
@@ -23,6 +24,13 @@ export default function OtherBankTransferScreen() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isConfirmExiting, setIsConfirmExiting] = useState(false);
   const reduceMotion = useReducedMotion();
+  const [selectedAccIdx, setSelectedAccIdx] = useState(-1);
+  const [showAccDropdown, setShowAccDropdown] = useState(false);
+
+  const accounts = [
+    { type: "SAVING", number: "0911121314156" },
+    { type: "CURRENT", number: "0912223344556" },
+  ];
 
   const banks = [
     { name: "Abay Bank", logo: "/Abaya Bank 1.png" },
@@ -111,17 +119,65 @@ export default function OtherBankTransferScreen() {
           ease: [0.22, 1, 0.36, 1],
           delay: reduceMotion ? 0 : 0.04,
         }}
-        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-10"
+        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar"
       >
-        <div className="p-4 pt-10">
-          <div className="space-y-4">
+        <div className="p-4 pb-0 pt-3">
+          <div className="space-y-1.5">
 
-            {/* Field: Select Bank */}
+            {/* Field: Select Account */}
+            <div className="space-y-2 relative">
+              <label className="text-[#004360] text-[13px] font-bold ml-1">Select Account</label>
+              <button
+                onClick={() => setShowAccDropdown(!showAccDropdown)}
+                className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] px-2 py-2 focus:ring-4 focus:ring-orange-50 transition-all group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] shrink-0">
+                    <Wallet size={18} strokeWidth={2.5} />
+                  </div>
+                  <span className={`text-[#004360] text-[14px] font-semibold ${selectedAccIdx === -1 ? "opacity-30" : ""}`}>
+                    {selectedAccIdx === -1 ? "Select Account" : `${accounts[selectedAccIdx].type} - ${accounts[selectedAccIdx].number.slice(-4)}`}
+                  </span>
+                </div>
+                <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showAccDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
+              </button>
+
+              {/* Account Dropdown Overlay */}
+              {showAccDropdown && (
+                <>
+                  <div className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]" onClick={() => setShowAccDropdown(false)} />
+                  <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-50 overflow-hidden border border-orange-100 animate-in fade-in zoom-in-95 duration-200">
+                    <div className="p-2 space-y-1">
+                      {accounts.map((acc, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setSelectedAccIdx(idx);
+                            setShowAccDropdown(false);
+                          }}
+                          className={`w-full px-5 py-4 rounded-[18px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
+                        >
+                          <div className="flex flex-col">
+                            <span className="text-[13px] font-black uppercase tracking-wider">{acc.type}</span>
+                            <span className="text-[11px] opacity-40 font-bold">{acc.number}</span>
+                          </div>
+                          {selectedAccIdx === idx && (
+                            <div className="w-2 h-2 rounded-full bg-[#ff6b0b]" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Field: Select Destination Bank */}
             <div className="space-y-2">
-              <label className="text-[#004360] text-[13px] font-bold ml-1">Select Bank</label>
+              <label className="text-[#004360] text-[13px] font-bold ml-1">Select Destination Bank</label>
               <button
                 onClick={() => toggleBankModal(true)}
-                className="w-full h-14 bg-[#fff9f4] border border-orange-100 rounded-[12px] px-4 flex items-center justify-between group transition-all"
+                className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] px-4 py-2 flex items-center justify-between group transition-all"
               >
                 <div className="flex items-center gap-3 text-[#004360]">
                   {selectedBank ? (
@@ -132,7 +188,7 @@ export default function OtherBankTransferScreen() {
                     </div>
                   )}
                   <span className={`text-[14px] font-semibold ${!selectedBank ? 'opacity-30' : ''}`}>
-                    {selectedBank ? selectedBank.name : "Select Bank"}
+                    {selectedBank ? selectedBank.name : "Select Destination Bank"}
                   </span>
                 </div>
                 <ChevronLeft size={16} className="-rotate-90 text-[#ff6b0b]" strokeWidth={3} />
@@ -173,13 +229,58 @@ export default function OtherBankTransferScreen() {
             </div>
 
             {/* Transfer Button */}
-            <div className="pt-6 pb-4">
+            <div className="pt-2">
               <button
                 onClick={() => toggleConfirmModal(true)}
-                className="w-full h-[52px] bg-[#ff8f12] text-white rounded-[22px] font-black text-[18px] shadow-[0_12px_24px_rgba(255,107,11,0.25)] active:scale-[0.98] transition-all"
+                className="w-full h-[44px] bg-[#ff8f12] text-white rounded-[20px] font-black text-[15px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] active:scale-[0.98] transition-all"
               >
                 Transfer
               </button>
+            </div>
+
+            {/* ─── Recent Transactions ─── */}
+            <div className="pt-1">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-[#004360] text-[13px] font-black tracking-tight">Recent Transactions</h3>
+                <button className="text-[#ff8f12] text-[11px] font-bold hover:underline transition-all">See All</button>
+              </div>
+
+              <div className="space-y-2">
+                {[
+                  { type: "Deposit", name: "Abebe Kebede", amount: "+200.00", date: "Mon April 12 2026 20:26", isCredit: true },
+                  { type: "Transfer", name: "Tigist Alemu", amount: "-500.00", date: "Mon April 12 2026 18:14", isCredit: false },
+                  { type: "Deposit", name: "Yohannes Tadesse", amount: "+1,200.00", date: "Sun April 11 2026 09:45", isCredit: true },
+                ].map((tx, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 py-1.5 px-3 bg-white border border-gray-50 rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.08)] hover:bg-[#fffdfb] active:scale-[0.98] transition-all duration-300 cursor-pointer group"
+                  >
+                    {/* Direction Icon */}
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 ${tx.isCredit ? 'bg-green-50' : 'bg-red-50'}`}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={tx.isCredit ? '#16a34a' : '#ff6b0b'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        {tx.isCredit
+                          ? <><path d="M12 19V5" /><path d="m5 12 7 7 7-7" /></>
+                          : <><path d="M12 5v14" /><path d="m19 12-7-7-7 7" /></>
+                        }
+                      </svg>
+                    </div>
+
+                    {/* Label & Name */}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[#ff8f12] text-[12px] font-black leading-none mb-0.5">{tx.type}</p>
+                      <p className="text-[#004360] text-[12px] font-semibold truncate">{tx.name}</p>
+                    </div>
+
+                    {/* Amount & Date */}
+                    <div className="text-right shrink-0">
+                      <p className={`text-[13px] font-black leading-none mb-0.5 ${tx.isCredit ? 'text-green-600' : 'text-[#e05a0b]'}`}>
+                        {tx.amount} ETB
+                      </p>
+                      <p className="text-[#004360]/30 text-[9px] font-semibold whitespace-nowrap">{tx.date}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

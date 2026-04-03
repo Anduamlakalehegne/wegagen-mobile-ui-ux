@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
 import {
   Menu,
   RefreshCw,
@@ -26,10 +26,26 @@ import {
   Smartphone,
   LayoutPanelLeft,
   Gift,
-  CheckCircle2
+  CheckCircle2,
+  Plane,
+  GraduationCap,
+  Droplets,
+  Stethoscope,
+  ShoppingCart,
+  Key,
+  Fuel,
+  Heart,
+  Globe,
+  DollarSign,
+  Fingerprint,
+  Languages,
+  Activity,
+  FileText,
+  Lock,
+  Info,
+  Settings as SettingsIcon,
+  QrCode
 } from 'lucide-react';
-
-// import imgPhoto from "../../imports/svg-5bcz1";
 
 interface TransactionItemProps {
   icon: React.ReactNode;
@@ -71,8 +87,8 @@ function TransactionItem({ icon, title, iconBgColor, onClick, isGrid }: Transact
           {title}
         </p>
       </div>
-      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50/80 group-hover:bg-[#ff6b0b] group-hover:text-white transition-all duration-300">
-        <ChevronRight size={16} strokeWidth={3} />
+      <div className="flex items-center justify-center w-7 h-7 rounded-full bg-gray-50/80 group-hover:bg-[#ff6b0b] group-hover:text-white transition-all duration-300">
+        <ChevronRight size={12} strokeWidth={2} />
       </div>
     </button>
   );
@@ -114,12 +130,11 @@ function NavItem({ icon, label, active, onClick }: NavItemProps) {
   return (
     <button
       onClick={onClick}
-      className="flex-1 flex items-center justify-center"
+      className={`flex-1 flex items-center justify-center`}
     >
-      <div className={`flex flex-col items-center justify-center gap-0.5 transition-all duration-300 h-[48px] w-full max-w-[68px] rounded-[18px] ${active ? 'bg-white/20' : 'hover:bg-white/10'
-        }`}>
+      <div className={`flex flex-col items-center justify-center gap-0.5 transition-all duration-300 h-[48px] w-full max-w-[68px] rounded-[18px] ${active ? 'bg-white/20' : 'hover:bg-white/10'}`}>
         {icon}
-        <span className="text-[10px] text-white font-normal">
+        <span className={`text-[10px] font-medium tracking-tight ${active ? 'text-white' : 'text-white/60'}`}>
           {label}
         </span>
       </div>
@@ -209,6 +224,7 @@ export default function HomeScreen() {
   const [isGridView, setIsGridView] = useState(false);
   const [selectedAccIdx, setSelectedAccIdx] = useState(0);
   const [showAccDropdown, setShowAccDropdown] = useState(false);
+  const [activeTab, setActiveTab] = useState('Transfer');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const reduceMotion = useReducedMotion();
 
@@ -228,32 +244,36 @@ export default function HomeScreen() {
 
   const quickActions = [
     {
-      icon: <ArrowLeftRight size={24} strokeWidth={2} className="text-white" />,
+      id: 'Transfer',
+      icon: <ArrowLeftRight size={24} strokeWidth={2} className={activeTab === 'Transfer' ? "text-white" : "text-[#ff6b0b]"} />,
       label: "Transfer",
-      bgColor: "bg-[#FF8F12]",
-      onClick: () => navigateWithTransition("/transfer"),
+      bgColor: activeTab === 'Transfer' ? "bg-[#FF8F12]" : "bg-[#fff6ec]",
+      onClick: () => setActiveTab('Transfer'),
     },
     {
-      icon: <CreditCard size={24} strokeWidth={2} className="text-[#ff6b0b]" />,
+      id: 'Payment',
+      icon: <CreditCard size={24} strokeWidth={2} className={activeTab === 'Payment' ? "text-white" : "text-[#ff6b0b]"} />,
       label: "Payment",
-      bgColor: "bg-[#fff6ec]",
-      onClick: () => console.log("Payment clicked"),
+      bgColor: activeTab === 'Payment' ? "bg-[#FF8F12]" : "bg-[#fff6ec]",
+      onClick: () => setActiveTab('Payment'),
     },
     {
-      icon: <TrendingUp size={24} strokeWidth={2} className="text-[#ff6b0b]" />,
+      id: 'Top-up',
+      icon: <TrendingUp size={24} strokeWidth={2} className={activeTab === 'Top-up' ? "text-white" : "text-[#ff6b0b]"} />,
       label: "Top-up",
-      bgColor: "bg-[#fff6ec]",
-      onClick: () => console.log("Top-up clicked"),
+      bgColor: activeTab === 'Top-up' ? "bg-[#FF8F12]" : "bg-[#fff6ec]",
+      onClick: () => setActiveTab('Top-up'),
     },
     {
-      icon: <LayoutGrid size={24} strokeWidth={2} className="text-[#ff6b0b]" />,
+      id: 'Other',
+      icon: <LayoutGrid size={24} strokeWidth={2} className={activeTab === 'Other' ? "text-white" : "text-[#ff6b0b]"} />,
       label: "Other",
-      bgColor: "bg-[#fff6ec]",
-      onClick: () => console.log("Other clicked"),
+      bgColor: activeTab === 'Other' ? "bg-[#FF8F12]" : "bg-[#fff6ec]",
+      onClick: () => setActiveTab('Other'),
     },
   ];
 
-  const transactions = [
+  const transferItems = [
     {
       icon: <img src="/Group 82.png" alt="Wegagen Bank" className="w-[28px] h-[28px] object-contain" />,
       title: "To Wegagen Bank Account",
@@ -276,15 +296,119 @@ export default function HomeScreen() {
       icon: <Wallet size={20} strokeWidth={2} className="text-[#ff6b0b]" />,
       title: "To Wallet",
       iconBgColor: "bg-[#FFF6EC]",
-      onClick: () => console.log("To Wallet"),
+      onClick: () => navigateWithTransition("/wallet"),
     },
     {
       icon: <Banknote size={20} strokeWidth={2} className="text-[#ff6b0b]" />,
       title: "To Micro Finance",
       iconBgColor: "bg-[#FFF6EC]",
-      onClick: () => console.log("To Micro Finance"),
+      onClick: () => navigateWithTransition("/micro-finance"),
     },
   ];
+
+  const paymentItems = [
+    {
+      icon: <Plane size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Ethiopian Airlines Payment",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Airlines clicked"),
+    },
+    {
+      icon: <GraduationCap size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "School Payment",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("School clicked"),
+    },
+    {
+      icon: <Droplets size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Water Payments",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Water clicked"),
+    },
+    {
+      icon: <Building2 size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Tigray Housing Payment",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Housing clicked"),
+    },
+    {
+      icon: <Stethoscope size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Health Payments",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Health clicked"),
+    },
+    {
+      icon: <Key size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Rental Payments",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Rental clicked"),
+    },
+    {
+      icon: <Users size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Cooperatives Payment",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Cooperatives clicked"),
+    },
+    {
+      icon: <ShoppingCart size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Pay Merchant",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Merchant clicked"),
+    },
+    {
+      icon: <Fuel size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Fuel Payment",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Fuel clicked"),
+    },
+  ];
+
+  const topUpItems = [
+    {
+      icon: <Smartphone size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Ethio Telecom",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Ethio Telecom clicked"),
+    },
+  ];
+
+  const otherItems = [
+    {
+      icon: <DollarSign size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "ATM Cashout",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("ATM clicked"),
+    },
+    {
+      icon: <CreditCard size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Card Services",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Card clicked"),
+    },
+    {
+      icon: <Heart size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Donation",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Donation clicked"),
+    },
+    {
+      icon: <Globe size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "SWIFT",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("SWIFT clicked"),
+    },
+    {
+      icon: <Fingerprint size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      title: "Fayda",
+      iconBgColor: "bg-[#FFF6EC]",
+      onClick: () => console.log("Fayda clicked"),
+    },
+  ];
+
+  const currentTransactions = activeTab === 'Payment' ? paymentItems :
+    activeTab === 'Top-up' ? topUpItems :
+      activeTab === 'Other' ? otherItems :
+        transferItems;
 
   return (
     <div className="bg-transparent relative w-full h-full overflow-hidden" data-name="Home Screen">
@@ -444,23 +568,34 @@ export default function HomeScreen() {
           </div>
         </div>
 
-        {/* Scrollable Section: Transaction List & Advertisement */}
+        {/* Scrollable Section: Transaction List */}
         <div className="flex-1 overflow-y-auto no-scrollbar px-3 pb-[10px]">
           {/* Transaction List */}
-          <div className={`${isGridView ? 'grid grid-cols-3 gap-1.5 items-stretch' : 'flex flex-col gap-1.5'} mb-5`}>
-            {transactions.map((transaction, index) => (
-              <TransactionItem
-                key={index}
-                icon={transaction.icon}
-                title={transaction.title}
-                iconBgColor={transaction.iconBgColor}
-                onClick={transaction.onClick}
-                isGrid={isGridView}
-              />
-            ))}
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className={`${isGridView ? 'grid grid-cols-3 gap-1.5 items-stretch' : 'flex flex-col gap-1.5'} mb-2`}
+            >
+              {currentTransactions.map((transaction, index) => (
+                <TransactionItem
+                  key={index}
+                  icon={transaction.icon}
+                  title={transaction.title}
+                  iconBgColor={transaction.iconBgColor}
+                  onClick={transaction.onClick}
+                  isGrid={isGridView}
+                />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-          {/* Dynamic Ad Slider */}
+        {/* Sticky Advertisement Section */}
+        <div className="px-4 pb-[62px] z-20">
           <AdSlider />
         </div>
       </motion.div>
@@ -474,21 +609,95 @@ export default function HomeScreen() {
           onClick={() => console.log("Home")}
         />
         <NavItem
-          icon={<Receipt size={20} strokeWidth={2} className="text-white" />}
+          icon={<Receipt size={20} strokeWidth={2} className="text-white placeholder:opacity-60" />}
           label="Transaction"
-          onClick={() => console.log("Transaction")}
+          onClick={() => navigateWithTransition('/transactions')}
         />
         <NavItem
-          icon={<Users size={20} strokeWidth={2} className="text-white" />}
+          icon={<Users size={20} strokeWidth={2} className="text-white opacity-60" />}
           label="Beneficiary"
           onClick={() => console.log("Beneficiary")}
         />
         <NavItem
-          icon={<LogOut size={20} strokeWidth={2} className="text-white" />}
+          icon={<LogOut size={20} strokeWidth={2} className="text-white opacity-60" />}
           label="Logout"
           onClick={() => navigateWithTransition('/')}
         />
       </div>
+
+      {/* Modern Side Menu Drawer (Constrained to Phone Container) */}
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            {/* Backdrop Layer */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMenuOpen(false)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-[2px] z-[100]"
+            />
+
+            {/* Slide-out Menu Panel (Absolute within Phone) */}
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: "spring", damping: 30, stiffness: 250 }}
+              className="absolute top-0 left-0 bottom-0 w-[290px] bg-white z-[110] shadow-[10px_0_50px_rgba(0,0,0,0.15)] flex flex-col"
+            >
+              {/* Premium Branded Header (Consistent with Transfer Screens) */}
+              <div className="relative h-[220px] overflow-hidden shrink-0">
+                {/* Background Layer */}
+                <div className="absolute inset-0 z-0 h-full">
+                  <div className="absolute inset-x-0 h-full bg-gradient-to-br from-[#FF8F12] to-[#FF6B0B] opacity-100" />
+                  <img src="/Mask group (1).png" alt="" className="absolute top-0 left-0 w-full h-full object-cover opacity-100" />
+                </div>
+
+                <div className="relative z-10 flex flex-col items-center justify-center h-full pt-4">
+                  <div className="flex flex-col items-center">
+                    <img src="/LogoSVG 1 (1).png" alt="Wegagen" className="h-10 object-contain drop-shadow-lg" />
+                    <h3 className="text-white text-[15px] font-black uppercase tracking-[0.08em] mt-8 drop-shadow-md opacity-95">Excelling Together</h3>
+                    <div className="h-[2px] w-8 bg-white/40 mt-1 rounded-full" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Menu Items List */}
+              <div className="flex-1 overflow-y-auto py-4 px-4 custom-scrollbar">
+                {[
+                  { icon: <Languages size={18} />, label: "Change Language", onClick: () => console.log("Lang") },
+                  { icon: <Activity size={18} />, label: "Exchange Rate", onClick: () => console.log("Rate") },
+                  { icon: <FileText size={18} />, label: "Terms and Tariff", onClick: () => console.log("Terms") },
+                  { icon: <Lock size={18} />, label: "Change PIN", onClick: () => console.log("PIN") },
+                  { icon: <Info size={18} />, label: "About Us", onClick: () => console.log("About") },
+                  { icon: <SettingsIcon size={18} />, label: "Settings", onClick: () => console.log("Settings") },
+                  { icon: <LogOut size={18} />, label: "Logout", color: "text-red-500", onClick: () => navigateWithTransition('/') },
+                ].map((item, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      item.onClick();
+                      if (item.label !== 'Logout') setMenuOpen(false);
+                    }}
+                    className="w-full flex items-center gap-4 px-4 py-2 rounded-2xl hover:bg-orange-50/50 active:scale-[0.98] transition-all group"
+                  >
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${item.color ? 'bg-red-50 text-red-500' : 'bg-[#fff6ec] text-[#ff6b0b] group-hover:bg-[#ff8f12] group-hover:text-white'}`}>
+                      {item.icon}
+                    </div>
+                    <span className={`text-[13px] font-black tracking-tight ${item.color || 'text-[#004360] opacity-80'}`}>{item.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Drawer Footer */}
+              <div className="p-6 border-t border-gray-100 bg-gray-50/20">
+                <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.2em] text-center">Version 4.5.12 Premium</p>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -9,6 +9,10 @@ import WegagenEBirrScreen from "./screens/WegagenEBirrScreen";
 import OtherBankTransferScreen from "./screens/OtherBankTransferScreen";
 import ConfirmationPinScreen from "./screens/ConfirmationPinScreen";
 import TransferSuccessScreen from "./screens/TransferSuccessScreen";
+import ToWalletScreen from "./screens/ToWalletScreen";
+import WalletTransferFormScreen from "./screens/WalletTransferFormScreen";
+import MicroFinanceScreen from "./screens/MicroFinanceScreen";
+import TransactionScreen from "./screens/TransactionScreen";
 
 export const router = createBrowserRouter([
   {
@@ -50,5 +54,21 @@ export const router = createBrowserRouter([
   {
     path: "/transfer-success",
     Component: TransferSuccessScreen,
+  },
+  {
+    path: "/wallet",
+    Component: ToWalletScreen,
+  },
+  {
+    path: "/wallet-form",
+    Component: WalletTransferFormScreen,
+  },
+  {
+    path: "/micro-finance",
+    Component: MicroFinanceScreen,
+  },
+  {
+    path: "/transactions",
+    Component: TransactionScreen,
   },
 ]);
