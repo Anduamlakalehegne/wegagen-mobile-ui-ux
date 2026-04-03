@@ -311,7 +311,7 @@ export default function HomeScreen() {
       icon: <Plane size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
       title: "Ethiopian Airlines Payment",
       iconBgColor: "bg-[#FFF6EC]",
-      onClick: () => console.log("Airlines clicked"),
+      onClick: () => navigateWithTransition("/ethiopian-airlines"),
     },
     {
       icon: <GraduationCap size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
@@ -323,7 +323,7 @@ export default function HomeScreen() {
       icon: <Droplets size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
       title: "Water Payments",
       iconBgColor: "bg-[#FFF6EC]",
-      onClick: () => console.log("Water clicked"),
+      onClick: () => navigateWithTransition("/water-providers"),
     },
     {
       icon: <Building2 size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,

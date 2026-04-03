@@ -4,11 +4,16 @@ import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import {
   ChevronLeft,
   ChevronDown,
+  ArrowUpRight,
+  ArrowDownLeft,
   Filter,
   Home as HomeIcon,
   Receipt,
   Users,
-  LogOut
+  LogOut,
+  ArrowUpCircle,
+  ArrowDownCircle,
+  LayoutGrid
 } from 'lucide-react';
 
 export default function TransactionScreen() {
@@ -30,10 +35,16 @@ export default function TransactionScreen() {
     { id: 4, type: 'Transfer', name: 'Fikir T.', amount: '-300.00 ETB', date: 'Sat April 10 2026 14:22', isCredit: false, status: 'Debited' },
     { id: 5, type: 'Transfer', name: 'Fuel Station', amount: '-100.00 ETB', date: 'Fri April 09 2026 10:15', isCredit: false, status: 'Debited' },
     { id: 6, type: 'Deposit', name: 'Salary Payment', amount: '+25,000.00', date: 'Wed April 07 2026 08:30', isCredit: true, status: 'Credited' },
+    { id: 7, type: 'Transfer', name: 'Supermarket Buy', amount: '-850.50 ETB', date: 'Tue April 06 2026 19:40', isCredit: false, status: 'Debited' },
+    { id: 8, type: 'Deposit', name: 'External Wire', amount: '+4,500.00 ETB', date: 'Mon April 05 2026 11:20', isCredit: true, status: 'Credited' },
+    { id: 9, type: 'Transfer', name: 'School Fees', amount: '-12,000.00 ETB', date: 'Sun April 04 2026 15:10', isCredit: false, status: 'Debited' },
+    { id: 10, type: 'Transfer', name: 'Rent Payment', amount: '-15,000.00 ETB', date: 'Sat April 03 2026 10:00', isCredit: false, status: 'Debited' },
+    { id: 11, type: 'Deposit', name: 'Cash Deposit', amount: '+1,500.00 ETB', date: 'Fri April 02 2026 16:45', isCredit: true, status: 'Credited' },
+    { id: 12, type: 'Transfer', name: 'Gofundme Donation', amount: '-500.00 ETB', date: 'Thu April 01 2026 12:30', isCredit: false, status: 'Debited' },
   ];
 
-  const filteredTransactions = activeTab === 'All' 
-    ? transactions 
+  const filteredTransactions = activeTab === 'All'
+    ? transactions
     : transactions.filter(t => t.status === activeTab);
 
   return (
@@ -56,9 +67,9 @@ export default function TransactionScreen() {
           >
             <ChevronLeft size={22} strokeWidth={3} />
           </button>
-          <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm">
+          {/* <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm">
             <Filter size={18} strokeWidth={3} />
-          </button>
+          </button> */}
         </div>
 
         <div className="pt-16 flex flex-col items-center">
@@ -80,42 +91,85 @@ export default function TransactionScreen() {
           ease: [0.22, 1, 0.36, 1],
           delay: reduceMotion ? 0 : 0.04,
         }}
-        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-hidden flex flex-col"
-      >
-        {/* Account Filter Dropdown Header */}
-        <div className="p-4 border-b border-gray-50 bg-gray-50/10">
-          <button 
+        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-hidden flex flex-col">
+
+        <div className="relative p-4 border-b border-gray-50 bg-gray-50/10">
+          <button
             onClick={() => setShowAccDropdown(!showAccDropdown)}
-            className="w-full flex items-center justify-between px-4 py-2.5 bg-[#fff6ec] rounded-[15px] border border-orange-100/50"
+            className="w-full flex items-center justify-between px-6 py-3.5 bg-[#fff6ec] rounded-[22px] border border-orange-100/50 active:scale-[0.99] transition-all"
           >
-             <span className="text-[#004360] text-[13px] font-bold">{accounts[selectedAccIdx].type} - {accounts[selectedAccIdx].number.slice(-4)}</span>
-             <ChevronDown size={16} className={`text-[#ff6b0b] transition-transform ${showAccDropdown ? 'rotate-180' : ''}`} />
+            <span className="text-[#004360] text-[14px] font-black uppercase tracking-tight">{accounts[selectedAccIdx].type} - {accounts[selectedAccIdx].number.slice(-4)}</span>
+            <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform ${showAccDropdown ? 'rotate-180' : ''}`} strokeWidth={3} />
           </button>
+
+          {/* Actual Dropdown List */}
+          <AnimatePresence>
+            {showAccDropdown && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setShowAccDropdown(false)}
+                  className="fixed inset-0 z-40"
+                />
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  className="absolute top-[78px] left-4 right-4 bg-white rounded-[22px] shadow-[0_15px_50px_rgba(0,0,0,0.15)] z-50 border border-orange-100 overflow-hidden"
+                >
+                  {accounts.map((acc, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        setSelectedAccIdx(idx);
+                        setShowAccDropdown(false);
+                      }}
+                      className={`w-full px-6 py-4 text-left flex items-center justify-between hover:bg-orange-50/30 transition-all ${selectedAccIdx === idx ? 'bg-orange-50/50' : ''}`}
+                    >
+                      <div className="flex flex-col">
+                        <span className="text-[#004360] text-[13px] font-black uppercase">{acc.type}</span>
+                        <span className="text-[#004360]/40 text-[11px] font-bold">{acc.number}</span>
+                      </div>
+                      {selectedAccIdx === idx && (
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#FF8F12]" />
+                      )}
+                    </button>
+                  ))}
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Tab Switcher */}
-        <div className="px-4 py-3">
-          <div className="flex items-center gap-2 p-1 bg-gray-50 rounded-[15px]">
-            {['All', 'Debited', 'Credited'].map((tab) => (
+        {/* Tab Switcher with Dynamic White Icons */}
+        <div className="px-5 py-2">
+          <div className="flex items-center gap-2.5 p-1.5 bg-gray-50 rounded-[20px]">
+            {[
+              { id: 'All', label: 'All', icon: (active: boolean) => <LayoutGrid size={15} className={active ? "text-white" : ""} /> },
+              { id: 'Debited', label: 'Debited', icon: (active: boolean) => <ArrowUpCircle size={15} className={active ? "text-white" : "text-red-500"} /> },
+              { id: 'Credited', label: 'Credited', icon: (active: boolean) => <ArrowDownCircle size={15} className={active ? "text-white" : "text-green-600"} /> }
+            ].map((tab) => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`flex-1 py-2 rounded-[12px] text-[12px] font-bold transition-all ${
-                  activeTab === tab 
-                  ? 'bg-[#FF8F12] text-white shadow-md' 
-                  : 'text-[#004360]/60 hover:bg-gray-100'
-                }`}
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex-1 py-2 px-1 rounded-[10px] text-[12px] font-black tracking-tight transition-all flex items-center justify-center gap-2 ${activeTab === tab.id
+                  ? 'bg-[#FF8F12] text-white shadow-[0_6px_15px_rgba(255,143,18,0.3)] scale-[1.03]'
+                  : 'text-[#004360]/50 hover:bg-gray-100'
+                  }`}
               >
-                {tab}
+                {tab.icon(activeTab === tab.id)}
+                {tab.label}
               </button>
             ))}
           </div>
         </div>
 
         {/* Transaction List - Styled identical to WegagenTransferScreen */}
-        <div className="flex-1 overflow-y-auto no-scrollbar px-4 pb-16">
+        <div className="flex-1 overflow-y-auto no-scrollbar px-5 pb-20">
           <AnimatePresence mode="popLayout">
-            <div className="space-y-2.5">
+            <div className="space-y-3">
               {filteredTransactions.map((tx, idx) => (
                 <motion.div
                   key={tx.id}
@@ -123,11 +177,11 @@ export default function TransactionScreen() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: idx * 0.04 }}
-                  className="flex items-center gap-2.5 py-2 px-3 bg-white border border-gray-50 rounded-[18px] shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.08)] hover:bg-[#fffdfb] active:scale-[0.98] transition-all duration-300 cursor-pointer group"
+                  className="flex items-center gap-3 py-2.5 px-3.5 bg-white border border-gray-50 rounded-[22px] shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.08)] hover:bg-[#fffdfb] active:scale-[0.98] transition-all duration-300 cursor-pointer group"
                 >
-                  {/* Direction Icon */}
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 ${tx.isCredit ? 'bg-green-50' : 'bg-red-50'}`}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={tx.isCredit ? '#16a34a' : '#ff6b0b'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  {/* Direction Icon (Standardized Circle) */}
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-sm ${tx.isCredit ? 'bg-green-50' : 'bg-red-50'}`}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={tx.isCredit ? '#16a34a' : '#ff6b0b'} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                       {tx.isCredit
                         ? <><path d="M12 19V5" /><path d="m5 12 7 7 7-7" /></>
                         : <><path d="M12 5v14" /><path d="m19 12-7-7-7 7" /></>
@@ -137,16 +191,16 @@ export default function TransactionScreen() {
 
                   {/* Label & Name */}
                   <div className="flex-1 min-w-0 text-left">
-                    <p className="text-[#ff8f12] text-[12px] font-black leading-none mb-0.5 uppercase tracking-tighter">{tx.type}</p>
-                    <p className="text-[#004360] text-[12px] font-semibold truncate tracking-tight">{tx.name}</p>
+                    <p className="text-[#ff8f12] text-[12px] font-black leading-none mb-1 uppercase tracking-tight">{tx.type}</p>
+                    <p className="text-[#004360] text-[13px] font-bold truncate tracking-tight">{tx.name}</p>
                   </div>
 
                   {/* Amount & Date */}
                   <div className="text-right shrink-0">
-                    <p className={`text-[13px] font-black leading-none mb-0.5 ${tx.isCredit ? 'text-green-600' : 'text-[#e05a0b]'}`}>
+                    <p className={`text-[14px] font-black leading-none mb-1.5 tracking-tight ${tx.isCredit ? 'text-green-600' : 'text-[#e05a0b]'}`}>
                       {tx.amount}
                     </p>
-                    <p className="text-[#004360]/30 text-[9px] font-semibold whitespace-nowrap uppercase tracking-tighter">{tx.date}</p>
+                    <p className="text-[#004360]/30 text-[9px] font-black whitespace-nowrap uppercase tracking-tighter">{tx.date}</p>
                   </div>
                 </motion.div>
               ))}

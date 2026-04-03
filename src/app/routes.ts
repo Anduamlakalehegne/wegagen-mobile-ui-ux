@@ -13,6 +13,9 @@ import ToWalletScreen from "./screens/ToWalletScreen";
 import WalletTransferFormScreen from "./screens/WalletTransferFormScreen";
 import MicroFinanceScreen from "./screens/MicroFinanceScreen";
 import TransactionScreen from "./screens/TransactionScreen";
+import EthiopianAirlinesPaymentScreen from "./screens/EthiopianAirlinesPaymentScreen";
+import WaterPaymentProviderScreen from "./screens/WaterPaymentProviderScreen";
+import WaterPaymentFormScreen from "./screens/WaterPaymentFormScreen";
 
 export const router = createBrowserRouter([
   {
@@ -70,5 +73,17 @@ export const router = createBrowserRouter([
   {
     path: "/transactions",
     Component: TransactionScreen,
+  },
+  {
+    path: "/ethiopian-airlines",
+    Component: EthiopianAirlinesPaymentScreen,
+  },
+  {
+    path: "/water-providers",
+    Component: WaterPaymentProviderScreen,
+  },
+  {
+    path: "/water-payment-form/:providerName",
+    Component: WaterPaymentFormScreen,
   },
 ]);
