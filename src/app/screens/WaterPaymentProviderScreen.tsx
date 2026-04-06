@@ -115,9 +115,9 @@ export default function WaterPaymentProviderScreen() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ delay: index * 0.015 }}
                   onClick={() => navigate(`/water-payment-form/${provider.name}`)}
-                  className="group relative flex flex-col items-center justify-center h-[115px] w-full bg-white border border-[#fff6ec] rounded-[22px] shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(255,107,11,0.08)] transition-all duration-300 active:scale-95 text-center"
+                  className="group relative flex flex-col items-center justify-center h-[100px] w-full bg-white border border-[#fff6ec] rounded-[22px] shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(255,107,11,0.08)] transition-all duration-300 active:scale-95 text-center"
                 >
-                  <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center bg-[#FFF6EC] mb-1 shadow-sm group-hover:scale-110 transition-transform duration-500">
+                  <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center bg-[#FFF6EC] mb-2 shadow-sm group-hover:scale-110 transition-transform duration-500">
                     <div className="transform group-hover:rotate-12 transition-transform duration-500 text-[#ff6b0b]">
                       <Droplets size={22} strokeWidth={2.5} />
                     </div>
