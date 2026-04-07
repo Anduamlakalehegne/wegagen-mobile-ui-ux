@@ -187,7 +187,7 @@ export default function PinEntryScreen() {
       {/* 1:1 Elite Header Background Layer */}
       <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
-          src="/Mask group (1).png"
+          src="/Mask group.png"
           alt="Header Background"
           className="w-full h-full object-cover -translate-y-2 opacity-110"
         />
@@ -211,7 +211,7 @@ export default function PinEntryScreen() {
           <img
             src="/LogoSVG 1 (1).png"
             alt="Wegagen Bank"
-            className="h-10 object-contain drop-shadow-lg"
+            className="h-12 object-contain drop-shadow-lg"
           />
         </div>
       </div>
@@ -231,7 +231,7 @@ export default function PinEntryScreen() {
           ease: isTransitioning ? [0.4, 0, 1, 1] : [0.22, 1, 0.36, 1],
           delay: reduceMotion || isTransitioning ? 0 : 0.04,
         }}
-        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar"
+        className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[140px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar"
       >
         <div className="px-8 py-10 flex flex-col items-center h-full">
           {/* Welcome Title */}

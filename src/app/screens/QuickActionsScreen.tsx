@@ -84,7 +84,7 @@ export default function QuickActionsScreen() {
       {/* 1:1 Elite Header Background Layer */}
       <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
-          src="/Mask group (1).png"
+          src="/Mask group.png"
           alt="Header Background"
           className="w-full h-full object-cover -translate-y-2 opacity-110"
         />
@@ -95,7 +95,7 @@ export default function QuickActionsScreen() {
         <img
           src="/LogoSVG 1 (1).png"
           alt="Wegagen Bank"
-          className="h-10 object-contain drop-shadow-lg"
+          className="h-12 object-contain drop-shadow-lg"
         />
       </div>
 
@@ -114,7 +114,7 @@ export default function QuickActionsScreen() {
           ease: isTransitioning ? [0.4, 0, 1, 1] : [0.22, 1, 0.36, 1],
           delay: reduceMotion || isTransitioning ? 0 : 0.04,
         }}
-        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30"
+        className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[140px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30"
       >
         <div className="px-8 py-10">
           {/* Welcome Section */}
@@ -154,7 +154,7 @@ export default function QuickActionsScreen() {
           </div>
 
           {/* Branding Footer */}
-          <div className="mt-28 pt-4 border-t border-gray-50 flex flex-col items-center">
+          <div className="mt-30 pt-4 border-t border-gray-50 flex flex-col items-center">
             <p className="text-[#004360]/20 text-[9px] font-black uppercase tracking-[0.2em]">
               Copyright © 2026 Wegagen Bank S.C
             </p>
