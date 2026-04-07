@@ -87,11 +87,11 @@ export default function VerificationScreen() {
         </div>
 
         {/* Centered Logo (Kept at Original Position) */}
-        <div className="relative z-20 px-8 pt-16 h-[250px] flex flex-col items-center">
+        <div className="relative z-20 px-8 pt-12 h-[250px] flex flex-col items-center">
           <img
             src="/LogoSVG 1 (1).png"
             alt="Wegagen Bank"
-            className="h-12 object-contain drop-shadow-lg"
+            className="h-14 object-contain drop-shadow-lg"
           />
         </div>
       </div>
@@ -192,7 +192,7 @@ export default function VerificationScreen() {
           </div>
 
           {/* Branding Footer */}
-          <div className="pt-6 border-t border-gray-50 flex flex-col items-center">
+          <div className="pt-8 border-t border-gray-50 flex flex-col items-center">
             <p className="text-[#004360]/20 text-[9px] font-black uppercase tracking-[0.2em]">
               Copyright © 2026 Wegagen Bank S.C
             </p>

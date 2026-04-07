@@ -87,9 +87,9 @@ function TransactionItem({ icon, title, iconBgColor, onClick, isGrid }: Transact
           {title}
         </p>
       </div>
-      <div className="flex items-center justify-center w-7 h-7 rounded-full bg-gray-50/80 group-hover:bg-[#ff6b0b] group-hover:text-white transition-all duration-300">
+      {/* <div className="flex items-center justify-center w-7 h-7 rounded-full bg-gray-50/80 group-hover:bg-[#ff6b0b] group-hover:text-white transition-all duration-300">
         <ChevronRight size={12} strokeWidth={2} />
-      </div>
+      </div> */}
     </button>
   );
 }
@@ -130,14 +130,21 @@ function NavItem({ icon, label, active, onClick }: NavItemProps) {
   return (
     <button
       onClick={onClick}
-      className={`flex-1 flex items-center justify-center`}
+      className={`flex-1 flex items-center justify-center relative`}
     >
-      <div className={`flex flex-col items-center justify-center gap-0.5 transition-all duration-300 h-[48px] w-full max-w-[68px] rounded-[18px] ${active ? 'bg-white/20' : 'hover:bg-white/10'}`}>
+      <div className={`relative z-10 flex flex-col items-center justify-center gap-0.5 transition-all duration-300 h-[48px] w-full max-w-[68px] rounded-[14px] ${!active ? 'hover:bg-white/10' : ''}`}>
         {icon}
         <span className={`text-[10px] font-medium tracking-tight ${active ? 'text-white' : 'text-white/60'}`}>
           {label}
         </span>
       </div>
+      {active && (
+        <motion.div
+          layoutId="bottomNavIndicator"
+          className="absolute z-0 h-[48px] w-full max-w-[68px] bg-white/20 rounded-[14px]"
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        />
+      )}
     </button>
   );
 }
@@ -553,16 +560,11 @@ export default function HomeScreen() {
           <div className="flex justify-end mb-2">
             <div className="bg-white/80 backdrop-blur-sm rounded-full p-1 flex items-center shadow-sm border border-orange-100">
               <button
-                onClick={() => setIsGridView(false)}
-                className={`p-1.5 rounded-full transition-all ${!isGridView ? 'bg-[#ff6b0b] text-white shadow-md' : 'text-[#ff6b0b] hover:bg-orange-50'}`}
+                onClick={() => setIsGridView(!isGridView)}
+                className="p-1.5 rounded-full transition-all text-[#ff6b0b] hover:bg-orange-50 active:scale-95"
+                title={isGridView ? "Switch to List View" : "Switch to Grid View"}
               >
-                <ListIcon size={16} strokeWidth={2.5} />
-              </button>
-              <button
-                onClick={() => setIsGridView(true)}
-                className={`p-1.5 rounded-full transition-all ${isGridView ? 'bg-[#ff6b0b] text-white shadow-md' : 'text-[#ff6b0b] hover:bg-orange-50'}`}
-              >
-                <LayoutGrid size={16} strokeWidth={2.5} />
+                {isGridView ? <ListIcon size={16} strokeWidth={2.5} /> : <LayoutGrid size={16} strokeWidth={2.5} />}
               </button>
             </div>
           </div>
@@ -609,6 +611,11 @@ export default function HomeScreen() {
           onClick={() => console.log("Home")}
         />
         <NavItem
+          icon={<QrCode size={20} strokeWidth={2} className="text-white opacity-60" />}
+          label="Scan"
+          onClick={() => console.log("Scan")}
+        />
+        <NavItem
           icon={<Receipt size={20} strokeWidth={2} className="text-white placeholder:opacity-60" />}
           label="Transaction"
           onClick={() => navigateWithTransition('/transactions')}
@@ -617,11 +624,6 @@ export default function HomeScreen() {
           icon={<Users size={20} strokeWidth={2} className="text-white opacity-60" />}
           label="Beneficiary"
           onClick={() => console.log("Beneficiary")}
-        />
-        <NavItem
-          icon={<LogOut size={20} strokeWidth={2} className="text-white opacity-60" />}
-          label="Logout"
-          onClick={() => navigateWithTransition('/')}
         />
       </div>
 

@@ -91,11 +91,11 @@ export default function QuickActionsScreen() {
       </div>
 
       {/* Brand Header */}
-      <div className="relative z-20 px-8 pt-16 h-[220px] flex flex-col items-center">
+      <div className="relative z-20 px-8 pt-12 h-[250px] flex flex-col items-center">
         <img
           src="/LogoSVG 1 (1).png"
           alt="Wegagen Bank"
-          className="h-12 object-contain drop-shadow-lg"
+          className="h-14 object-contain drop-shadow-lg"
         />
       </div>
 

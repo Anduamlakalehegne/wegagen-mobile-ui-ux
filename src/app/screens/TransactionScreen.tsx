@@ -13,7 +13,8 @@ import {
   LogOut,
   ArrowUpCircle,
   ArrowDownCircle,
-  LayoutGrid
+  LayoutGrid,
+  QrCode
 } from 'lucide-react';
 
 export default function TransactionScreen() {
@@ -217,6 +218,11 @@ export default function TransactionScreen() {
           onClick={() => navigate('/home')}
         />
         <NavItem
+          icon={<QrCode size={20} className="text-white opacity-60" />}
+          label="Scan"
+          onClick={() => console.log("Scan")}
+        />
+        <NavItem
           icon={<Receipt size={20} className="text-white" />}
           label="Transaction"
           active={true}
@@ -227,11 +233,6 @@ export default function TransactionScreen() {
           label="Beneficiary"
           onClick={() => console.log("Beneficiary")}
         />
-        <NavItem
-          icon={<LogOut size={20} className="text-white opacity-60" />}
-          label="Logout"
-          onClick={() => navigate('/')}
-        />
       </div>
     </div>
   );
@@ -241,10 +242,21 @@ function NavItem({ icon, label, active = false, onClick }: { icon: React.ReactNo
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center justify-center gap-0.5 px-3 h-[48px] rounded-[18px] transition-all ${active ? 'bg-white/20' : 'hover:bg-white/10'}`}
+      className={`flex-1 flex items-center justify-center relative`}
     >
-      {icon}
-      <span className={`text-[10px] font-medium ${active ? 'text-white' : 'text-white/60'}`}>{label}</span>
+      <div className={`relative z-10 flex flex-col items-center justify-center gap-0.5 transition-all duration-300 h-[48px] w-full max-w-[68px] rounded-[14px] ${!active ? 'hover:bg-white/10' : ''}`}>
+        {icon}
+        <span className={`text-[10px] font-medium tracking-tight ${active ? 'text-white' : 'text-white/60'}`}>
+          {label}
+        </span>
+      </div>
+      {active && (
+        <motion.div
+          layoutId="bottomNavIndicator"
+          className="absolute z-0 h-[48px] w-full max-w-[68px] bg-white/20 rounded-[14px]"
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        />
+      )}
     </button>
   );
 }

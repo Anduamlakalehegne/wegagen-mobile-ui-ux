@@ -116,16 +116,11 @@ export default function MicroFinanceScreen() {
           <div className="flex justify-end">
             <div className="bg-white/80 backdrop-blur-sm rounded-full p-1 flex items-center shadow-sm border border-orange-100">
               <button
-                onClick={() => setIsGridView(false)}
-                className={`p-1.5 rounded-full transition-all ${!isGridView ? 'bg-[#ff6b0b] text-white shadow-md' : 'text-[#ff6b0b] hover:bg-orange-50'}`}
+                onClick={() => setIsGridView(!isGridView)}
+                className="p-1.5 rounded-full transition-all text-[#ff6b0b] hover:bg-orange-50 active:scale-95"
+                title={isGridView ? "Switch to List View" : "Switch to Grid View"}
               >
-                <ListIcon size={16} strokeWidth={2.5} />
-              </button>
-              <button
-                onClick={() => setIsGridView(true)}
-                className={`p-1.5 rounded-full transition-all ${isGridView ? 'bg-[#ff6b0b] text-white shadow-md' : 'text-[#ff6b0b] hover:bg-orange-50'}`}
-              >
-                <LayoutGrid size={16} strokeWidth={2.5} />
+                {isGridView ? <ListIcon size={16} strokeWidth={2.5} /> : <LayoutGrid size={16} strokeWidth={2.5} />}
               </button>
             </div>
           </div>

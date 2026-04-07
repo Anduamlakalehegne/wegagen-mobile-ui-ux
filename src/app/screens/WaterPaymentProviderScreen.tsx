@@ -9,7 +9,8 @@ import {
   Receipt,
   Users,
   LogOut,
-  RefreshCw
+  RefreshCw,
+  QrCode
 } from 'lucide-react';
 
 const providers = [
@@ -132,41 +133,6 @@ export default function WaterPaymentProviderScreen() {
         </div>
       </motion.div>
 
-      {/* Floating Sticky Bottom Navigation */}
-      <div className="absolute bottom-[10px] left-[16px] right-[16px] h-[58px] bg-[#FF8F12] rounded-[25px] shadow-[0_8px_30px_rgba(0,0,0,0.2)] flex items-center justify-around px-1 z-40">
-        <NavItem
-          icon={<HomeIcon size={20} className="text-white opacity-60" />}
-          label="Home"
-          onClick={() => navigate('/home')}
-        />
-        <NavItem
-          icon={<Receipt size={20} className="text-white opacity-60" />}
-          label="Transaction"
-          onClick={() => navigate('/transactions')}
-        />
-        <NavItem
-          icon={<Users size={20} className="text-white opacity-60" />}
-          label="Beneficiary"
-          onClick={() => console.log("Beneficiary")}
-        />
-        <NavItem
-          icon={<LogOut size={20} className="text-white opacity-60" />}
-          label="Logout"
-          onClick={() => navigate('/')}
-        />
-      </div>
     </div>
-  );
-}
-
-function NavItem({ icon, label, active = false, onClick }: { icon: React.ReactNode, label: string, active?: boolean, onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex flex-col items-center justify-center gap-0.5 px-3 h-[48px] rounded-[18px] transition-all ${active ? 'bg-white/20' : 'hover:bg-white/10'}`}
-    >
-      {icon}
-      <span className={`text-[10px] font-bold ${active ? 'text-white' : 'text-white/60'}`}>{label}</span>
-    </button>
   );
 }
