@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { useSwipeable } from 'react-swipeable';
 import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
 import {
   Menu,
@@ -233,6 +234,8 @@ export default function HomeScreen() {
   const [showAccDropdown, setShowAccDropdown] = useState(false);
   const [activeTab, setActiveTab] = useState('Transfer');
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [isLogoutExiting, setIsLogoutExiting] = useState(false);
   const reduceMotion = useReducedMotion();
 
   const navigateWithTransition = (path: string) => {
@@ -240,6 +243,19 @@ export default function HomeScreen() {
     setIsTransitioning(true);
     const transitionDurationMs = reduceMotion ? 0 : 260;
     window.setTimeout(() => navigate(path), transitionDurationMs);
+  };
+
+  const toggleLogoutModal = (show: boolean) => {
+    if (!show) {
+      setIsLogoutExiting(true);
+      setTimeout(() => {
+        setShowLogoutModal(false);
+        setIsLogoutExiting(false);
+      }, 350);
+    } else {
+      setShowLogoutModal(true);
+      setMenuOpen(false);
+    }
   };
 
   const accounts = [
@@ -417,8 +433,26 @@ export default function HomeScreen() {
       activeTab === 'Other' ? otherItems :
         transferItems;
 
+  const tabs = ['Transfer', 'Payment', 'Top-up', 'Other'];
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      const currentIndex = tabs.indexOf(activeTab);
+      if (currentIndex < tabs.length - 1) {
+        setActiveTab(tabs[currentIndex + 1]);
+      }
+    },
+    onSwipedRight: () => {
+      const currentIndex = tabs.indexOf(activeTab);
+      if (currentIndex > 0) {
+        setActiveTab(tabs[currentIndex - 1]);
+      }
+    },
+    trackMouse: true,
+  });
+
   return (
-    <div className="bg-transparent relative w-full h-full overflow-hidden" data-name="Home Screen">
+    <div {...handlers} className="bg-transparent relative w-full h-full overflow-hidden" data-name="Home Screen">
       {/* Background Layer (Behind Everything) */}
       <div className="absolute left-0 right-0 h-[250px] overflow-hidden z-0">
         <img
@@ -503,10 +537,18 @@ export default function HomeScreen() {
                             <Wallet size={14} />
                           </div>
                           <div className="flex flex-col">
-                            <span className="text-[11px] font-black uppercase tracking-tight">{acc.type}</span>
-                            <span className="text-[9px] opacity-50 font-bold">
-                              {showBalance ? acc.number : `•••• •••• ${acc.number.slice(-4)}`}
-                            </span>
+                            <span className="text-[11px] font-black uppercase tracking-tight">{acc.type} - {acc.number}</span>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[10px] opacity-60 font-bold whitespace-nowrap">
+                                ETB {showBalance ? (acc as any).balance || "125,110.90" : "• • • • •"}
+                              </span>
+                              <div
+                                onClick={(e) => { e.stopPropagation(); setShowBalance(!showBalance); }}
+                                className="p-0.5 rounded-full hover:bg-orange-200/30 text-[#ff6b0b] transition-colors"
+                              >
+                                {showBalance ? <EyeOff size={12} strokeWidth={2.5} /> : <Eye size={12} strokeWidth={2.5} />}
+                              </div>
+                            </div>
                           </div>
                         </div>
                         {selectedAccIdx === idx && (
@@ -576,6 +618,7 @@ export default function HomeScreen() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
+              {...handlers}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
@@ -674,7 +717,7 @@ export default function HomeScreen() {
                   { icon: <Lock size={18} />, label: "Change PIN", onClick: () => console.log("PIN") },
                   { icon: <Info size={18} />, label: "About Us", onClick: () => console.log("About") },
                   { icon: <SettingsIcon size={18} />, label: "Settings", onClick: () => console.log("Settings") },
-                  { icon: <LogOut size={18} />, label: "Logout", color: "text-red-500", onClick: () => navigateWithTransition('/') },
+                  { icon: <LogOut size={18} />, label: "Logout", color: "text-red-500", onClick: () => toggleLogoutModal(true) },
                 ].map((item, idx) => (
                   <button
                     key={idx}
@@ -700,6 +743,43 @@ export default function HomeScreen() {
           </>
         )}
       </AnimatePresence>
+
+      {/* --- LOGOUT CONFIRMATION MODAL (SLIDE FROM BOTTOM) --- */}
+      {showLogoutModal && (
+        <div className={`absolute inset-0 z-[200] flex flex-col justify-end ${isLogoutExiting ? 'transition-opacity duration-400 opacity-0' : 'animate-in fade-in'}`}>
+          {/* Liquid Glass Backdrop */}
+          <div className={`absolute inset-0 bg-[#004360]/10 transition-all duration-400 backdrop-blur-[12px] ${isLogoutExiting ? 'opacity-0' : 'opacity-100'}`} onClick={() => toggleLogoutModal(false)} />
+
+          <div className={`relative w-full bg-white rounded-t-[44px] overflow-hidden shadow-[0_-15px_60px_rgba(0,0,0,0.15)] flex flex-col transition-transform duration-400 cubic-bezier(0.34,1.56,0.64,1) ${isLogoutExiting ? 'translate-y-full' : 'translate-y-0 animate-in slide-in-from-bottom-full'}`}>
+            <div className="w-12 h-1.5 bg-gray-100 rounded-full mx-auto mt-4 mb-2 shrink-0" />
+
+            <div className="px-8 pt-6 pb-2 flex flex-col items-center shrink-0">
+              <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center text-red-500 mb-4 shadow-sm border border-red-100">
+                <LogOut size={28} strokeWidth={2.5} />
+              </div>
+              <h2 className="text-[#004360] text-[22px] font-black text-center mb-2">Sign Out</h2>
+              <p className="text-[#004360]/60 text-[14px] font-semibold text-center leading-relaxed">
+                Are you sure you want to sign out of your account?
+              </p>
+            </div>
+
+            <div className="p-8 pt-6 pb-10 space-y-3">
+              <button
+                onClick={() => navigateWithTransition('/')}
+                className="w-full h-[52px] bg-red-500 hover:bg-red-600 text-white rounded-[20px] font-black text-[15px] shadow-[0_10px_20px_rgba(239,68,68,0.25)] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+              >
+                Yes, Sign Out
+              </button>
+              <button
+                onClick={() => toggleLogoutModal(false)}
+                className="w-full h-[52px] bg-gray-50 hover:bg-gray-100 text-[#004360] rounded-[20px] font-black text-[15px] active:scale-[0.98] transition-all"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

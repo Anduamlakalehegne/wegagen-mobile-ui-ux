@@ -59,9 +59,9 @@ function MFItem({ item, isGrid, onClick }: { item: MFOption; isGrid: boolean; on
       <div className="flex-1 text-left">
         <p className="text-[#053d57] text-[14px] font-semibold tracking-tight">{item.title}</p>
       </div>
-      <div className="flex items-center justify-center w-7 h-7 rounded-full bg-gray-50/80 group-hover:bg-[#ff6b0b] group-hover:text-white transition-all duration-300">
+      {/* <div className="flex items-center justify-center w-7 h-7 rounded-full bg-gray-50/80 group-hover:bg-[#ff6b0b] group-hover:text-white transition-all duration-300">
         <ChevronRight size={12} strokeWidth={2} />
-      </div>
+      </div> */}
     </button>
   );
 }
@@ -79,7 +79,7 @@ export default function MicroFinanceScreen() {
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Micro Finance Screen">
       {/* Header Background */}
       <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
-        <img src="/Mask group (1).png" alt="" className="w-full h-full object-cover -translate-y-2 opacity-110" />
+        <img src="/Mask group.png" alt="" className="w-full h-full object-cover -translate-y-2 opacity-110" />
       </div>
 
       {/* Brand Header */}
@@ -91,13 +91,13 @@ export default function MicroFinanceScreen() {
           >
             <ChevronLeft size={22} strokeWidth={3} />
           </button>
-          <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90">
+          {/* <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90">
             <RefreshCw size={18} strokeWidth={3} />
-          </button>
+          </button> */}
         </div>
-        <div className="pt-16 flex flex-col items-center">
-          <img src="/LogoSVG 1 (1).png" alt="Wegagen Bank" className="h-10 object-contain drop-shadow-lg" />
-          <h2 className="text-white text-[15px] font-bold tracking-tight mt-6 opacity-90">Micro Finance</h2>
+        <div className="pt-13 flex flex-col items-center">
+          {/* <img src="/LogoSVG 1 (1).png" alt="Wegagen Bank" className="h-10 object-contain drop-shadow-lg" /> */}
+          <h2 className="text-white text-[18px] font-bold tracking-tight mt-2">Micro Finance</h2>
         </div>
       </div>
 
@@ -110,7 +110,7 @@ export default function MicroFinanceScreen() {
           ease: [0.22, 1, 0.36, 1],
           delay: reduceMotion ? 0 : 0.04,
         }}
-        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 flex flex-col overflow-hidden"
+        className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[130px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 flex flex-col overflow-hidden"
       >
         <div className="flex-none px-4 pt-4 pb-2">
           <div className="flex justify-end">

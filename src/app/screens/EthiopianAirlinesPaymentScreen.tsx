@@ -14,7 +14,9 @@ import {
   Fingerprint,
   Info,
   FileText,
-  QrCode
+  QrCode,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 export default function EthiopianAirlinesPaymentScreen() {
@@ -23,6 +25,7 @@ export default function EthiopianAirlinesPaymentScreen() {
   const [remark, setRemark] = useState('');
   const [showAccDropdown, setShowAccDropdown] = useState(false);
   const [selectedAccIdx, setSelectedAccIdx] = useState(0);
+  const [showBalance, setShowBalance] = useState(false);
 
   const accounts = [
     { type: "SAVING", number: "0911121314156", balance: "125,110.90" },
@@ -86,11 +89,18 @@ export default function EthiopianAirlinesPaymentScreen() {
                   <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b]">
                     <Wallet size={18} strokeWidth={2.5} />
                   </div>
-                  <span className="text-[#004360] text-[14px] font-semibold">
-                    {accounts[selectedAccIdx].type} - {accounts[selectedAccIdx].number.slice(-4)}
-                  </span>
+                  <div className="flex flex-col items-start min-w-[150px]">
+                    <span className="text-[#004360] text-[13px] font-black tracking-wider">
+                      {accounts[selectedAccIdx].number}
+                    </span>
+                    <span className="text-[#004360]/50 text-[11px] font-bold">
+                      ETB {showBalance ? accounts[selectedAccIdx].balance : "• • • • •"}
+                    </span>
+                  </div>
                 </div>
-                <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showAccDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
+                <div className="flex items-center gap-1.5 pr-1">
+                  <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showAccDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
+                </div>
               </button>
 
               <AnimatePresence>
@@ -120,8 +130,20 @@ export default function EthiopianAirlinesPaymentScreen() {
                             className={`w-full px-5 py-4 rounded-[18px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
                           >
                             <div className="flex flex-col">
-                              <span className="text-[13px] font-black uppercase tracking-wider">{acc.type}</span>
-                              <span className="text-[11px] opacity-40 font-bold">{acc.number}</span>
+                              <span className="text-[13px] font-black tracking-wider mb-0.5">
+                                {acc.number}
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <span className="text-[11px] opacity-60 font-bold whitespace-nowrap">
+                                  ETB {showBalance ? acc.balance : "• • • • •"}
+                                </span>
+                                <div
+                                  onClick={(e) => { e.stopPropagation(); setShowBalance(!showBalance); }}
+                                  className="p-1 rounded-full hover:bg-orange-200/30 text-[#ff6b0b] transition-colors"
+                                >
+                                  {showBalance ? <EyeOff size={14} strokeWidth={2.5} /> : <Eye size={14} strokeWidth={2.5} />}
+                                </div>
+                              </div>
                             </div>
                             {selectedAccIdx === idx && (
                               <div className="w-2 h-2 rounded-full bg-[#ff6b0b]" />

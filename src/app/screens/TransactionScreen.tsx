@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useSwipeable } from 'react-swipeable';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import {
   ChevronLeft,
@@ -48,8 +49,26 @@ export default function TransactionScreen() {
     ? transactions
     : transactions.filter(t => t.status === activeTab);
 
+  const tabs = ['All', 'Debited', 'Credited'];
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      const currentIndex = tabs.indexOf(activeTab);
+      if (currentIndex < tabs.length - 1) {
+        setActiveTab(tabs[currentIndex + 1]);
+      }
+    },
+    onSwipedRight: () => {
+      const currentIndex = tabs.indexOf(activeTab);
+      if (currentIndex > 0) {
+        setActiveTab(tabs[currentIndex - 1]);
+      }
+    },
+    trackMouse: true,
+  });
+
   return (
-    <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Transaction Screen">
+    <div {...handlers} className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Transaction Screen">
       {/* 1:1 Elite Header Background Layer */}
       <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
@@ -170,9 +189,16 @@ export default function TransactionScreen() {
         {/* Transaction List - Styled identical to WegagenTransferScreen */}
         <div className="flex-1 overflow-y-auto no-scrollbar px-5 pb-20">
           <AnimatePresence mode="popLayout">
-            <div className="space-y-3">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="space-y-3"
+            >
               {filteredTransactions.map((tx, idx) => (
-                <motion.div
+                <div
                   key={tx.id}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -203,9 +229,9 @@ export default function TransactionScreen() {
                     </p>
                     <p className="text-[#004360]/30 text-[9px] font-black whitespace-nowrap uppercase tracking-tighter">{tx.date}</p>
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </div>
+            </motion.div>
           </AnimatePresence>
         </div>
       </motion.div>

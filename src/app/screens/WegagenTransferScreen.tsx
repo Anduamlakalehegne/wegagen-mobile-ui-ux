@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
 import {
   ChevronLeft,
   RefreshCw,
@@ -9,7 +9,9 @@ import {
   User,
   Banknote,
   FileText,
-  ArrowRight
+  ArrowRight,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 export default function WegagenTransferScreen() {
@@ -18,6 +20,7 @@ export default function WegagenTransferScreen() {
   const [bAcc, setBAcc] = useState('');
   const [selectedAccIdx, setSelectedAccIdx] = useState(-1);
   const [showAccDropdown, setShowAccDropdown] = useState(false);
+  const [showBalance, setShowBalance] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isModalExiting, setIsModalExiting] = useState(false);
   const reduceMotion = useReducedMotion();
@@ -95,41 +98,79 @@ export default function WegagenTransferScreen() {
                   <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] shrink-0">
                     <Wallet size={18} strokeWidth={2.5} />
                   </div>
-                  <span className={`text-[#004360] text-[14px] font-semibold ${selectedAccIdx === -1 ? "opacity-30" : ""}`}>
-                    {selectedAccIdx === -1 ? "Select Account" : `${accounts[selectedAccIdx].type} - ${accounts[selectedAccIdx].number.slice(-4)}`}
-                  </span>
+                  <div className="flex flex-col items-start min-w-[150px]">
+                    {selectedAccIdx === -1 ? (
+                      <span className="text-[#004360] text-[14px] font-semibold opacity-30 mt-1">Select Account</span>
+                    ) : (
+                      <>
+                        <span className="text-[#004360] text-[13px] font-black tracking-wider">
+                          {accounts[selectedAccIdx].number}
+                        </span>
+                        <span className="text-[#004360]/50 text-[11px] font-bold">
+                          ETB {showBalance ? accounts[selectedAccIdx].balance : "• • • • •"}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showAccDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
+                <div className="flex items-center gap-1.5 pr-1">
+                  <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showAccDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
+                </div>
               </button>
 
               {/* Account Dropdown Overlay */}
-              {showAccDropdown && (
-                <>
-                  <div className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]" onClick={() => setShowAccDropdown(false)} />
-                  <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-50 overflow-hidden border border-orange-100 animate-in fade-in zoom-in-95 duration-200">
-                    <div className="p-2 space-y-1">
-                      {accounts.map((acc, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => {
-                            setSelectedAccIdx(idx);
-                            setShowAccDropdown(false);
-                          }}
-                          className={`w-full px-5 py-4 rounded-[18px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
-                        >
-                          <div className="flex flex-col">
-                            <span className="text-[13px] font-black uppercase tracking-wider">{acc.type}</span>
-                            <span className="text-[11px] opacity-40 font-bold">{acc.number}</span>
-                          </div>
-                          {selectedAccIdx === idx && (
-                            <div className="w-2 h-2 rounded-full bg-[#ff6b0b]" />
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              )}
+              <AnimatePresence>
+                {showAccDropdown && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onClick={() => setShowAccDropdown(false)}
+                      className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]"
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      className="absolute top-full left-0 right-0 mt-3 bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-50 overflow-hidden border border-orange-100 animate-in fade-in zoom-in-95 duration-200"
+                    >
+                      <div className="p-2 space-y-1">
+                        {accounts.map((acc, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => {
+                              setSelectedAccIdx(idx);
+                              setShowAccDropdown(false);
+                            }}
+                            className={`w-full px-5 py-4 rounded-[18px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
+                          >
+                            <div className="flex flex-col">
+                              <span className="text-[13px] font-black tracking-wider mb-0.5">
+                                {acc.number}
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <span className="text-[11px] opacity-60 font-bold whitespace-nowrap">
+                                  ETB {showBalance ? acc.balance : "• • • • •"}
+                                </span>
+                                <div
+                                  onClick={(e) => { e.stopPropagation(); setShowBalance(!showBalance); }}
+                                  className="p-1 rounded-full hover:bg-orange-200/30 text-[#ff6b0b] transition-colors"
+                                >
+                                  {showBalance ? <EyeOff size={14} strokeWidth={2.5} /> : <Eye size={14} strokeWidth={2.5} />}
+                                </div>
+                              </div>
+                            </div>
+                            {selectedAccIdx === idx && (
+                              <div className="w-2 h-2 rounded-full bg-[#ff6b0b]" />
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Field: Beneficiary Account */}
@@ -158,10 +199,10 @@ export default function WegagenTransferScreen() {
                 </div>
                 <input
                   type="number"
-                  placeholder="0.00"
+                  placeholder="Enter Amount"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-bold text-[15px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all"
+                  className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all"
                 />
               </div>
             </div>
