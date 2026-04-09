@@ -88,31 +88,27 @@ export default function OtherBankTransferScreen() {
         />
       </div>
 
-      {/* Brand Header with Top-aligned Navigation */}
-      <div className="relative z-20 px-8 h-[220px] flex flex-col items-center animate-in fade-in duration-500">
-        {/* Absolute Top Navigation Buttons (Exactly like Home Page) */}
-        <div className="absolute top-3 left-6 right-6 flex items-center justify-between z-30">
+      {/* Brand Header with Navigation */}
+      <div className="relative z-20 px-8 h-[220px] flex flex-col items-center shrink-0">
+        <div className="absolute top-5 left-6 z-30">
           <button
             onClick={() => navigate(-1)}
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90"
           >
-            <ChevronLeft size={20} strokeWidth={3} />
+            <ChevronLeft size={22} strokeWidth={3} />
           </button>
-          {/* <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90">
-            <RefreshCw size={18} strokeWidth={3} />
-          </button> */}
         </div>
 
         {/* Centered Logo & Title Group */}
-        <div className="pt-15 flex flex-col items-center justify-center gap-2">
-          {/* <div className="w-14 h-14 rounded-full flex justify-center items-center p-2 shadow-[0_4px_12px_rgba(0,0,0,0.1)] border border-white/20 bg-white/20 backdrop-blur-md">
-            <img src="/Group 82.png" alt="Other Bank" className="w-full h-full object-contain drop-shadow-md brightness-0 invert" />
-          </div> */}
+        <div className="pt-8 flex flex-col items-center justify-center gap-2">
+          <div className="w-14 h-14 rounded-xl flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
+            <Building2 size={32} strokeWidth={2.5} className="text-white drop-shadow-md" />
+          </div>
           <h2 className="text-white text-[16px] font-bold tracking-tight">To Other Bank</h2>
         </div>
       </div>
 
-      {/* Main Glassmorphic Form Card (ONLY PADDING & ROUNDING ENHANCEMENTS) */}
+      {/* Main Glassmorphic Form Card */}
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
         animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
@@ -121,14 +117,12 @@ export default function OtherBankTransferScreen() {
           ease: [0.22, 1, 0.36, 1],
           delay: reduceMotion ? 0 : 0.04,
         }}
-        className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[130px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar"
+        className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[140px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-4"
       >
-        <div className="p-4 pb-0 pt-7">
-          <div className="space-y-5">
-
+        <div className="p-4 pb-0 pt-10">
+          <div className="space-y-6">
             {/* Field: Select Account */}
             <div className="space-y-2 relative">
-              {/* <label className="text-[#004360] text-[13px] font-bold ml-1">Select Account</label> */}
               <button
                 onClick={() => setShowAccDropdown(!showAccDropdown)}
                 className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] px-2 py-2 focus:ring-4 focus:ring-orange-50 transition-all group"
@@ -157,7 +151,6 @@ export default function OtherBankTransferScreen() {
                 </div>
               </button>
 
-              {/* Account Dropdown Overlay */}
               <AnimatePresence>
                 {showAccDropdown && (
                   <>
@@ -214,14 +207,13 @@ export default function OtherBankTransferScreen() {
 
             {/* Field: Select Destination Bank */}
             <div className="space-y-2">
-              {/* <label className="text-[#004360] text-[13px] font-bold ml-1">Select Destination Bank</label> */}
               <button
                 onClick={() => toggleBankModal(true)}
-                className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] px-4 py-2 flex items-center justify-between group transition-all"
+                className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] px-2 py-2 pr-3 flex items-center justify-between group transition-all"
               >
                 <div className="flex items-center gap-3 text-[#004360]">
                   {selectedBank ? (
-                    <img src={selectedBank.logo} alt="" className="w-6 h-6 object-contain" />
+                    <img src={selectedBank.logo} alt="" className="w-8 h-8 object-contain" />
                   ) : (
                     <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b]">
                       <Building2 size={18} strokeWidth={2.5} />
@@ -237,7 +229,6 @@ export default function OtherBankTransferScreen() {
 
             {/* Field: Beneficiary Account */}
             <div className="space-y-2">
-              {/* <label className="text-[#004360] text-[13px] font-bold ml-1">Beneficiary Account</label> */}
               <div className="relative group">
                 <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
                   <User size={18} strokeWidth={2.5} />
@@ -248,7 +239,6 @@ export default function OtherBankTransferScreen() {
 
             {/* Field: Amount */}
             <div className="space-y-2">
-              {/* <label className="text-[#004360] text-[13px] font-bold ml-1">Enter Amount</label> */}
               <div className="relative group">
                 <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
                   <Banknote size={18} strokeWidth={2.5} />
@@ -259,7 +249,6 @@ export default function OtherBankTransferScreen() {
 
             {/* Field: Reason */}
             <div className="space-y-2">
-              {/* <label className="text-[#004360] text-[13px] font-bold ml-1">Enter Reason</label> */}
               <div className="relative group">
                 <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
                   <FileText size={18} strokeWidth={2.5} />
@@ -272,15 +261,15 @@ export default function OtherBankTransferScreen() {
             <div className="pt-2">
               <button
                 onClick={() => toggleConfirmModal(true)}
-                className="w-full h-[48px] bg-[#ff8f12] text-white rounded-[20px] font-black text-[15px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] active:scale-[0.98] transition-all"
+                className="w-full h-[48px] bg-[#ff8f12] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] active:scale-[0.98] transition-all"
               >
                 Transfer
               </button>
             </div>
 
-            {/* ─── Recent Beneficiaries ─── */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
+            {/* Recent Beneficiaries */}
+            <div className="pt-2">
+              <div className="flex items-center justify-between mb-3 px-1">
                 <h3 className="text-[#004360] text-[13px] font-black tracking-tight">Beneficiary Account</h3>
                 <button className="text-[#ff8f12] text-[11px] font-bold hover:underline transition-all">See All</button>
               </div>
@@ -314,94 +303,121 @@ export default function OtherBankTransferScreen() {
         </div>
       </motion.div>
 
-      {/* --- BANK SELECTION MODAL (SLIDE FROM BOTTOM) --- */}
-      {showBankModal && (
-        <div className={`absolute inset-0 z-[200] flex flex-col justify-end ${isModalExiting ? 'transition-opacity duration-400 opacity-0' : 'animate-in fade-in'}`}>
-          {/* Liquid Glass Backdrop */}
-          <div className={`absolute inset-0 bg-[#004360]/10 transition-all duration-400 backdrop-blur-[12px] ${isModalExiting ? 'opacity-0' : 'opacity-100'}`} onClick={() => toggleBankModal(false)} />
+      {/* --- BANK SELECTION MODAL --- */}
+      <AnimatePresence>
+        {showBankModal && (
+          <div className="fixed inset-0 z-[200] flex flex-col justify-end">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-[#004360]/10 backdrop-blur-[12px]"
+              onClick={() => toggleBankModal(false)}
+            />
 
-          <div className={`relative h-[85%] w-full bg-white rounded-t-[44px] overflow-hidden shadow-[0_-15px_60px_rgba(0,0,0,0.15)] flex flex-col transition-transform duration-400 cubic-bezier(0.34,1.56,0.64,1) ${isModalExiting ? 'translate-y-full' : 'translate-y-0 animate-in slide-in-from-bottom-full'}`}>
-            <div className="w-12 h-1.5 bg-gray-100 rounded-full mx-auto mt-4 mb-2 shrink-0" />
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="relative h-[85%] w-full bg-white rounded-t-[44px] overflow-hidden shadow-[0_-15px_60px_rgba(0,0,0,0.15)] flex flex-col"
+            >
+              <div className="w-12 h-1.5 bg-gray-100 rounded-full mx-auto mt-4 mb-2 shrink-0" />
 
-            <div className="px-6 pt-2 pb-4 flex items-center justify-between shrink-0">
-              <h2 className="text-[#004360] text-[20px] font-black">Select Bank</h2>
-              <button onClick={() => toggleBankModal(false)} className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-50 text-gray-400">
-                <X size={20} strokeWidth={2.5} />
-              </button>
-            </div>
-
-            {/* Search Bar - Modern Wegagen Style */}
-            <div className="px-6 pb-6 shrink-0">
-              <div className="relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-200 group-focus-within:text-[#ff6b0b] transition-colors" size={20} />
-                <input
-                  type="text"
-                  placeholder="Search Bank"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full h-14 bg-[#fffaf5] border border-orange-100 rounded-[22px] pl-12 pr-6 outline-none text-[#004360] font-black placeholder:text-[#004360]/20 focus:bg-white focus:ring-4 focus:ring-orange-50 transition-all"
-                />
+              <div className="px-6 pt-2 pb-4 flex items-center justify-between shrink-0">
+                <h2 className="text-[#004360] text-[20px] font-black">Select Bank</h2>
+                <button onClick={() => toggleBankModal(false)} className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-50 text-gray-400">
+                  <X size={20} strokeWidth={2.5} />
+                </button>
               </div>
-            </div>
 
-            {/* Bank Grid - Scrollable and Optimized */}
-            <div className="flex-1 overflow-y-auto no-scrollbar px-6 pb-12">
-              <div className="grid grid-cols-3 gap-2.5 animate-in fade-in duration-500 delay-200">
-                {filteredBanks.map((bank, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      setSelectedBank(bank);
-                      toggleBankModal(false);
-                    }}
-                    className="flex flex-col items-center justify-center p-2.5 bg-white border border-gray-50 rounded-[20px] shadow-sm hover:shadow-lg hover:border-orange-100 transition-all group active:scale-95"
-                  >
-                    <div className="w-10 h-10 mb-2 flex items-center justify-center overflow-hidden">
-                      <img src={bank.logo} alt={bank.name} className="w-full h-full object-contain filter grayscale-[0.2] group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110" />
-                    </div>
-                    <span className="text-[9px] text-[#004360] font-bold text-center leading-none line-clamp-2 px-1 uppercase tracking-tighter">
-                      {bank.name}
-                    </span>
-                  </button>
-                ))}
+              {/* Search Bar */}
+              <div className="px-6 pb-6 shrink-0">
+                <div className="relative group">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-200 group-focus-within:text-[#ff6b0b] transition-colors" size={20} />
+                  <input
+                    type="text"
+                    placeholder="Search Bank"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full h-14 bg-[#fffaf5] border border-orange-100 rounded-[22px] pl-12 pr-6 outline-none text-[#004360] font-black placeholder:text-[#004360]/20 focus:bg-white focus:ring-4 focus:ring-orange-50 transition-all"
+                  />
+                </div>
               </div>
-            </div>
+
+              {/* Bank Grid */}
+              <div className="flex-1 overflow-y-auto no-scrollbar px-6 pb-12">
+                <div className="grid grid-cols-3 gap-2.5">
+                  {filteredBanks.map((bank, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        setSelectedBank(bank);
+                        toggleBankModal(false);
+                      }}
+                      className="flex flex-col items-center justify-center p-2.5 bg-white border border-gray-50 rounded-[20px] shadow-sm hover:shadow-lg hover:border-orange-100 transition-all group active:scale-95"
+                    >
+                      <div className="w-10 h-10 mb-2 flex items-center justify-center overflow-hidden">
+                        <img src={bank.logo} alt={bank.name} className="w-full h-full object-contain filter grayscale-[0.2] group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110" />
+                      </div>
+                      <span className="text-[9px] text-[#004360] font-bold text-center leading-none line-clamp-2 px-1 uppercase tracking-tighter">
+                        {bank.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
 
       {/* Confirmation Modal */}
-      {showConfirmModal && (
-        <div className={`absolute inset-0 z-[300] flex items-end justify-center ${isConfirmExiting ? 'opacity-0' : 'animate-in fade-in'} transition-opacity duration-300`}>
-          <div className="absolute inset-0 bg-[#004360]/20 backdrop-blur-[10px]" onClick={() => toggleConfirmModal(false)} />
-          <div className={`relative w-full bg-white rounded-t-[40px] p-6 pb-10 transition-transform duration-350 ease-out transform ${isConfirmExiting ? 'translate-y-full' : 'translate-y-0 animate-in slide-in-from-bottom-full'}`}>
-            <div className="w-12 h-1.5 bg-gray-100 rounded-full mx-auto mb-6" />
-            <div className="flex flex-col items-center mb-6">
-              <div className="w-16 h-16 rounded-full bg-orange-50 flex items-center justify-center text-[#ff6b0b] mb-3">
-                <RefreshCw size={24} strokeWidth={3} className="animate-spin-slow" />
-              </div>
-              <h3 className="text-[#004360] text-[18px] font-black">Confirm Transfer</h3>
-            </div>
-            <div className="space-y-3 mb-8">
-              {[
-                { label: "Transfer To", value: selectedBank?.name || "Target Bank" },
-                { label: "Account", value: "1000054875412" },
-                { label: "Amount", value: `${amount || "0.00"} ETB` },
-                { label: "Fee", value: "5.00 ETB" }
-              ].map((item, i) => (
-                <div key={i} className="flex justify-between border-b border-gray-50 pb-2">
-                  <span className="text-gray-400 text-[12px] font-bold">{item.label}</span>
-                  <span className="text-[#004360] text-[12px] font-black">{item.value}</span>
+      <AnimatePresence>
+        {showConfirmModal && (
+          <div className="fixed inset-0 z-[300] flex items-end justify-center">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-[#004360]/20 backdrop-blur-[10px]"
+              onClick={() => toggleConfirmModal(false)}
+            />
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="relative w-full bg-white rounded-t-[40px] p-6 pb-10"
+            >
+              <div className="w-12 h-1.5 bg-gray-100 rounded-full mx-auto mb-6" />
+              <div className="flex flex-col items-center mb-6">
+                <div className="w-16 h-16 rounded-full bg-orange-50 flex items-center justify-center text-[#ff6b0b] mb-3">
+                  <RefreshCw size={24} strokeWidth={3} className="animate-spin-slow" />
                 </div>
-              ))}
-            </div>
-            <div className="flex gap-3">
-              <button onClick={() => toggleConfirmModal(false)} className="flex-1 h-12 bg-gray-50 text-gray-400 rounded-[15px] font-bold active:scale-95 transition-all">Cancel</button>
-              <button onClick={() => { toggleConfirmModal(false); setTimeout(() => navigate('/confirm-pin'), 350); }} className="flex-1 h-12 bg-[#ff6b0b] text-white rounded-[15px] font-black active:scale-95 shadow-lg transition-all">Confirm</button>
-            </div>
+                <h3 className="text-[#004360] text-[18px] font-black">Confirm Transfer</h3>
+              </div>
+              <div className="space-y-3 mb-8">
+                {[
+                  { label: "Transfer To", value: selectedBank?.name || "Target Bank" },
+                  { label: "Account", value: bAcc || "N/A" },
+                  { label: "Amount", value: `${amount || "0.00"} ETB` },
+                  { label: "Fee", value: "5.00 ETB" }
+                ].map((item, i) => (
+                  <div key={i} className="flex justify-between border-b border-gray-50 pb-2">
+                    <span className="text-gray-400 text-[12px] font-bold">{item.label}</span>
+                    <span className="text-[#004360] text-[12px] font-black">{item.value}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-3">
+                <button onClick={() => toggleConfirmModal(false)} className="flex-1 h-12 bg-gray-50 text-gray-400 rounded-[15px] font-bold active:scale-95 transition-all">Cancel</button>
+                <button onClick={() => { toggleConfirmModal(false); setTimeout(() => navigate('/confirm-pin'), 350); }} className="flex-1 h-12 bg-[#ff6b0b] text-white rounded-[15px] font-black active:scale-95 shadow-lg transition-all">Confirm</button>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 }

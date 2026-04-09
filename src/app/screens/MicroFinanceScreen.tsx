@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, useReducedMotion } from 'motion/react';
-import { ChevronLeft, RefreshCw, LayoutGrid, List as ListIcon, ChevronRight } from 'lucide-react';
+import { ChevronLeft, RefreshCw, LayoutGrid, List as ListIcon, ChevronRight, Building2 } from 'lucide-react';
 
 /* ─── Micro Finance Options Data ─── */
 interface MFOption {
@@ -59,9 +59,6 @@ function MFItem({ item, isGrid, onClick }: { item: MFOption; isGrid: boolean; on
       <div className="flex-1 text-left">
         <p className="text-[#053d57] text-[14px] font-semibold tracking-tight">{item.title}</p>
       </div>
-      {/* <div className="flex items-center justify-center w-7 h-7 rounded-full bg-gray-50/80 group-hover:bg-[#ff6b0b] group-hover:text-white transition-all duration-300">
-        <ChevronRight size={12} strokeWidth={2} />
-      </div> */}
     </button>
   );
 }
@@ -77,27 +74,28 @@ export default function MicroFinanceScreen() {
 
   return (
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Micro Finance Screen">
-      {/* Header Background */}
+      {/* 1:1 Elite Header Background */}
       <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img src="/Mask group.png" alt="" className="w-full h-full object-cover -translate-y-2 opacity-110" />
       </div>
 
-      {/* Brand Header */}
-      <div className="relative z-20 px-8 h-[220px] flex flex-col items-center">
-        <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
+      {/* Brand Header with Navigation */}
+      <div className="relative z-20 px-8 h-[220px] flex flex-col items-center shrink-0">
+        <div className="absolute top-5 left-6 z-30">
           <button
             onClick={() => navigate('/home')}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90"
           >
             <ChevronLeft size={22} strokeWidth={3} />
           </button>
-          {/* <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90">
-            <RefreshCw size={18} strokeWidth={3} />
-          </button> */}
         </div>
-        <div className="pt-13 flex flex-col items-center">
-          {/* <img src="/LogoSVG 1 (1).png" alt="Wegagen Bank" className="h-10 object-contain drop-shadow-lg" /> */}
-          <h2 className="text-white text-[18px] font-bold tracking-tight mt-2">Micro Finance</h2>
+
+        {/* Centered Logo & Title Group */}
+        <div className="pt-8 flex flex-col items-center justify-center gap-2">
+          <div className="w-14 h-14 rounded-xl flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
+            <Building2 size={32} strokeWidth={2.5} className="text-white drop-shadow-md" />
+          </div>
+          <h2 className="text-white text-[16px] font-bold tracking-tight">Micro Finance</h2>
         </div>
       </div>
 
@@ -110,7 +108,7 @@ export default function MicroFinanceScreen() {
           ease: [0.22, 1, 0.36, 1],
           delay: reduceMotion ? 0 : 0.04,
         }}
-        className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[130px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 flex flex-col overflow-hidden"
+        className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[140px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 flex flex-col overflow-hidden"
       >
         <div className="flex-none px-4 pt-4 pb-2">
           <div className="flex justify-end">
@@ -126,8 +124,8 @@ export default function MicroFinanceScreen() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto no-scrollbar px-4 pb-12">
-          <div className={`${isGridView ? 'grid grid-cols-2 gap-1.5 items-stretch' : 'flex flex-col gap-1.5'}`}>
+        <div className="flex-1 overflow-y-auto no-scrollbar px-4 pb-12 pt-1">
+          <div className={`${isGridView ? 'grid grid-cols-2 gap-3 items-stretch' : 'flex flex-col gap-3'}`}>
             {mfOptions.map((item) => (
               <MFItem key={item.id} item={item} isGrid={isGridView} onClick={() => handleSelect(item)} />
             ))}

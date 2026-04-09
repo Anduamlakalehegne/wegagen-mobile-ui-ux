@@ -48,7 +48,7 @@ export default function WaterPaymentProviderScreen() {
       {/* 1:1 Elite Header Background Layer */}
       <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
-          src="/Mask group (1).png"
+          src="/Mask group.png"
           alt="Header Background"
           className="w-full h-full object-cover -translate-y-2 opacity-110"
         />
@@ -56,25 +56,21 @@ export default function WaterPaymentProviderScreen() {
 
       {/* Brand Header with Navigation */}
       <div className="relative z-20 px-8 h-[220px] flex flex-col items-center shrink-0">
-        <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
+        <div className="absolute top-5 left-6 z-30">
           <button
             onClick={() => navigate(-1)}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90"
           >
             <ChevronLeft size={22} strokeWidth={3} />
           </button>
-          <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm active:scale-90">
-            <RefreshCw size={18} strokeWidth={3} />
-          </button>
         </div>
 
-        <div className="pt-16 flex flex-col items-center">
-          <img
-            src="/LogoSVG 1 (1).png"
-            alt="Wegagen Bank"
-            className="h-10 object-contain drop-shadow-lg"
-          />
-          <h2 className="text-white text-[15px] font-bold tracking-tight mt-6 opacity-90">Water Payments</h2>
+        {/* Centered Logo & Title Group */}
+        <div className="pt-8 flex flex-col items-center justify-center gap-2">
+          <div className="w-14 h-14 rounded-xl flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
+            <Droplets size={32} strokeWidth={2.5} className="text-white drop-shadow-md" />
+          </div>
+          <h2 className="text-white text-[16px] font-bold tracking-tight">Water Payments</h2>
         </div>
       </div>
 
@@ -87,10 +83,10 @@ export default function WaterPaymentProviderScreen() {
           ease: [0.22, 1, 0.36, 1],
           delay: reduceMotion ? 0 : 0.04,
         }}
-        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-hidden flex flex-col"
+        className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[140px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-hidden flex flex-col pt-4"
       >
-        {/* Search Bar - Modern Wegagen Style (Consistent with Other Bank Transfer) */}
-        <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/5 shrink-0">
+        {/* Search Bar */}
+        <div className="px-6 py-4 shrink-0">
           <div className="relative group">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-200 group-focus-within:text-[#ff6b0b] transition-colors" size={20} />
             <input
@@ -132,7 +128,6 @@ export default function WaterPaymentProviderScreen() {
           </div>
         </div>
       </motion.div>
-
     </div>
   );
 }

@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import {
   ChevronLeft,
-  RefreshCw,
   ChevronDown,
   Wallet,
   Home as HomeIcon,
@@ -15,7 +14,8 @@ import {
   Droplets,
   QrCode,
   Eye,
-  EyeOff
+  EyeOff,
+  RefreshCw
 } from 'lucide-react';
 
 export default function WaterPaymentFormScreen() {
@@ -25,54 +25,59 @@ export default function WaterPaymentFormScreen() {
   const [showAccDropdown, setShowAccDropdown] = useState(false);
   const [selectedAccIdx, setSelectedAccIdx] = useState(-1);
   const [showBalance, setShowBalance] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [isModalExiting, setIsModalExiting] = useState(false);
   const reduceMotion = useReducedMotion();
+
+  const openModal = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalExiting(true);
+    setTimeout(() => {
+      setShowConfirmModal(false);
+      setIsModalExiting(false);
+    }, 320);
+  };
 
   const accounts = [
     { type: "SAVING", number: "0911121314156", balance: "125,110.90" },
     { type: "CHECKING", number: "0922232425267", balance: "45,210.50" }
   ];
 
-  const handleSearch = () => {
-    // Navigate to confirmation or success
-    console.log("Searching for water account:", accountId);
-  };
-
   return (
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Water Payment Form Screen">
       {/* 1:1 Elite Header Background Layer */}
       <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
-          src="/Mask group (1).png"
+          src="/Mask group.png"
           alt="Header Background"
           className="w-full h-full object-cover -translate-y-2 opacity-110"
         />
       </div>
 
-      {/* Brand Header with Top-aligned Navigation (Exactly like Transfer Page) */}
-      <div className="relative z-20 px-8 h-[220px] flex flex-col items-center">
-        <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
+      {/* Brand Header with Navigation */}
+      <div className="relative z-20 px-8 h-[220px] flex flex-col items-center shrink-0">
+        <div className="absolute top-5 left-6 z-30">
           <button
             onClick={() => navigate(-1)}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm"
           >
             <ChevronLeft size={22} strokeWidth={3} />
           </button>
-          {/* <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm shadow-sm">
-            <RefreshCw size={18} strokeWidth={3} />
-          </button> */}
         </div>
 
-        <div className="pt-16 flex flex-col items-center">
-          <img
-            src="/LogoSVG 1 (1).png"
-            alt="Wegagen Bank"
-            className="h-10 object-contain drop-shadow-lg"
-          />
-          <h2 className="text-white text-[15px] font-bold tracking-tight mt-6 opacity-95 tracking-wide">{providerName} Water Payment</h2>
+        {/* Centered Logo & Title Group */}
+        <div className="pt-8 flex flex-col items-center justify-center gap-2">
+          <div className="w-14 h-14 rounded-xl flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
+            <Droplets size={32} strokeWidth={2.5} className="text-white drop-shadow-md" />
+          </div>
+          <h2 className="text-white text-[16px] font-bold tracking-tight">{providerName} Water Payment</h2>
         </div>
       </div>
 
-      {/* Content Container (Form Section - Styled exactly like WegagenTransfer) */}
+      {/* Main Glassmorphic Form Card */}
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
         animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
@@ -81,13 +86,12 @@ export default function WaterPaymentFormScreen() {
           ease: [0.22, 1, 0.36, 1],
           delay: reduceMotion ? 0 : 0.04,
         }}
-        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-10"
+        className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[140px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-4"
       >
-        <div className="p-4 pb-0 pt-5">
-          <div className="space-y-4">
+        <div className="p-4 pb-0 pt-10">
+          <div className="space-y-6">
             {/* Field: Select Account */}
             <div className="space-y-2 relative">
-              <label className="text-[#004360] text-[13px] font-bold ml-1">Select account</label>
               <button
                 onClick={() => setShowAccDropdown(!showAccDropdown)}
                 className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] px-2 py-2 focus:ring-4 focus:ring-orange-50 transition-all group"
@@ -172,7 +176,6 @@ export default function WaterPaymentFormScreen() {
 
             {/* Field: Account ID */}
             <div className="space-y-2">
-              <label className="text-[#004360] text-[13px] font-bold ml-1">Please Enter your Account Id</label>
               <div className="relative group">
                 <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
                   <User size={18} strokeWidth={2.5} />
@@ -190,7 +193,7 @@ export default function WaterPaymentFormScreen() {
             {/* Search Button */}
             <div className="pt-3 pb-2">
               <button
-                onClick={handleSearch}
+                onClick={openModal}
                 className="w-full h-[48px] bg-[#ff8f12] hover:bg-[#ff6b0b] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
               >
                 <span>Search</span>
@@ -198,8 +201,8 @@ export default function WaterPaymentFormScreen() {
               </button>
             </div>
 
-            {/* ─── Recent Transactions (Consistent with Transfer Page) ─── */}
-            <div className="pt-2">
+            {/* Recent Transactions */}
+            {/* <div className="pt-2">
               <div className="flex items-center justify-between mb-3 px-1">
                 <h3 className="text-[#004360] text-[13px] font-black tracking-tight">Recent Transactions</h3>
                 <button className="text-[#ff8f12] text-[11px] font-bold hover:underline">See All</button>
@@ -231,12 +234,78 @@ export default function WaterPaymentFormScreen() {
                   </div>
                 ))}
               </div>
-            </div>
-
+            </div> */}
           </div>
         </div>
       </motion.div>
 
+      {/* Confirmation Modal */}
+      <AnimatePresence>
+        {showConfirmModal && (
+          <div className="fixed inset-0 z-[200] flex items-end justify-center">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleCloseModal}
+              className="absolute inset-0 bg-[#004360]/10 backdrop-blur-[12px]"
+            />
+
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="relative w-full bg-white rounded-t-[44px] overflow-hidden shadow-[0_-15px_80px_rgba(0,0,0,0.15)] z-[210]"
+            >
+              <div className="w-12 h-1.5 bg-gray-100 rounded-full mx-auto mt-3 mb-1" />
+              <div className="p-6 pb-2 pt-5 flex flex-col items-center">
+                <div className="relative mb-2 scale-90">
+                  <div className="w-18 h-18 rounded-full bg-orange-50 flex items-center justify-center text-[#ff6b0b] relative z-10 border border-orange-100">
+                    <div className="w-11 h-11 rounded-full bg-[#ff6b0b] shadow-[0_8px_20px_rgba(255,107,11,0.3)] flex items-center justify-center text-white">
+                      <RefreshCw size={22} strokeWidth={3} className="animate-spin-slow" />
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 bg-[#ff6b0b] blur-[30px] opacity-10 rounded-full scale-125" />
+                </div>
+
+                <h2 className="text-[#053d57] text-[17px] font-black tracking-tight mb-5">Confirm Your Payment</h2>
+
+                <div className="w-full space-y-3 mb-6 px-2">
+                  {[
+                    { label: "Biller", value: providerName },
+                    { label: "Account ID", value: accountId || "N/A" },
+                    { label: "Debit Account", value: selectedAccIdx !== -1 ? accounts[selectedAccIdx].number : "N/A" }
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex items-center justify-between border-b border-gray-50 pb-2">
+                      <span className="text-gray-400 text-[12px] font-bold">{item.label}</span>
+                      <span className="text-[#053d57] text-[12px] font-black">{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="w-full flex gap-3 pb-6">
+                  <button
+                    onClick={handleCloseModal}
+                    className="flex-1 h-[48px] bg-gray-50 text-gray-400 rounded-[15px] font-bold text-[15px] active:scale-95 transition-all"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleCloseModal();
+                      setTimeout(() => navigate('/transfer-success'), 350);
+                    }}
+                    className="flex-1 h-[48px] bg-[#ff6b0b] text-white rounded-[15px] font-black text-[16px] shadow-[0_10px_30px_rgba(255,107,11,0.25)] active:scale-95 transition-all"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

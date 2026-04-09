@@ -70,8 +70,8 @@ export default function WegagenEBirrScreen() {
         </div>
 
         {/* Centered Logo & Title Group */}
-        <div className="pt-8 flex flex-col items-center justify-center gap-2">
-          <div className="w-14 h-14 rounded-full flex justify-center items-center p-2 shadow-[0_4px_12px_rgba(0,0,0,0.1)] border border-white/20 bg-white/20 backdrop-blur-md">
+        <div className="pt-10 flex flex-col items-center justify-center gap-2">
+          <div className="w-14 h-14 rounded-xl flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
             <img src="/Ebirr_Logo 1.png" alt="eBirr" className="w-full h-full object-contain drop-shadow-md" />
           </div>
           <h2 className="text-white text-[16px] font-bold tracking-tight">To Wegagen EBirr</h2>

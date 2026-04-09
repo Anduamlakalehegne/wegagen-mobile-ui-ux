@@ -47,7 +47,7 @@ export default function TransferSuccessScreen() {
          {/* 1:1 Elite Header Background Layer */}
          <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
             <img
-               src="/Mask group (1).png"
+               src="/Mask group.png"
                alt="Header Background"
                className="w-full h-full object-cover -translate-y-2 opacity-110"
             />
@@ -58,11 +58,11 @@ export default function TransferSuccessScreen() {
             <img
                src="/LogoSVG 1 (1).png"
                alt="Wegagen Bank"
-               className="h-10 object-contain drop-shadow-lg mb-6"
+               className="h-12 object-contain drop-shadow-lg mb-6"
             />
-            <h1 className="text-white text-[17px] font-black tracking-[0.2em] z-10 animate-in fade-in slide-in-from-top-4 duration-700 opacity-90">
+            {/* <h1 className="text-white text-[17px] font-black tracking-[0.2em] z-10 animate-in fade-in slide-in-from-top-4 duration-700 opacity-90">
                Acknowledge
-            </h1>
+            </h1> */}
          </div>
 
          {/* Main Receipt Content (ONLY PADDING & ROUNDING ENHANCEMENTS) */}
@@ -80,7 +80,7 @@ export default function TransferSuccessScreen() {
                ease: isTransitioning ? [0.4, 0, 1, 1] : [0.22, 1, 0.36, 1],
                delay: reduceMotion || isTransitioning ? 0 : 0.04,
             }}
-            className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-8 transition-all cubic-bezier(0.34,1.56,0.64,1) duration-700"
+            className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[140px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-8 transition-all cubic-bezier(0.34,1.56,0.64,1) duration-700"
          >
             <div className={`p-5 pt-4 flex flex-col items-center h-full transition-all duration-700 ${showContent ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
 
@@ -127,7 +127,7 @@ export default function TransferSuccessScreen() {
                <div className="w-full flex gap-3 mb-6">
                   <button className="flex-1 h-12 bg-white border-1 border-[#ff6b0b] text-[#ff6b0b] rounded-[15px] font-black text-[14px] flex items-center justify-center gap-2 active:scale-95 transition-all shadow-sm">
                      <Download size={18} strokeWidth={3} />
-                     PDF
+                     Download
                   </button>
                   <button className="flex-1 h-12 bg-white border-1 border-[#ff6b0b] text-[#ff6b0b] rounded-[15px] font-black text-[14px] flex items-center justify-center gap-2 active:scale-95 transition-all shadow-sm">
                      <Share2 size={18} strokeWidth={3} />
@@ -145,13 +145,13 @@ export default function TransferSuccessScreen() {
                </button>
 
                {/* Footer Branding */}
-               <div className="mt-auto opacity-90 flex flex-col items-center">
+               {/* <div className="mt-auto opacity-90 flex flex-col items-center">
                   <img
                      src="/LogoSVG 1.png"
                      alt="Wegagen Bank"
                      className="h-8 object-contain"
                   />
-               </div>
+               </div> */}
             </div>
          </motion.div>
       </div>

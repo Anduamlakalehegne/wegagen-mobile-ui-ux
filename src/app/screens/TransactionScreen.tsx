@@ -15,7 +15,10 @@ import {
   ArrowUpCircle,
   ArrowDownCircle,
   LayoutGrid,
-  QrCode
+  QrCode,
+  Wallet,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 export default function TransactionScreen() {
@@ -23,6 +26,7 @@ export default function TransactionScreen() {
   const [activeTab, setActiveTab] = useState('All');
   const [showAccDropdown, setShowAccDropdown] = useState(false);
   const [selectedAccIdx, setSelectedAccIdx] = useState(0);
+  const [showBalance, setShowBalance] = useState(false);
   const reduceMotion = useReducedMotion();
 
   const accounts = [
@@ -72,13 +76,13 @@ export default function TransactionScreen() {
       {/* 1:1 Elite Header Background Layer */}
       <div className="absolute top-0 left-0 right-0 overflow-hidden z-0">
         <img
-          src="/Mask group (1).png"
+          src="/Mask group.png"
           alt="Header Background"
           className="w-full h-full object-cover -translate-y-2 opacity-110"
         />
       </div>
 
-      {/* Brand Header with Centered Grouping (Consistent with Transfer Screens) */}
+      {/* Brand Header */}
       <div className="relative z-20 px-8 h-[220px] flex flex-col items-center shrink-0">
         <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
           <button
@@ -87,18 +91,10 @@ export default function TransactionScreen() {
           >
             <ChevronLeft size={22} strokeWidth={3} />
           </button>
-          {/* <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white backdrop-blur-sm">
-            <Filter size={18} strokeWidth={3} />
-          </button> */}
         </div>
 
         <div className="pt-16 flex flex-col items-center">
-          <img
-            src="/LogoSVG 1 (1).png"
-            alt="Wegagen Bank"
-            className="h-10 object-contain drop-shadow-lg"
-          />
-          <h2 className="text-white text-[15px] font-bold tracking-tight mt-6 opacity-90">Recent Transactions</h2>
+          <h2 className="text-white text-[15px] font-bold tracking-tight mt-6">Transactions</h2>
         </div>
       </div>
 
@@ -111,60 +107,91 @@ export default function TransactionScreen() {
           ease: [0.22, 1, 0.36, 1],
           delay: reduceMotion ? 0 : 0.04,
         }}
-        className="absolute bg-white h-[calc(100%-180px)] left-4 right-4 rounded-[28px] top-[160px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-hidden flex flex-col">
+        className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[140px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-hidden flex flex-col">
 
-        <div className="relative p-4 border-b border-gray-50 bg-gray-50/10">
-          <button
-            onClick={() => setShowAccDropdown(!showAccDropdown)}
-            className="w-full flex items-center justify-between px-6 py-3.5 bg-[#fff6ec] rounded-[22px] border border-orange-100/50 active:scale-[0.99] transition-all"
-          >
-            <span className="text-[#004360] text-[14px] font-black uppercase tracking-tight">{accounts[selectedAccIdx].type} - {accounts[selectedAccIdx].number.slice(-4)}</span>
-            <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform ${showAccDropdown ? 'rotate-180' : ''}`} strokeWidth={3} />
-          </button>
+        {/* Unified Account Selection (Standardized) */}
+        <div className="p-4 pb-0 pt-6">
+          <div className="relative">
+            <button
+              onClick={() => setShowAccDropdown(!showAccDropdown)}
+              className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] px-2 py-2 focus:ring-4 focus:ring-orange-50 transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] shrink-0">
+                  <Wallet size={18} strokeWidth={2.5} />
+                </div>
+                <div className="flex flex-col items-start">
+                  <span className="text-[#004360] text-[13px] font-black tracking-wider leading-tight">
+                    {accounts[selectedAccIdx].number}
+                  </span>
+                  <span className="text-[#004360]/50 text-[11px] font-bold">
+                    ETB {showBalance ? accounts[selectedAccIdx].balance : "• • • • •"}
+                  </span>
+                </div>
+              </div>
+              <div className="pr-1">
+                <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showAccDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
+              </div>
+            </button>
 
-          {/* Actual Dropdown List */}
-          <AnimatePresence>
-            {showAccDropdown && (
-              <>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onClick={() => setShowAccDropdown(false)}
-                  className="fixed inset-0 z-40"
-                />
-                <motion.div
-                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                  className="absolute top-[78px] left-4 right-4 bg-white rounded-[22px] shadow-[0_15px_50px_rgba(0,0,0,0.15)] z-50 border border-orange-100 overflow-hidden"
-                >
-                  {accounts.map((acc, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => {
-                        setSelectedAccIdx(idx);
-                        setShowAccDropdown(false);
-                      }}
-                      className={`w-full px-6 py-4 text-left flex items-center justify-between hover:bg-orange-50/30 transition-all ${selectedAccIdx === idx ? 'bg-orange-50/50' : ''}`}
-                    >
-                      <div className="flex flex-col">
-                        <span className="text-[#004360] text-[13px] font-black uppercase">{acc.type}</span>
-                        <span className="text-[#004360]/40 text-[11px] font-bold">{acc.number}</span>
-                      </div>
-                      {selectedAccIdx === idx && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#FF8F12]" />
-                      )}
-                    </button>
-                  ))}
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
+            {/* Account Dropdown Overlay */}
+            <AnimatePresence>
+              {showAccDropdown && (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => setShowAccDropdown(false)}
+                    className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]"
+                  />
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    className="absolute top-full left-0 right-0 mt-3 bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-50 overflow-hidden border border-orange-100"
+                  >
+                    <div className="p-2 space-y-1">
+                      {accounts.map((acc, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setSelectedAccIdx(idx);
+                            setShowAccDropdown(false);
+                          }}
+                          className={`w-full px-5 py-4 rounded-[18px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
+                        >
+                          <div className="flex flex-col">
+                            <span className="text-[13px] font-black tracking-wider mb-0.5">
+                              {acc.number}
+                            </span>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[11px] opacity-60 font-bold whitespace-nowrap">
+                                ETB {showBalance ? acc.balance : "• • • • •"}
+                              </span>
+                              <div
+                                onClick={(e) => { e.stopPropagation(); setShowBalance(!showBalance); }}
+                                className="p-1 rounded-full hover:bg-orange-200/30 text-[#ff6b0b] transition-colors"
+                              >
+                                {showBalance ? <EyeOff size={14} strokeWidth={2.5} /> : <Eye size={14} strokeWidth={2.5} />}
+                              </div>
+                            </div>
+                          </div>
+                          {selectedAccIdx === idx && (
+                            <div className="w-2 h-2 rounded-full bg-[#ff6b0b]" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Tab Switcher with Dynamic White Icons */}
-        <div className="px-5 py-2">
+        <div className="px-5 py-4">
           <div className="flex items-center gap-2.5 p-1.5 bg-gray-50 rounded-[20px]">
             {[
               { id: 'All', label: 'All', icon: (active: boolean) => <LayoutGrid size={15} className={active ? "text-white" : ""} /> },
@@ -186,7 +213,7 @@ export default function TransactionScreen() {
           </div>
         </div>
 
-        {/* Transaction List - Styled identical to WegagenTransferScreen */}
+        {/* Transaction List */}
         <div className="flex-1 overflow-y-auto no-scrollbar px-5 pb-20">
           <AnimatePresence mode="popLayout">
             <motion.div
@@ -200,13 +227,8 @@ export default function TransactionScreen() {
               {filteredTransactions.map((tx, idx) => (
                 <div
                   key={tx.id}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ delay: idx * 0.04 }}
                   className="flex items-center gap-3 py-2.5 px-3.5 bg-white border border-gray-50 rounded-[22px] shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.08)] hover:bg-[#fffdfb] active:scale-[0.98] transition-all duration-300 cursor-pointer group"
                 >
-                  {/* Direction Icon (Standardized Circle) */}
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-sm ${tx.isCredit ? 'bg-green-50' : 'bg-red-50'}`}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={tx.isCredit ? '#16a34a' : '#ff6b0b'} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                       {tx.isCredit
@@ -216,13 +238,11 @@ export default function TransactionScreen() {
                     </svg>
                   </div>
 
-                  {/* Label & Name */}
                   <div className="flex-1 min-w-0 text-left">
                     <p className="text-[#ff8f12] text-[12px] font-black leading-none mb-1 uppercase tracking-tight">{tx.type}</p>
                     <p className="text-[#004360] text-[13px] font-bold truncate tracking-tight">{tx.name}</p>
                   </div>
 
-                  {/* Amount & Date */}
                   <div className="text-right shrink-0">
                     <p className={`text-[14px] font-black leading-none mb-1.5 tracking-tight ${tx.isCredit ? 'text-green-600' : 'text-[#e05a0b]'}`}>
                       {tx.amount}

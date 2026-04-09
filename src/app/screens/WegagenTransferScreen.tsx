@@ -67,8 +67,8 @@ export default function WegagenTransferScreen() {
 
         {/* Centered Logo & Title Group */}
         <div className="pt-8 flex flex-col items-center justify-center gap-2">
-          <div className="w-14 h-14 rounded-full flex justify-center items-center p-2 shadow-[0_4px_12px_rgba(0,0,0,0.1)] border border-white/20">
-            <img src="/Group 82.png" alt="Wegagen" className="w-full h-full object-contain drop-shadow-md brightness-0 invert" />
+          <div className="w-14 h-14 rounded-xl flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
+            <img src="/Group 82.png" alt="Wegagen" className="w-full h-full object-contain drop-shadow-md" />
           </div>
           <h2 className="text-white text-[16px] font-bold tracking-tight">To Wegagen Bank Account</h2>
         </div>
