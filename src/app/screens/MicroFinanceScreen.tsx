@@ -16,7 +16,7 @@ const mfOptions: MFOption[] = [
     id: 'awach',
     title: 'To Awach',
     iconBg: 'bg-[#FFF6EC]',
-    logo: '/logo_en_1 1.png',
+    logo: '/awach.jpg',
   },
   {
     id: 'saccos',

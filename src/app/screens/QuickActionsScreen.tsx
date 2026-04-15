@@ -143,7 +143,11 @@ export default function QuickActionsScreen() {
             <button
               onClick={handleLogin}
               disabled={isTransitioning}
-              className="w-full max-w-[280px] flex items-center justify-center gap-2 py-4 rounded-[16px] bg-[#FF8F12] text-white shadow-[0_6px_20px_rgba(255,143,18,0.3)] hover:shadow-[0_8px_24px_rgba(255,143,18,0.4)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              className={`w-full max-w-[280px] flex items-center justify-center gap-2 py-4 rounded-[16px] transition-all duration-300 ${
+                isTransitioning
+                ? 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
+                : 'bg-[#FF8F12] text-white shadow-[0_6px_20px_rgba(255,143,18,0.3)] hover:shadow-[0_8px_24px_rgba(255,143,18,0.4)] hover:scale-[1.02] active:scale-[0.98]'
+              }`}
             >
               <span className="text-[16px] font-medium">Login</span>
               <LogIn size={20} strokeWidth={2.5} />

@@ -425,12 +425,15 @@ export default function WegagenTransferScreen() {
                   </AnimatePresence>
                 </div>
 
-                {/* Transfer Button */}
                 <div className="pt-1">
                   <button
                     onClick={openModal}
                     disabled={selectedAccIdx === -1 || (!isOwnAccount ? !bAcc : selectedCreditAccIdx === -1) || !amount || parseFloat(amount) <= 0 || !selectedReason || (selectedReason === "Other (Custom)" && !customReason)}
-                    className="w-full h-[48px] bg-[#ff8f12] hover:bg-[#ff6b0b] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98] transition-all disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed"
+                    className={`w-full h-[48px] rounded-[20px] font-black text-[17px] transition-all duration-300 ${
+                      (selectedAccIdx === -1 || (!isOwnAccount ? !bAcc : selectedCreditAccIdx === -1) || !amount || parseFloat(amount) <= 0 || !selectedReason || (selectedReason === "Other (Custom)" && !customReason))
+                        ? 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
+                        : 'bg-[#ff8f12] hover:bg-[#ff6b0b] text-white shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98]'
+                    }`}
                   >
                     Transfer
                   </button>

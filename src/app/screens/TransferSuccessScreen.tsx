@@ -135,11 +135,14 @@ export default function TransferSuccessScreen() {
                   </button>
                </div>
 
-               {/* Finished Button */}
                <button
                   onClick={handleFinished}
                   disabled={isTransitioning}
-                  className="w-full h-14 bg-[#ff6b0b] text-white rounded-[18px] font-black text-[16px] flex items-center justify-center shadow-[0_12px_30px_rgba(255,107,11,0.25)] active:scale-95 transition-all mb-6"
+                  className={`w-full h-14 rounded-[18px] font-black text-[16px] flex items-center justify-center shadow-[0_12px_30px_rgba(255,107,11,0.25)] active:scale-95 transition-all mb-6 ${
+                    isTransitioning 
+                    ? 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed' 
+                    : 'bg-[#ff6b0b] text-white'
+                  }`}
                >
                   Finished
                </button>

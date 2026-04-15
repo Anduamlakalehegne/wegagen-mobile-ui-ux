@@ -313,12 +313,14 @@ export default function WalletTransferFormScreen() {
               </AnimatePresence>
             </div>
 
-            {/* Transfer Button */}
             <div className="pt-2">
               <button
                 onClick={openModal}
                 disabled={!selectedReason || (selectedReason === "Other (Custom)" && !customReason)}
-                className="w-full h-[48px] bg-[#ff8f12] hover:bg-[#ff6b0b] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale"
+                className={`w-full h-[48px] rounded-[20px] font-black text-[17px] transition-all duration-300 flex items-center justify-center gap-2 ${(!selectedReason || (selectedReason === "Other (Custom)" && !customReason))
+                    ? 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
+                    : 'bg-[#ff8f12] hover:bg-[#ff6b0b] text-white shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98]'
+                  }`}
               >
                 Transfer
               </button>

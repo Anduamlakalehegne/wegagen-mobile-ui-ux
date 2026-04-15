@@ -347,12 +347,14 @@ export default function OtherBankTransferScreen() {
               </AnimatePresence>
             </div>
 
-            {/* Transfer Button */}
             <div className="pt-2">
               <button
                 onClick={() => toggleConfirmModal(true)}
                 disabled={!selectedReason || (selectedReason === "Other (Custom)" && !customReason)}
-                className="w-full h-[48px] bg-[#ff8f12] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] active:scale-[0.98] transition-all disabled:opacity-50 disabled:grayscale"
+                className={`w-full h-[48px] rounded-[20px] font-black text-[17px] transition-all duration-300 ${(!selectedReason || (selectedReason === "Other (Custom)" && !customReason))
+                    ? 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
+                    : 'bg-[#ff8f12] text-white shadow-[0_10px_20px_rgba(255,107,11,0.25)] active:scale-[0.98]'
+                  }`}
               >
                 Transfer
               </button>
