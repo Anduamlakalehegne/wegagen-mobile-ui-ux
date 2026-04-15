@@ -70,8 +70,8 @@ export default function WaterPaymentFormScreen() {
 
         {/* Centered Logo & Title Group */}
         <div className="pt-8 flex flex-col items-center justify-center gap-2">
-          <div className="w-14 h-14 rounded-xl flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
-            <Droplets size={32} strokeWidth={2.5} className="text-white drop-shadow-md" />
+          <div className="w-13 h-13 rounded-full flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
+            <Droplets size={26} strokeWidth={2.5} className="text-white drop-shadow-md" />
           </div>
           <h2 className="text-white text-[16px] font-bold tracking-tight">{providerName} Water Payment</h2>
         </div>
@@ -144,10 +144,10 @@ export default function WaterPaymentFormScreen() {
                               setSelectedAccIdx(idx);
                               setShowAccDropdown(false);
                             }}
-                            className={`w-full px-5 py-4 rounded-[18px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
+                            className={`w-full px-4 py-2 rounded-[12px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
                           >
                             <div className="flex flex-col">
-                              <span className="text-[13px] font-black tracking-wider mb-0.5">
+                              <span className="text-[12px] font-black tracking-wider">
                                 {acc.number}
                               </span>
                               <div className="flex items-center gap-2">
@@ -242,7 +242,7 @@ export default function WaterPaymentFormScreen() {
       {/* Confirmation Modal */}
       <AnimatePresence>
         {showConfirmModal && (
-          <div className="fixed inset-0 z-[200] flex items-end justify-center">
+          <div className="absolute inset-0 z-[200] flex items-end justify-center">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

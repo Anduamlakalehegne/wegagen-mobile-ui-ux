@@ -98,8 +98,8 @@ export default function ToWalletScreen() {
 
         {/* Centered Logo & Title Group */}
         <div className="pt-8 flex flex-col items-center justify-center gap-2">
-          <div className="w-14 h-14 rounded-xl flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
-            <Wallet size={32} strokeWidth={2.5} className="text-white drop-shadow-md" />
+          <div className="w-13 h-13 rounded-full flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
+            <Wallet size={26} strokeWidth={2.5} className="text-white drop-shadow-md" />
           </div>
           <h2 className="text-white text-[16px] font-bold tracking-tight">To Wallet</h2>
         </div>

@@ -159,10 +159,10 @@ export default function TransactionScreen() {
                             setSelectedAccIdx(idx);
                             setShowAccDropdown(false);
                           }}
-                          className={`w-full px-5 py-4 rounded-[18px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
+                          className={`w-full px-4 py-2 rounded-[12px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
                         >
                           <div className="flex flex-col">
-                            <span className="text-[13px] font-black tracking-wider mb-0.5">
+                            <span className="text-[12px] font-black tracking-wider">
                               {acc.number}
                             </span>
                             <div className="flex items-center gap-2">

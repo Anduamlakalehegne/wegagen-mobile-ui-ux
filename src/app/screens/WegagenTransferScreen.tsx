@@ -11,8 +11,18 @@ import {
   FileText,
   ArrowRight,
   Eye,
-  EyeOff
+  EyeOff,
+  Check
 } from 'lucide-react';
+
+const REASON_OPTIONS = [
+  "Goods & Services",
+  "Rent",
+  "Gift",
+  "Loan",
+  "Travel & Transport",
+  "Other (Custom)"
+];
 
 export default function WegagenTransferScreen() {
   const navigate = useNavigate();
@@ -23,6 +33,12 @@ export default function WegagenTransferScreen() {
   const [showBalance, setShowBalance] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isModalExiting, setIsModalExiting] = useState(false);
+
+  // Reason Selection State
+  const [selectedReason, setSelectedReason] = useState("");
+  const [customReason, setCustomReason] = useState("");
+  const [showReasonDropdown, setShowReasonDropdown] = useState(false);
+
   const reduceMotion = useReducedMotion();
 
   const openModal = () => {
@@ -34,13 +50,15 @@ export default function WegagenTransferScreen() {
     setTimeout(() => {
       setShowConfirmModal(false);
       setIsModalExiting(false);
-    }, 320); // Faster duration match for exit animation
+    }, 320);
   };
 
   const accounts = [
     { type: "SAVING", number: "0911121314156", balance: "125,110.90" },
     { type: "CHECKING", number: "0922232425267", balance: "45,210.50" }
   ];
+
+  const finalReason = selectedReason === "Other (Custom)" ? customReason : selectedReason;
 
   return (
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Wegagen Transfer Screen">
@@ -55,7 +73,6 @@ export default function WegagenTransferScreen() {
 
       {/* Brand Header with Top-aligned Navigation */}
       <div className="relative z-20 px-8 h-[220px] flex flex-col items-center">
-        {/* Absolute Top Navigation Buttons (Exactly like Home Page) */}
         <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
           <button
             onClick={() => navigate(-1)}
@@ -67,14 +84,14 @@ export default function WegagenTransferScreen() {
 
         {/* Centered Logo & Title Group */}
         <div className="pt-8 flex flex-col items-center justify-center gap-2">
-          <div className="w-14 h-14 rounded-xl flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
+          <div className="w-13 h-13 rounded-full flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
             <img src="/Group 82.png" alt="Wegagen" className="w-full h-full object-contain drop-shadow-md" />
           </div>
           <h2 className="text-white text-[16px] font-bold tracking-tight">To Wegagen Bank Account</h2>
         </div>
       </div>
 
-      {/* Main Glassmorphic Form Card (ONLY PADDING & ROUNDING ENHANCEMENTS) */}
+      {/* Main Glassmorphic Form Card */}
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
         animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
@@ -89,7 +106,6 @@ export default function WegagenTransferScreen() {
           <div className="space-y-6">
             {/* Field: Select Account */}
             <div className="space-y-2 relative">
-              {/* <label className="text-[#004360] text-[13px] font-bold ml-1">Select Account</label> */}
               <button
                 onClick={() => setShowAccDropdown(!showAccDropdown)}
                 className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] px-2 py-2 focus:ring-4 focus:ring-orange-50 transition-all group"
@@ -118,7 +134,6 @@ export default function WegagenTransferScreen() {
                 </div>
               </button>
 
-              {/* Account Dropdown Overlay */}
               <AnimatePresence>
                 {showAccDropdown && (
                   <>
@@ -143,10 +158,10 @@ export default function WegagenTransferScreen() {
                               setSelectedAccIdx(idx);
                               setShowAccDropdown(false);
                             }}
-                            className={`w-full px-5 py-4 rounded-[18px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
+                            className={`w-full px-4 py-2 rounded-[12px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
                           >
                             <div className="flex flex-col">
-                              <span className="text-[13px] font-black tracking-wider mb-0.5">
+                              <span className="text-[12px] font-black tracking-wider">
                                 {acc.number}
                               </span>
                               <div className="flex items-center gap-2">
@@ -175,7 +190,6 @@ export default function WegagenTransferScreen() {
 
             {/* Field: Beneficiary Account */}
             <div className="space-y-2">
-              {/* <label className="text-[#004360] text-[13px] font-bold ml-1">Beneficiary Account</label> */}
               <div className="relative group">
                 <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
                   <User size={18} strokeWidth={2.5} />
@@ -192,7 +206,6 @@ export default function WegagenTransferScreen() {
 
             {/* Field: Enter Amount */}
             <div className="space-y-2">
-              {/* <label className="text-[#004360] text-[13px] font-bold ml-1">Enter Amount</label> */}
               <div className="relative group">
                 <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
                   <Banknote size={18} strokeWidth={2.5} />
@@ -207,32 +220,101 @@ export default function WegagenTransferScreen() {
               </div>
             </div>
 
-            {/* Field: Enter Reason */}
-            <div className="space-y-2">
-              {/* <label className="text-[#004360] text-[13px] font-bold ml-1">Enter Reason</label> */}
+            {/* Field: Enter Reason (Standardized Select + Custom Input) */}
+            <div className="space-y-3 relative">
               <div className="relative group">
-                <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
-                  <FileText size={18} strokeWidth={2.5} />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter transfer reason"
-                  className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all"
-                />
+                <button
+                  onClick={() => setShowReasonDropdown(!showReasonDropdown)}
+                  className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-2 pr-4 py-2 focus:ring-4 focus:ring-orange-50 transition-all group overflow-hidden"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] shrink-0 group-hover:bg-[#ff6b0b] group-hover:text-white transition-colors">
+                      <FileText size={18} strokeWidth={2.5} />
+                    </div>
+                    <span className={`text-[14px] font-semibold truncate ${selectedReason ? "text-[#004360]" : "text-[#004360]/30"}`}>
+                      {selectedReason || "Select transfer reason"}
+                    </span>
+                  </div>
+                  <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showReasonDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
+                </button>
+
+                <AnimatePresence>
+                  {showReasonDropdown && (
+                    <>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setShowReasonDropdown(false)}
+                        className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]"
+                      />
+                      <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        className="absolute top-full left-0 right-0 mt-3 bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-[60] overflow-hidden border border-orange-100 p-2"
+                      >
+                        <div className="space-y-1">
+                          {REASON_OPTIONS.map((option) => (
+                            <button
+                              key={option}
+                              onClick={() => {
+                                setSelectedReason(option);
+                                setShowReasonDropdown(false);
+                                if (option !== "Other (Custom)") setCustomReason("");
+                              }}
+                              className={`w-full px-5 py-2.5 rounded-[12px] text-left transition-all flex items-center justify-between group ${selectedReason === option ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
+                            >
+                              <span className="text-[13px] font-bold">{option}</span>
+                              {selectedReason === option && <Check size={16} strokeWidth={3} />}
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
               </div>
+
+              {/* Custom Reason Input (Reveals only if Other is selected) */}
+              <AnimatePresence>
+                {selectedReason === "Other (Custom)" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                    animate={{ opacity: 1, height: "auto", marginTop: 8 }}
+                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="relative group">
+                      <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
+                        <ArrowRight size={18} strokeWidth={2.5} />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Type your custom reason"
+                        value={customReason}
+                        onChange={(e) => setCustomReason(e.target.value)}
+                        className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all border-dashed"
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            {/* Transfer Button - Matches Image Shape/Color */}
+            {/* Transfer Button */}
             <div className="pt-3 pb-2">
               <button
                 onClick={openModal}
-                className="w-full h-[48px] bg-[#ff8f12] hover:bg-[#ff6b0b] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98] transition-all"
+                disabled={!selectedReason || (selectedReason === "Other (Custom)" && !customReason)}
+                className="w-full h-[48px] bg-[#ff8f12] hover:bg-[#ff6b0b] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98] transition-all disabled:opacity-50 disabled:grayscale"
               >
                 Transfer
               </button>
             </div>
 
-            {/* ─── Recent Beneficiaries ─── */}
+            {/* Recent Beneficiaries */}
             <div className="pt-2">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-[#004360] text-[13px] font-black tracking-tight">Beneficiary Account</h3>
@@ -248,14 +330,11 @@ export default function WegagenTransferScreen() {
                   <div
                     key={idx}
                     onClick={() => setBAcc(beneficiary.account)}
-                    className="flex items-center gap-3 py-2 px-3 bg-white border border-gray-50 rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.08)] hover:bg-[#fffdfb] hover:border-orange-100/50 active:scale-[0.98] transition-all duration-300 cursor-pointer group"
+                    className="flex items-center gap-3 py-2.5 px-3 bg-white border border-gray-50 rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.08)] hover:bg-[#fffdfb] hover:border-orange-100/50 active:scale-[0.98] transition-all duration-300 cursor-pointer group"
                   >
-                    {/* User Avatar */}
                     <div className="w-[38px] h-[38px] rounded-xl bg-orange-50 flex items-center justify-center text-[#ff6b0b] font-black text-[13px] group-hover:bg-[#ff6b0b] group-hover:text-white transition-colors duration-300">
                       {beneficiary.name.split(' ').map(n => n[0]).join('')}
                     </div>
-
-                    {/* Name & Account */}
                     <div className="flex-1 min-w-0">
                       <p className="text-[#004360] text-[13px] font-bold truncate tracking-tight">{beneficiary.name}</p>
                       <p className="text-[#004360]/50 text-[11px] font-bold tracking-tight mt-0.5">{beneficiary.account}</p>
@@ -264,7 +343,6 @@ export default function WegagenTransferScreen() {
                 ))}
               </div>
             </div>
-
           </div>
         </div>
       </motion.div>
@@ -272,7 +350,6 @@ export default function WegagenTransferScreen() {
       {/* High-Fidelity Confirmation Modal Overlay */}
       {showConfirmModal && (
         <div className={`absolute inset-0 z-[200] flex items-end justify-center ${isModalExiting ? "transition-opacity duration-300 opacity-0" : "animate-in fade-in duration-300"}`}>
-          {/* Advanced Seamless Backdrop */}
           <div
             className={`absolute inset-0 bg-[#004360]/10 transition-all duration-300 ease-out ${isModalExiting ? "opacity-0 backdrop-blur-none" : "opacity-100 backdrop-blur-[12px] animate-in fade-in fill-mode-both"
               }`}
@@ -280,16 +357,13 @@ export default function WegagenTransferScreen() {
             onClick={handleCloseModal}
           />
 
-          {/* Liquid Glass Modal Container */}
           <div
             className={`relative w-full bg-white rounded-t-[44px] overflow-hidden shadow-[0_-15px_80px_rgba(0,0,0,0.15)] transition-transform duration-300 ease-out transform ${isModalExiting ? "translate-y-full" : "translate-y-0 animate-in slide-in-from-bottom-full"
               }`}
           >
-            {/* Modal Handle Pin */}
             <div className="w-12 h-1.5 bg-gray-100 rounded-full mx-auto mt-3 mb-1" />
 
             <div className="p-6 pb-2 pt-5 flex flex-col items-center">
-              {/* Success Brand Glower */}
               <div className="relative mb-2 scale-90">
                 <div className="w-18 h-18 rounded-full bg-orange-50 flex items-center justify-center text-[#ff6b0b] relative z-10 border border-orange-100">
                   <div className="w-11 h-11 rounded-full bg-[#ff6b0b] shadow-[0_8px_20px_rgba(255,107,11,0.3)] flex items-center justify-center text-white">
@@ -301,14 +375,13 @@ export default function WegagenTransferScreen() {
 
               <h2 className="text-[#053d57] text-[17px] font-black tracking-tight mb-5">Confirm Your Transfer</h2>
 
-              {/* High-Contrast Transaction Details */}
               <div className="w-full space-y-3 mb-6 px-2">
                 {[
                   { label: "Recipient", value: "Fikir T." },
                   { label: "Debit Account", value: selectedAccIdx !== -1 ? accounts[selectedAccIdx].number : "0911128513141" },
-                  { label: "Credit Account", value: "092258758742" },
-                  { label: "Amount", value: `${amount || "10,000"} ETB` },
-                  { label: "Remark", value: "Transfer" }
+                  { label: "Credit Account", value: bAcc || "092258758742" },
+                  { label: "Amount", value: `${amount || "0"} ETB` },
+                  { label: "Remark", value: finalReason || "Transfer" }
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center justify-between border-b border-gray-50 pb-2">
                     <span className="text-gray-400 text-[12px] font-bold">{item.label}</span>
@@ -317,7 +390,6 @@ export default function WegagenTransferScreen() {
                 ))}
               </div>
 
-              {/* Compact Horizontal Buttons */}
               <div className="w-full flex gap-3 pb-6">
                 <button
                   onClick={handleCloseModal}
@@ -328,7 +400,6 @@ export default function WegagenTransferScreen() {
                 <button
                   onClick={() => {
                     handleCloseModal();
-                    // Navigate to Transfer PIN Confirmation
                     setTimeout(() => navigate('/confirm-pin'), 350);
                   }}
                   className="flex-1 h-[48px] bg-[#ff6b0b] text-white rounded-[15px] font-black text-[16px] shadow-[0_10px_30px_rgba(255,107,11,0.25)] active:scale-95 transition-all"

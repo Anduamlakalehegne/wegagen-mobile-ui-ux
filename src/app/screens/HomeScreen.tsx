@@ -310,7 +310,7 @@ export default function HomeScreen() {
       onClick: () => navigateWithTransition("/ebirr-transfer"),
     },
     {
-      icon: <Landmark size={20} strokeWidth={2} className="text-[#ff6b0b]" />,
+      icon: <img src="/ethiopay1.png" alt="Other Bank" className="w-[28px] h-[28px] object-contain" />,
       title: "To Other Bank Account",
       iconBgColor: "bg-[#FFF6EC]",
       onClick: () => navigateWithTransition("/other-bank-transfer"),
@@ -331,7 +331,7 @@ export default function HomeScreen() {
 
   const paymentItems = [
     {
-      icon: <Plane size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      icon: <img src="/Ethiopian_Airlines_idbCkgr4HW_1.png" alt="Ethiopian Airlines" className="w-[28px] h-[28px] object-contain" />,
       title: "Ethiopian Airlines Payment",
       iconBgColor: "bg-[#FFF6EC]",
       onClick: () => navigateWithTransition("/ethiopian-airlines"),
@@ -349,7 +349,7 @@ export default function HomeScreen() {
       onClick: () => navigateWithTransition("/water-providers"),
     },
     {
-      icon: <Building2 size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
+      icon: <img src="/Tigray-Housing.png" alt="Tigray Housing" className="w-[28px] h-[28px] object-contain" />,
       title: "Tigray Housing Payment",
       iconBgColor: "bg-[#FFF6EC]",
       onClick: () => console.log("Housing clicked"),
@@ -374,7 +374,7 @@ export default function HomeScreen() {
     },
     {
       icon: <ShoppingCart size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
-      title: "Pay Merchant",
+      title: "Merchant Payment",
       iconBgColor: "bg-[#FFF6EC]",
       onClick: () => console.log("Merchant clicked"),
     },
@@ -691,7 +691,7 @@ export default function HomeScreen() {
               transition={{ type: "spring", damping: 30, stiffness: 250 }}
               className="absolute top-0 left-0 bottom-0 w-[290px] bg-white z-[110] shadow-[10px_0_50px_rgba(0,0,0,0.15)] flex flex-col"
             >
-              {/* Premium Branded Header (Consistent with Transfer Screens) */}
+              {/* Premium Branded Header */}
               <div className="relative h-[220px] overflow-hidden shrink-0">
                 {/* Background Layer */}
                 <div className="absolute inset-0 z-0 h-full">
@@ -699,12 +699,8 @@ export default function HomeScreen() {
                   <img src="/Mask group (1).png" alt="" className="absolute top-0 left-0 w-full h-full object-cover opacity-100" />
                 </div>
 
-                <div className="relative z-10 flex flex-col items-center justify-center h-full pt-4">
-                  <div className="flex flex-col items-center">
-                    <img src="/LogoSVG 1 (1).png" alt="Wegagen" className="h-10 object-contain drop-shadow-lg" />
-                    <h3 className="text-white text-[15px] font-black uppercase tracking-[0.08em] mt-8 drop-shadow-md opacity-95">Excelling Together</h3>
-                    <div className="h-[2px] w-8 bg-white/40 mt-1 rounded-full" />
-                  </div>
+                <div className="relative z-10 flex flex-col items-center justify-center h-full pt-4 px-6">
+                  <img src="/Moto-with-Logo-1.png" alt="Wegagen Bank - Excelling Together" className="w-[75%] max-w-[200px] h-auto object-contain drop-shadow-md" />
                 </div>
               </div>
 

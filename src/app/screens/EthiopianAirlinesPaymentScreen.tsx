@@ -9,18 +9,34 @@ import {
   FileText,
   Eye,
   EyeOff,
-  RefreshCw
+  RefreshCw,
+  Check,
+  ArrowRight
 } from 'lucide-react';
+
+const REASON_OPTIONS = [
+  "Goods & Services",
+  "Rent",
+  "Gift",
+  "Loan",
+  "Travel & Transport",
+  "Other (Custom)"
+];
 
 export default function EthiopianAirlinesPaymentScreen() {
   const navigate = useNavigate();
   const [pnr, setPnr] = useState('');
-  const [remark, setRemark] = useState('');
   const [showAccDropdown, setShowAccDropdown] = useState(false);
   const [selectedAccIdx, setSelectedAccIdx] = useState(-1);
   const [showBalance, setShowBalance] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isModalExiting, setIsModalExiting] = useState(false);
+
+  // Reason Selection State
+  const [selectedReason, setSelectedReason] = useState("");
+  const [customReason, setCustomReason] = useState("");
+  const [showReasonDropdown, setShowReasonDropdown] = useState(false);
+
   const reduceMotion = useReducedMotion();
 
   const accounts = [
@@ -39,6 +55,8 @@ export default function EthiopianAirlinesPaymentScreen() {
       setIsModalExiting(false);
     }, 320);
   };
+
+  const finalReason = selectedReason === "Other (Custom)" ? customReason : selectedReason;
 
   return (
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Ethiopian Airlines Payment Screen">
@@ -64,8 +82,8 @@ export default function EthiopianAirlinesPaymentScreen() {
 
         {/* Centered Logo & Title Group */}
         <div className="pt-8 flex flex-col items-center justify-center gap-2">
-          <div className="w-14 h-14 rounded-xl flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
-            <Plane size={32} strokeWidth={2.5} className="text-white drop-shadow-md" />
+          <div className="w-13 h-13 rounded-full flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
+            <img src="/Ethiopian_Airlines_idbCkgr4HW_1.png" alt="Ethiopian Airlines" className="w-full h-full object-contain drop-shadow-md" />
           </div>
           <h2 className="text-white text-[16px] font-bold tracking-tight">Ethiopian Airlines Payment</h2>
         </div>
@@ -138,10 +156,10 @@ export default function EthiopianAirlinesPaymentScreen() {
                               setSelectedAccIdx(idx);
                               setShowAccDropdown(false);
                             }}
-                            className={`w-full px-5 py-4 rounded-[18px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
+                            className={`w-full px-4 py-2 rounded-[12px] text-left transition-all flex items-center justify-between group ${selectedAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
                           >
                             <div className="flex flex-col">
-                              <span className="text-[13px] font-black tracking-wider mb-0.5">
+                              <span className="text-[12px] font-black tracking-wider">
                                 {acc.number}
                               </span>
                               <div className="flex items-center gap-2">
@@ -184,27 +202,94 @@ export default function EthiopianAirlinesPaymentScreen() {
               </div>
             </div>
 
-            {/* Field: Remark */}
-            <div className="space-y-2">
+            {/* Field: Enter Reason (Standardized Select + Custom Input) */}
+            <div className="space-y-3 relative">
               <div className="relative group">
-                <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
-                  <FileText size={18} strokeWidth={2.5} />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter remark"
-                  value={remark}
-                  onChange={(e) => setRemark(e.target.value)}
-                  className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all"
-                />
+                <button
+                  onClick={() => setShowReasonDropdown(!showReasonDropdown)}
+                  className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-2 pr-4 py-2 focus:ring-4 focus:ring-orange-50 transition-all group overflow-hidden"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] shrink-0 group-hover:bg-[#ff6b0b] group-hover:text-white transition-colors">
+                      <FileText size={18} strokeWidth={2.5} />
+                    </div>
+                    <span className={`text-[14px] font-semibold truncate ${selectedReason ? "text-[#004360]" : "text-[#004360]/30"}`}>
+                      {selectedReason || "Select payment reason"}
+                    </span>
+                  </div>
+                  <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showReasonDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
+                </button>
+
+                <AnimatePresence>
+                  {showReasonDropdown && (
+                    <>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setShowReasonDropdown(false)}
+                        className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]"
+                      />
+                      <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        className="absolute top-full left-0 right-0 mt-3 bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-[60] overflow-hidden border border-orange-100 p-2"
+                      >
+                        <div className="space-y-1">
+                          {REASON_OPTIONS.map((option) => (
+                            <button
+                              key={option}
+                              onClick={() => {
+                                setSelectedReason(option);
+                                setShowReasonDropdown(false);
+                                if (option !== "Other (Custom)") setCustomReason("");
+                              }}
+                              className={`w-full px-5 py-2.5 rounded-[12px] text-left transition-all flex items-center justify-between group ${selectedReason === option ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
+                            >
+                              <span className="text-[13px] font-bold">{option}</span>
+                              {selectedReason === option && <Check size={16} strokeWidth={3} />}
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
               </div>
+
+              <AnimatePresence>
+                {selectedReason === "Other (Custom)" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                    animate={{ opacity: 1, height: "auto", marginTop: 8 }}
+                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="relative group">
+                      <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
+                        <ArrowRight size={18} strokeWidth={2.5} />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Type your custom reason"
+                        value={customReason}
+                        onChange={(e) => setCustomReason(e.target.value)}
+                        className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all border-dashed"
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Pay Button */}
             <div className="pt-3 pb-2">
               <button
                 onClick={openModal}
-                className="w-full h-[48px] bg-[#ff8f12] hover:bg-[#ff6b0b] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                disabled={!selectedReason || (selectedReason === "Other (Custom)" && !customReason)}
+                className="w-full h-[48px] bg-[#ff8f12] hover:bg-[#ff6b0b] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale"
               >
                 <span>Pay</span>
               </button>
@@ -216,7 +301,7 @@ export default function EthiopianAirlinesPaymentScreen() {
       {/* Confirmation Modal */}
       <AnimatePresence>
         {showConfirmModal && (
-          <div className="fixed inset-0 z-[200] flex items-end justify-center">
+          <div className="absolute inset-0 z-[200] flex items-end justify-center">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -250,7 +335,7 @@ export default function EthiopianAirlinesPaymentScreen() {
                     { label: "Biller", value: "Ethiopian Airlines" },
                     { label: "PNR", value: pnr || "N/A" },
                     { label: "Debit Account", value: selectedAccIdx !== -1 ? accounts[selectedAccIdx].number : "N/A" },
-                    { label: "Remark", value: remark || "N/A" }
+                    { label: "Remark", value: finalReason || "N/A" }
                   ].map((item, idx) => (
                     <div key={idx} className="flex items-center justify-between border-b border-gray-50 pb-2">
                       <span className="text-gray-400 text-[12px] font-bold">{item.label}</span>
