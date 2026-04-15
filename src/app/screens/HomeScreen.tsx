@@ -733,7 +733,7 @@ export default function HomeScreen() {
 
               {/* Drawer Footer */}
               <div className="p-6 border-t border-gray-100 bg-gray-50/20">
-                <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.2em] text-center">Version 4.5.12 Premium</p>
+                <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.2em] text-center">Version 4.5.12</p>
               </div>
             </motion.div>
           </>

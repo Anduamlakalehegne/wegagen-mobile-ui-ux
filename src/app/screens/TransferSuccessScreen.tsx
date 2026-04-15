@@ -108,11 +108,11 @@ export default function TransferSuccessScreen() {
                {/* Detail Grid */}
                <div className="w-full bg-gray-50/70 rounded-[24px] p-5 py-4 space-y-2 mb-5 border border-gray-100 overflow-hidden">
                   {[
-                     { label: "Transaction ID", value: transactionData.id },
-                     { label: "Transaction Time", value: transactionData.time },
-                     { label: "Transaction Type", value: transactionData.type },
                      { label: "Sender", value: transactionData.sender },
                      { label: "Receiver", value: transactionData.receiver },
+                     { label: "Transaction ID", value: transactionData.id },
+                     { label: "Transaction Date", value: transactionData.time },
+                     { label: "Transaction Type", value: transactionData.type },
                      { label: "Back Account", value: transactionData.account },
                      { label: "Bank Name", value: transactionData.bankName }
                   ].map((item, idx) => (

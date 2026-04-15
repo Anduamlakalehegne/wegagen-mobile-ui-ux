@@ -39,6 +39,11 @@ export default function WegagenTransferScreen() {
   const [customReason, setCustomReason] = useState("");
   const [showReasonDropdown, setShowReasonDropdown] = useState(false);
 
+  // Own Account Transfer State
+  const [isOwnAccount, setIsOwnAccount] = useState(false);
+  const [showCreditAccDropdown, setShowCreditAccDropdown] = useState(false);
+  const [selectedCreditAccIdx, setSelectedCreditAccIdx] = useState(-1);
+
   const reduceMotion = useReducedMotion();
 
   const openModal = () => {
@@ -102,8 +107,36 @@ export default function WegagenTransferScreen() {
         }}
         className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[140px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30 overflow-y-auto no-scrollbar pb-4"
       >
-        <div className="p-4 pb-0 pt-10">
-          <div className="space-y-6">
+        <div className="p-4 pb-0 pt-5">
+          <div className="space-y-5">
+            {/* Transfer Type Toggle */}
+            <div className="flex bg-[#fff6ec] border border-orange-100 rounded-full p-1 relative z-10 shadow-inner">
+              {/* Animated Pill Indicator */}
+              <motion.div
+                className="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#ff6b0b] rounded-full shadow-[0_4px_12px_rgba(255,107,11,0.2)] z-0"
+                initial={false}
+                animate={{ left: isOwnAccount ? "calc(50% + 2px)" : "4px" }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              />
+
+              <button
+                onClick={() => { setIsOwnAccount(false); setBAcc(""); setSelectedCreditAccIdx(-1); }}
+                className={`flex-1 py-1.5 text-[12px] font-bold rounded-full transition-all duration-300 z-10 ${
+                  !isOwnAccount ? "text-white" : "text-[#004360]/60 hover:text-[#004360]"
+                }`}
+              >
+                Other Account
+              </button>
+              <button
+                onClick={() => { setIsOwnAccount(true); setBAcc(""); setSelectedCreditAccIdx(-1); }}
+                className={`flex-1 py-1.5 text-[12px] font-bold rounded-full transition-all duration-300 z-10 ${
+                  isOwnAccount ? "text-white" : "text-[#004360]/60 hover:text-[#004360]"
+                }`}
+              >
+                Own Account
+              </button>
+            </div>
+
             {/* Field: Select Account */}
             <div className="space-y-2 relative">
               <button
@@ -188,161 +221,254 @@ export default function WegagenTransferScreen() {
               </AnimatePresence>
             </div>
 
-            {/* Field: Beneficiary Account */}
-            <div className="space-y-2">
-              <div className="relative group">
-                <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
-                  <User size={18} strokeWidth={2.5} />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter beneficiary account number"
-                  value={bAcc}
-                  onChange={(e) => setBAcc(e.target.value)}
-                  className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all"
-                />
-              </div>
-            </div>
-
-            {/* Field: Enter Amount */}
-            <div className="space-y-2">
-              <div className="relative group">
-                <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
-                  <Banknote size={18} strokeWidth={2.5} />
-                </div>
-                <input
-                  type="number"
-                  placeholder="Enter Amount"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all"
-                />
-              </div>
-            </div>
-
-            {/* Field: Enter Reason (Standardized Select + Custom Input) */}
-            <div className="space-y-3 relative">
-              <div className="relative group">
-                <button
-                  onClick={() => setShowReasonDropdown(!showReasonDropdown)}
-                  className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-2 pr-4 py-2 focus:ring-4 focus:ring-orange-50 transition-all group overflow-hidden"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] shrink-0 group-hover:bg-[#ff6b0b] group-hover:text-white transition-colors">
-                      <FileText size={18} strokeWidth={2.5} />
-                    </div>
-                    <span className={`text-[14px] font-semibold truncate ${selectedReason ? "text-[#004360]" : "text-[#004360]/30"}`}>
-                      {selectedReason || "Select transfer reason"}
-                    </span>
-                  </div>
-                  <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showReasonDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
-                </button>
-
-                <AnimatePresence>
-                  {showReasonDropdown && (
-                    <>
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={() => setShowReasonDropdown(false)}
-                        className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]"
-                      />
-                      <motion.div
-                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                        className="absolute top-full left-0 right-0 mt-3 bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-[60] overflow-hidden border border-orange-100 p-2"
-                      >
-                        <div className="space-y-1">
-                          {REASON_OPTIONS.map((option) => (
-                            <button
-                              key={option}
-                              onClick={() => {
-                                setSelectedReason(option);
-                                setShowReasonDropdown(false);
-                                if (option !== "Other (Custom)") setCustomReason("");
-                              }}
-                              className={`w-full px-5 py-2.5 rounded-[12px] text-left transition-all flex items-center justify-between group ${selectedReason === option ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
-                            >
-                              <span className="text-[13px] font-bold">{option}</span>
-                              {selectedReason === option && <Check size={16} strokeWidth={3} />}
-                            </button>
-                          ))}
-                        </div>
-                      </motion.div>
-                    </>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Custom Reason Input (Reveals only if Other is selected) */}
-              <AnimatePresence>
-                {selectedReason === "Other (Custom)" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                    animate={{ opacity: 1, height: "auto", marginTop: 8 }}
-                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="overflow-hidden"
-                  >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={isOwnAccount ? "own" : "other"}
+                initial={{ opacity: 0, x: isOwnAccount ? 20 : -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: isOwnAccount ? -20 : 20 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+                className="space-y-5"
+              >
+                {/* Field: Beneficiary Account */}
+                {!isOwnAccount ? (
+                  <div className="space-y-2">
                     <div className="relative group">
                       <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
-                        <ArrowRight size={18} strokeWidth={2.5} />
+                        <User size={18} strokeWidth={2.5} />
                       </div>
                       <input
                         type="text"
-                        placeholder="Type your custom reason"
-                        value={customReason}
-                        onChange={(e) => setCustomReason(e.target.value)}
-                        className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all border-dashed"
+                        placeholder="Enter beneficiary account number"
+                        value={bAcc}
+                        onChange={(e) => setBAcc(e.target.value)}
+                        className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/30 focus:bg-white focus:border-[#ff6b0b]/40 transition-all cursor-text text-left"
                       />
                     </div>
-                  </motion.div>
+                  </div>
+                ) : (
+                  <div className="space-y-2 relative">
+                    <button
+                      onClick={() => setShowCreditAccDropdown(!showCreditAccDropdown)}
+                      className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] px-2 py-2 focus:ring-4 focus:ring-orange-50 transition-all group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] shrink-0 group-hover:bg-[#ff6b0b] group-hover:text-white transition-colors">
+                          <Wallet size={18} strokeWidth={2.5} />
+                        </div>
+                        <div className="flex flex-col items-start min-w-[150px]">
+                          {selectedCreditAccIdx === -1 ? (
+                            <span className="text-[#004360] text-[14px] font-semibold opacity-30 mt-1">Select Receiving Account</span>
+                          ) : (
+                            <>
+                              <span className="text-[#004360] text-[13px] font-black tracking-wider">
+                                {accounts[selectedCreditAccIdx].number}
+                              </span>
+                              <span className="text-[#004360]/50 text-[11px] font-bold">
+                                ETB {showBalance ? accounts[selectedCreditAccIdx].balance : "• • • • •"}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5 pr-1">
+                        <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showCreditAccDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
+                      </div>
+                    </button>
+
+                    <AnimatePresence>
+                      {showCreditAccDropdown && (
+                        <>
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowCreditAccDropdown(false)}
+                            className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]"
+                          />
+                          <motion.div
+                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                            className="absolute top-full left-0 right-0 mt-3 bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-[60] overflow-hidden border border-orange-100 animate-in fade-in zoom-in-95 duration-200"
+                          >
+                            <div className="p-2 space-y-1">
+                              {accounts.map((acc, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={() => {
+                                    setSelectedCreditAccIdx(idx);
+                                    setShowCreditAccDropdown(false);
+                                  }}
+                                  disabled={selectedAccIdx === idx}
+                                  className={`w-full px-4 py-2 text-left rounded-[12px] flex items-center justify-between transition-all group ${selectedCreditAccIdx === idx ? "bg-orange-50 text-[#ff6b0b]" : selectedAccIdx === idx ? "opacity-40 cursor-not-allowed bg-gray-50 grayscale" : "hover:bg-gray-50 text-[#004360]"}`}
+                                >
+                                  <div className="flex flex-col">
+                                    <span className={`text-[12px] font-black tracking-wider flex items-center gap-2 ${selectedAccIdx === idx ? "line-through text-gray-500" : ""}`}>
+                                      {acc.number} {selectedAccIdx === idx && <span className="text-[9px] bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded-md no-underline">Used as Debit</span>}
+                                    </span>
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-[11px] opacity-60 font-bold whitespace-nowrap">
+                                        ETB {showBalance ? acc.balance : "• • • • •"}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  {selectedCreditAccIdx === idx && (
+                                    <div className="w-2 h-2 rounded-full bg-[#ff6b0b]" />
+                                  )}
+                                </button>
+                              ))}
+                            </div>
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 )}
-              </AnimatePresence>
-            </div>
 
-            {/* Transfer Button */}
-            <div className="pt-3 pb-2">
-              <button
-                onClick={openModal}
-                disabled={!selectedReason || (selectedReason === "Other (Custom)" && !customReason)}
-                className="w-full h-[48px] bg-[#ff8f12] hover:bg-[#ff6b0b] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98] transition-all disabled:opacity-50 disabled:grayscale"
-              >
-                Transfer
-              </button>
-            </div>
-
-            {/* Recent Beneficiaries */}
-            <div className="pt-2">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-[#004360] text-[13px] font-black tracking-tight">Beneficiary Account</h3>
-                <button className="text-[#ff8f12] text-[11px] font-bold hover:underline transition-all">See All</button>
-              </div>
-
-              <div className="space-y-2.5">
-                {[
-                  { name: "Abebe Kebede", account: "091156894321" },
-                  { name: "Tigist Alemu", account: "092245781236" },
-                  { name: "Yohannes Tadesse", account: "096632145879" },
-                ].map((beneficiary, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => setBAcc(beneficiary.account)}
-                    className="flex items-center gap-3 py-2.5 px-3 bg-white border border-gray-50 rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.08)] hover:bg-[#fffdfb] hover:border-orange-100/50 active:scale-[0.98] transition-all duration-300 cursor-pointer group"
-                  >
-                    <div className="w-[38px] h-[38px] rounded-xl bg-orange-50 flex items-center justify-center text-[#ff6b0b] font-black text-[13px] group-hover:bg-[#ff6b0b] group-hover:text-white transition-colors duration-300">
-                      {beneficiary.name.split(' ').map(n => n[0]).join('')}
+                {/* Field: Enter Amount */}
+                <div className="space-y-2">
+                  <div className="relative group">
+                    <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
+                      <Banknote size={18} strokeWidth={2.5} />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[#004360] text-[13px] font-bold truncate tracking-tight">{beneficiary.name}</p>
-                      <p className="text-[#004360]/50 text-[11px] font-bold tracking-tight mt-0.5">{beneficiary.account}</p>
+                    <input
+                      type="number"
+                      placeholder="Enter Amount"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Field: Enter Reason (Standardized Select + Custom Input) */}
+                <div className="space-y-3 relative">
+                  <div className="relative group">
+                    <button
+                      onClick={() => setShowReasonDropdown(!showReasonDropdown)}
+                      className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-2 pr-4 py-2 focus:ring-4 focus:ring-orange-50 transition-all group overflow-hidden"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] shrink-0 group-hover:bg-[#ff6b0b] group-hover:text-white transition-colors">
+                          <FileText size={18} strokeWidth={2.5} />
+                        </div>
+                        <span className={`text-[14px] font-semibold truncate ${selectedReason ? "text-[#004360]" : "text-[#004360]/30"}`}>
+                          {selectedReason || "Select transfer reason"}
+                        </span>
+                      </div>
+                      <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showReasonDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
+                    </button>
+
+                    <AnimatePresence>
+                      {showReasonDropdown && (
+                        <>
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowReasonDropdown(false)}
+                            className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]"
+                          />
+                          <motion.div
+                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                            className="absolute top-full left-0 right-0 mt-3 bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-[60] overflow-hidden border border-orange-100 p-2"
+                          >
+                            <div className="space-y-1">
+                              {REASON_OPTIONS.map((option) => (
+                                <button
+                                  key={option}
+                                  onClick={() => {
+                                    setSelectedReason(option);
+                                    setShowReasonDropdown(false);
+                                    if (option !== "Other (Custom)") setCustomReason("");
+                                  }}
+                                  className={`w-full px-5 py-2.5 rounded-[12px] text-left transition-all flex items-center justify-between group ${selectedReason === option ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
+                                >
+                                  <span className="text-[13px] font-bold">{option}</span>
+                                  {selectedReason === option && <Check size={16} strokeWidth={3} />}
+                                </button>
+                              ))}
+                            </div>
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Custom Reason Input (Reveals only if Other is selected) */}
+                  <AnimatePresence>
+                    {selectedReason === "Other (Custom)" && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                        animate={{ opacity: 1, height: "auto", marginTop: 8 }}
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="relative group">
+                          <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
+                            <ArrowRight size={18} strokeWidth={2.5} />
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="Type your custom reason"
+                            value={customReason}
+                            onChange={(e) => setCustomReason(e.target.value)}
+                            className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all border-dashed"
+                          />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Transfer Button */}
+                <div className="pt-1">
+                  <button
+                    onClick={openModal}
+                    disabled={selectedAccIdx === -1 || (!isOwnAccount ? !bAcc : selectedCreditAccIdx === -1) || !amount || parseFloat(amount) <= 0 || !selectedReason || (selectedReason === "Other (Custom)" && !customReason)}
+                    className="w-full h-[48px] bg-[#ff8f12] hover:bg-[#ff6b0b] text-white rounded-[20px] font-black text-[17px] shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98] transition-all disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed"
+                  >
+                    Transfer
+                  </button>
+                </div>
+
+                {/* Recent Beneficiaries */}
+                {!isOwnAccount && (
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-[#004360] text-[13px] font-black tracking-tight">Beneficiary Account</h3>
+                      <button className="text-[#ff8f12] text-[11px] font-bold hover:underline transition-all">See All</button>
+                    </div>
+
+                    <div className="space-y-0.5">
+                      {[
+                        { name: "Abebe Kebede", account: "091156894321" },
+                        { name: "Tigist Alemu", account: "092245781236" },
+                        { name: "Yohannes Tadesse", account: "096632145879" },
+                      ].map((beneficiary, idx) => (
+                        <div
+                          key={idx}
+                          onClick={() => setBAcc(beneficiary.account)}
+                          className="flex items-center gap-3 py-2.5 px-3 bg-white border border-gray-50 rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.08)] hover:bg-[#fffdfb] hover:border-orange-100/50 active:scale-[0.98] transition-all duration-300 cursor-pointer group"
+                        >
+                          <div className="w-[38px] h-[38px] rounded-xl bg-orange-50 flex items-center justify-center text-[#ff6b0b] font-black text-[13px] group-hover:bg-[#ff6b0b] group-hover:text-white transition-colors duration-300">
+                            {beneficiary.name.split(' ').map(n => n[0]).join('')}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[#004360] text-[13px] font-bold truncate tracking-tight">{beneficiary.name}</p>
+                            <p className="text-[#004360]/50 text-[11px] font-bold tracking-tight mt-0.5">{beneficiary.account}</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </motion.div>
@@ -377,9 +503,9 @@ export default function WegagenTransferScreen() {
 
               <div className="w-full space-y-3 mb-6 px-2">
                 {[
-                  { label: "Recipient", value: "Fikir T." },
+                  { label: "Recipient", value: isOwnAccount ? "Own Account" : "Fikir T." },
                   { label: "Debit Account", value: selectedAccIdx !== -1 ? accounts[selectedAccIdx].number : "0911128513141" },
-                  { label: "Credit Account", value: bAcc || "092258758742" },
+                  { label: "Credit Account", value: isOwnAccount ? (selectedCreditAccIdx !== -1 ? accounts[selectedCreditAccIdx].number : "") : bAcc || "092258758742" },
                   { label: "Amount", value: `${amount || "0"} ETB` },
                   { label: "Remark", value: finalReason || "Transfer" }
                 ].map((item, idx) => (
