@@ -76,7 +76,7 @@ function WalletItem({ item, isGrid, onClick }: { item: WalletOption; isGrid: boo
 export default function ToWalletScreen() {
   const navigate = useNavigate();
   const reduceMotion = useReducedMotion();
-  const [isGridView, setIsGridView] = useState(false);
+  const [isGridView, setIsGridView] = useState(true);
 
   return (
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="To Wallet Screen">

@@ -62,8 +62,7 @@ export default function WelcomeScreen() {
               Welcome!
             </h1>
             <p className="text-[#004360] text-[13px] leading-relaxed opacity-70">
-              Bank smarter, faster, and more securely<br />
-              anytime, anywhere
+              Your phone Your Bank
             </p>
           </div>
 
@@ -114,12 +113,12 @@ export default function WelcomeScreen() {
 
           {/* Additional Info */}
           <div className="mt-30 pt-8 border-t border-[#004360]/10">
-            <div className="flex items-center justify-between text-[#004360] opacity-60">
+            <div className="text-[#004360] opacity-90">
               <div className="text-center">
-                <div className="text-[22px] font-bold text-[#ff6b0b]">24/7</div>
-                <div className="text-[10px] mt-1 uppercase tracking-tight">Support</div>
+                <div className="text-[22px] font-bold text-[#ff6b0b]">866</div>
+                <div className="text-[10px] mt-1 uppercase tracking-tight">Contact Center</div>
               </div>
-              <div className="w-[1px] h-[35px] bg-[#004360]/10" />
+              {/* <div className="w-[1px] h-[35px] bg-[#004360]/10" />
               <div className="text-center">
                 <div className="text-[22px] font-bold text-[#ff6b0b]">100%</div>
                 <div className="text-[10px] mt-1 uppercase tracking-tight">Secure</div>
@@ -128,7 +127,7 @@ export default function WelcomeScreen() {
               <div className="text-center">
                 <div className="text-[22px] font-bold text-[#ff6b0b]">Fast</div>
                 <div className="text-[10px] mt-1 uppercase tracking-tight">Transactions</div>
-              </div>
+              </div> */}
             </div>
           </div>
 

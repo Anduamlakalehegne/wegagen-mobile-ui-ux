@@ -229,7 +229,7 @@ export default function HomeScreen() {
   const navigate = useNavigate();
   const [showBalance, setShowBalance] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isGridView, setIsGridView] = useState(false);
+  const [isGridView, setIsGridView] = useState(true);
   const [selectedAccIdx, setSelectedAccIdx] = useState(0);
   const [showAccDropdown, setShowAccDropdown] = useState(false);
   const [activeTab, setActiveTab] = useState('Transfer');

@@ -16,14 +16,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 
-const REASON_OPTIONS = [
-  "Goods & Services",
-  "Rent",
-  "Gift",
-  "Loan",
-  "Travel & Transport",
-  "Other (Custom)"
-];
+
 
 export default function WegagenEBirrScreen() {
   const navigate = useNavigate();
@@ -36,9 +29,8 @@ export default function WegagenEBirrScreen() {
   const [isModalExiting, setIsModalExiting] = useState(false);
 
   // Reason Selection State
-  const [selectedReason, setSelectedReason] = useState("");
-  const [customReason, setCustomReason] = useState("");
-  const [showReasonDropdown, setShowReasonDropdown] = useState(false);
+  // Reason State
+  const [transferReason, setTransferReason] = useState("");
 
   const reduceMotion = useReducedMotion();
 
@@ -59,7 +51,7 @@ export default function WegagenEBirrScreen() {
     { type: "CHECKING", number: "0922232425267", balance: "45,210.50" }
   ];
 
-  const finalReason = selectedReason === "Other (Custom)" ? customReason : selectedReason;
+  const finalReason = transferReason || "Transfer";
 
   return (
     <div className="bg-[#fcfcfc] relative w-full h-full overflow-hidden font-sans flex flex-col" data-name="Wegagen EBirr Screen">
@@ -223,93 +215,27 @@ export default function WegagenEBirrScreen() {
               </div>
             </div>
 
-            {/* Field: Enter Reason (Standardized Select + Custom Input) */}
-            <div className="space-y-3 relative">
+            {/* Field: Transfer Reason (Simple Input) */}
+            <div className="space-y-2">
               <div className="relative group">
-                <button
-                  onClick={() => setShowReasonDropdown(!showReasonDropdown)}
-                  className="w-full flex items-center justify-between bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-2 pr-4 py-2 focus:ring-4 focus:ring-orange-50 transition-all group overflow-hidden"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] shrink-0 group-hover:bg-[#ff6b0b] group-hover:text-white transition-colors">
-                      <FileText size={18} strokeWidth={2.5} />
-                    </div>
-                    <span className={`text-[14px] font-semibold truncate ${selectedReason ? "text-[#004360]" : "text-[#004360]/30"}`}>
-                      {selectedReason || "Select transfer reason"}
-                    </span>
-                  </div>
-                  <ChevronDown size={18} className={`text-[#ff6b0b] transition-transform duration-300 ${showReasonDropdown ? "rotate-180" : ""}`} strokeWidth={2.5} />
-                </button>
-
-                <AnimatePresence>
-                  {showReasonDropdown && (
-                    <>
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={() => setShowReasonDropdown(false)}
-                        className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px]"
-                      />
-                      <motion.div
-                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                        className="absolute top-full left-0 right-0 mt-3 bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-[60] overflow-hidden border border-orange-100 p-2"
-                      >
-                        <div className="space-y-1">
-                          {REASON_OPTIONS.map((option) => (
-                            <button
-                              key={option}
-                              onClick={() => {
-                                setSelectedReason(option);
-                                setShowReasonDropdown(false);
-                                if (option !== "Other (Custom)") setCustomReason("");
-                              }}
-                              className={`w-full px-5 py-2.5 rounded-[12px] text-left transition-all flex items-center justify-between group ${selectedReason === option ? "bg-orange-50 text-[#ff6b0b]" : "hover:bg-gray-50 text-[#004360]"}`}
-                            >
-                              <span className="text-[13px] font-bold">{option}</span>
-                              {selectedReason === option && <Check size={16} strokeWidth={3} />}
-                            </button>
-                          ))}
-                        </div>
-                      </motion.div>
-                    </>
-                  )}
-                </AnimatePresence>
+                <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
+                  <FileText size={18} strokeWidth={2.5} />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Transfer Reason"
+                  value={transferReason}
+                  onChange={(e) => setTransferReason(e.target.value)}
+                  className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all"
+                />
               </div>
-
-              <AnimatePresence>
-                {selectedReason === "Other (Custom)" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                    animate={{ opacity: 1, height: "auto", marginTop: 8 }}
-                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="overflow-hidden"
-                  >
-                    <div className="relative group">
-                      <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-orange-100/50 flex items-center justify-center text-[#ff6b0b] transition-colors group-focus-within:bg-[#ff6b0b] group-focus-within:text-white">
-                        <ArrowRight size={18} strokeWidth={2.5} />
-                      </div>
-                      <input
-                        type="text"
-                        placeholder="Type your custom reason"
-                        value={customReason}
-                        onChange={(e) => setCustomReason(e.target.value)}
-                        className="w-full bg-[#fff9f4] border border-orange-100 rounded-[12px] pl-14 pr-5 py-3 outline-none text-[#004360] font-semibold text-[14px] placeholder:text-[#004360]/20 focus:bg-white focus:border-[#ff6b0b]/40 transition-all border-dashed"
-                      />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
 
             <div className="pt-3 pb-2">
               <button
                 onClick={openModal}
-                disabled={!selectedReason || (selectedReason === "Other (Custom)" && !customReason)}
-                className={`w-full h-[48px] rounded-[20px] font-black text-[17px] transition-all duration-300 ${(!selectedReason || (selectedReason === "Other (Custom)" && !customReason))
+                disabled={!transferReason}
+                className={`w-full h-[48px] rounded-[20px] font-black text-[17px] transition-all duration-300 ${(!transferReason)
                     ? 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
                     : 'bg-[#ff8f12] hover:bg-[#ff6b0b] text-white shadow-[0_10px_20px_rgba(255,107,11,0.25)] hover:shadow-[0_14px_30px_rgba(255,107,11,0.35)] active:scale-[0.98]'
                   }`}

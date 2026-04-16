@@ -185,7 +185,7 @@ export default function VerificationScreen() {
               <div>
                 <p className="text-[#004360] text-[12px] font-medium mb-1">Secure Verification</p>
                 <p className="text-[#004360] text-[11px] opacity-70 leading-relaxed">
-                  Your code is encrypted and will expire in 10 minutes for your security.
+                  Your code is encrypted and will expire in 5 minutes for your security.
                 </p>
               </div>
             </div>

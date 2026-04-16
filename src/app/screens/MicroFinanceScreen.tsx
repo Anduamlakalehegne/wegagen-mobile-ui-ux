@@ -16,7 +16,7 @@ const mfOptions: MFOption[] = [
     id: 'awach',
     title: 'To Awach',
     iconBg: 'bg-[#FFF6EC]',
-    logo: '/awach.jpg',
+    logo: '/logo_en_1 1.png',
   },
   {
     id: 'saccos',
@@ -66,7 +66,7 @@ function MFItem({ item, isGrid, onClick }: { item: MFOption; isGrid: boolean; on
 export default function MicroFinanceScreen() {
   const navigate = useNavigate();
   const reduceMotion = useReducedMotion();
-  const [isGridView, setIsGridView] = useState(false);
+  const [isGridView, setIsGridView] = useState(true);
 
   const handleSelect = (item: MFOption) => {
     navigate(`/wallet-form?title=${encodeURIComponent(item.title)}&logo=${encodeURIComponent(item.logo)}`);
