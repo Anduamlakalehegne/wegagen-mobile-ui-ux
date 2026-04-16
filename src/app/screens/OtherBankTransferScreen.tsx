@@ -112,7 +112,7 @@ export default function OtherBankTransferScreen() {
         {/* Centered Logo & Title Group */}
         <div className="pt-8 flex flex-col items-center justify-center gap-2">
           <div className="w-13 h-13 rounded-full flex justify-center items-center p-2 bg-white/20 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-white/30 transform">
-            <img src="/ethiopay1.png" alt="Other Bank" className="w-full h-full object-contain drop-shadow-md" />
+            <img src="/ethiopay1.png" alt="Other Bank" className="w-full h-full object-contain drop-shadow-md brightness-0 invert" />
           </div>
           <h2 className="text-white text-[16px] font-bold tracking-tight">To Other Bank</h2>
         </div>

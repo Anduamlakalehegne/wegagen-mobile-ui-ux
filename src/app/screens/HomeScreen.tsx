@@ -761,7 +761,7 @@ export default function HomeScreen() {
 
             <div className="p-8 pt-6 pb-10 space-y-3">
               <button
-                onClick={() => navigateWithTransition('/')}
+                onClick={() => navigateWithTransition('/quick-actions')}
                 className="w-full h-[52px] bg-red-500 hover:bg-red-600 text-white rounded-[20px] font-black text-[15px] shadow-[0_10px_20px_rgba(239,68,68,0.25)] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
               >
                 Yes, Sign Out
