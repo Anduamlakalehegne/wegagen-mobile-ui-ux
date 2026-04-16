@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
 import React, { useState } from 'react';
 import {
   ArrowLeftRight,
@@ -37,6 +37,7 @@ export default function QuickActionsScreen() {
   const navigate = useNavigate();
   const reduceMotion = useReducedMotion();
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
 
   const quickActions = [
     {
@@ -67,7 +68,7 @@ export default function QuickActionsScreen() {
     {
       icon: <MoreHorizontal size={24} strokeWidth={2} />,
       label: "More",
-      onClick: () => console.log("More clicked"),
+      onClick: () => setShowMoreInfo(!showMoreInfo),
     },
   ];
 
@@ -138,14 +139,35 @@ export default function QuickActionsScreen() {
             </div>
           </div>
 
+          {/* Toggleable More Info Section */}
+          <AnimatePresence>
+            {showMoreInfo && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="overflow-hidden mb-6"
+              >
+                <div className="mt-2 pt-4 border-t border-[#004360]/10">
+                  <div className="text-[#004360] opacity-90">
+                    <div className="text-center">
+                      <div className="text-[22px] font-bold text-[#ff6b0b]">866</div>
+                      <div className="text-[11px] mt-1 font-bold tracking-tight">TOLL-FREE CUSTOMER CONTACT CENTER</div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {/* Primary Login Cluster */}
           <div className="flex flex-col items-center gap-4">
             <button
               onClick={handleLogin}
               disabled={isTransitioning}
               className={`w-full max-w-[280px] flex items-center justify-center gap-2 py-4 rounded-[16px] transition-all duration-300 ${isTransitioning
-                  ? 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
-                  : 'bg-[#FF8F12] text-white shadow-[0_6px_20px_rgba(255,143,18,0.3)] hover:shadow-[0_8px_24px_rgba(255,143,18,0.4)] hover:scale-[1.02] active:scale-[0.98]'
+                ? 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
+                : 'bg-[#FF8F12] text-white shadow-[0_6px_20px_rgba(255,143,18,0.3)] hover:shadow-[0_8px_24px_rgba(255,143,18,0.4)] hover:scale-[1.02] active:scale-[0.98]'
                 }`}
             >
               <span className="text-[16px] font-medium">Login</span>
@@ -157,7 +179,7 @@ export default function QuickActionsScreen() {
           </div>
 
           {/* Branding Footer */}
-          <div className="mt-30 pt-4 border-t border-gray-50 flex flex-col items-center">
+          <div className="mt-3 pt-2 border-t border-gray-50 flex flex-col items-center">
             <p className="text-[#004360]/20 text-[9px] font-black uppercase tracking-[0.2em]">
               Copyright © 2026 Wegagen Bank S.C
             </p>

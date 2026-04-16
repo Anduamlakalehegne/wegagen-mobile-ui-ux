@@ -149,23 +149,6 @@ export default function VerificationScreen() {
             />
           </div>
 
-          {/* Timer and Resend */}
-          <div className="mb-8 text-center">
-            {!canResend ? (
-              <p className="text-[#004360] text-[13px] opacity-60">
-                Resend code in <span className="text-[#ff6b0b] font-medium">{countdown}s</span>
-              </p>
-            ) : (
-              <button
-                onClick={handleResend}
-                className="text-[#ff6b0b] text-[14px] font-medium flex items-center gap-2 mx-auto hover:opacity-80 transition-opacity active:scale-95"
-              >
-                <RefreshCw size={16} strokeWidth={2.5} />
-                Resend Code
-              </button>
-            )}
-          </div>
-
           {/* Verify Button */}
           <button
             onClick={handleVerify}
@@ -185,7 +168,7 @@ export default function VerificationScreen() {
               <div>
                 <p className="text-[#004360] text-[12px] font-medium mb-1">Secure Verification</p>
                 <p className="text-[#004360] text-[11px] opacity-70 leading-relaxed">
-                  Your code is encrypted and will expire in 5 minutes for your security.
+                  Your code is encrypted and will expire in 15 minutes for your security.
                 </p>
               </div>
             </div>

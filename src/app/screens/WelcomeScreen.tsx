@@ -116,18 +116,8 @@ export default function WelcomeScreen() {
             <div className="text-[#004360] opacity-90">
               <div className="text-center">
                 <div className="text-[22px] font-bold text-[#ff6b0b]">866</div>
-                <div className="text-[10px] mt-1 uppercase tracking-tight">Contact Center</div>
+                <div className="text-[11px] mt-1 font-bold">TOLL-FREE CUSTOMER CONTACT CENTER</div>
               </div>
-              {/* <div className="w-[1px] h-[35px] bg-[#004360]/10" />
-              <div className="text-center">
-                <div className="text-[22px] font-bold text-[#ff6b0b]">100%</div>
-                <div className="text-[10px] mt-1 uppercase tracking-tight">Secure</div>
-              </div>
-              <div className="w-[1px] h-[35px] bg-[#004360]/10" />
-              <div className="text-center">
-                <div className="text-[22px] font-bold text-[#ff6b0b]">Fast</div>
-                <div className="text-[10px] mt-1 uppercase tracking-tight">Transactions</div>
-              </div> */}
             </div>
           </div>
 
