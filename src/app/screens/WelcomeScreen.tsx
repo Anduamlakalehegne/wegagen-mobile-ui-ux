@@ -62,7 +62,7 @@ export default function WelcomeScreen() {
               Welcome!
             </h1>
             <p className="text-[#004360] text-[13px] leading-relaxed opacity-70">
-              Your phone Your Bank
+              Your Phone Your Bank
             </p>
           </div>
 
