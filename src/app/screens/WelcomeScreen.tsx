@@ -62,15 +62,15 @@ export default function WelcomeScreen() {
               Welcome!
             </h1>
             <p className="text-[#004360] text-[13px] leading-relaxed opacity-70">
-              Your Phone Your Bank
+              Your Phone, Your Bank
             </p>
           </div>
 
           {/* Input Section */}
           <div className="mb-6">
-            <label htmlFor="mobile-input" className="block text-[#004360] text-[13px] mb-3 opacity-70 font-semibold">
+            {/* <label htmlFor="mobile-input" className="block text-[#004360] text-[13px] mb-3 opacity-70 font-semibold">
               Mobile Number
-            </label>
+            </label> */}
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#ff6b0b]">
                 <Smartphone size={20} strokeWidth={2} />
@@ -112,7 +112,7 @@ export default function WelcomeScreen() {
           </div>
 
           {/* Additional Info */}
-          <div className="mt-30 pt-8 border-t border-[#004360]/10">
+          <div className="mt-40 pt-8 border-t border-[#004360]/10">
             <div className="text-[#004360] opacity-90">
               <div className="text-center">
                 <div className="text-[22px] font-bold text-[#ff6b0b]">866</div>

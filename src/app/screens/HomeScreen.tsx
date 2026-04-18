@@ -416,13 +416,13 @@ export default function HomeScreen() {
     },
     {
       icon: <Globe size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
-      title: "SWIFT",
+      title: "Swift GPI",
       iconBgColor: "bg-[#FFF6EC]",
       onClick: () => console.log("SWIFT clicked"),
     },
     {
       icon: <Fingerprint size={20} strokeWidth={2.5} className="text-[#ff6b0b]" />,
-      title: "Fayda",
+      title: "Fayda Harmonization",
       iconBgColor: "bg-[#FFF6EC]",
       onClick: () => console.log("Fayda clicked"),
     },

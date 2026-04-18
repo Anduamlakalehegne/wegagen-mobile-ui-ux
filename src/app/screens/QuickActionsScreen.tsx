@@ -173,13 +173,13 @@ export default function QuickActionsScreen() {
               <span className="text-[16px] font-medium">Login</span>
               <LogIn size={20} strokeWidth={2.5} />
             </button>
-            <p className="text-[#004360] text-[14px] opacity-80 font-medium">
+            {/* <p className="text-[#004360] text-[14px] opacity-80 font-medium">
               Sign In to Continue
-            </p>
+            </p> */}
           </div>
 
           {/* Branding Footer */}
-          <div className="mt-3 pt-2 border-t border-gray-50 flex flex-col items-center">
+          <div className="mt-43 pt-2 border-t border-gray-50 flex flex-col items-center">
             <p className="text-[#004360]/20 text-[9px] font-black uppercase tracking-[0.2em]">
               Copyright © 2026 Wegagen Bank S.C
             </p>

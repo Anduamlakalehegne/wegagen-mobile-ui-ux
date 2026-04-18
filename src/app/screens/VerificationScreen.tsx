@@ -113,7 +113,7 @@ export default function VerificationScreen() {
         }}
         className="absolute bg-white h-[calc(100%-170px)] left-4 right-4 rounded-[28px] top-[140px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] z-30"
       >
-        <div className="px-8 py-10">
+        <div className="px-6 py-10">
           {/* Security Icon */}
           <div className="flex justify-center mb-6">
             <div className="w-[72px] h-[72px] rounded-full bg-gradient-to-br from-[#ff6b0b] to-[#FF8F12] flex items-center justify-center shadow-[0_8px_24px_rgba(255,107,11,0.25)]">
@@ -123,12 +123,12 @@ export default function VerificationScreen() {
 
           {/* Title Section */}
           <div className="mb-8 text-center">
-            <h1 className="text-[#FF8F12] text-[28px] mb-3 tracking-tight font-medium">
-              Let's Activate Account
+            <h1 className="text-[#FF8F12] text-[19px] mb-3 tracking-tight font-medium">
+              Let's Activate Your Wegagen Mobile
             </h1>
             <p className="text-[#004360] text-[13px] leading-relaxed opacity-70">
-              Your activation code has been sent via SMS.<br />
-              Enter the code to complete your account activation
+              Your activation code has been sent via SMS,<br />
+              Enter the code to complete your account activation.
             </p>
           </div>
 
@@ -153,7 +153,7 @@ export default function VerificationScreen() {
           <button
             onClick={handleVerify}
             disabled={otp.length !== 4 || isTransitioning}
-            className={`w-full flex items-center justify-center gap-2 py-4 rounded-[16px] transition-all duration-300 text-[16px] font-medium ${otp.length === 4
+            className={`w-full flex items-center justify-center gap-2 py-4 mt-6 rounded-[16px] transition-all duration-300 text-[16px] font-medium ${otp.length === 4
               ? 'bg-[#FF8F12] text-white shadow-[0_6px_20px_rgba(255,107,11,0.3)] hover:shadow-[0_8px_24px_rgba(255,107,11,0.4)] hover:scale-[1.02] active:scale-[0.98]'
               : 'bg-[#ffebe0] text-[#ff6b0b] opacity-50 cursor-not-allowed'
               }`}
@@ -162,13 +162,14 @@ export default function VerificationScreen() {
           </button>
 
           {/* Security Info */}
-          <div className="mt-6 pt-4 border-t border-[#004360]/10">
+          <div className="mt-20 pt-4 border-t border-[#004360]/10">
             <div className="flex items-start gap-3 p-4 bg-[#fff6ec] rounded-[12px]">
               <Shield size={20} className="text-[#ff6b0b] flex-shrink-0 mt-0.5" strokeWidth={2} />
               <div>
                 <p className="text-[#004360] text-[12px] font-medium mb-1">Secure Verification</p>
                 <p className="text-[#004360] text-[11px] opacity-70 leading-relaxed">
-                  Your code is encrypted and will expire in 15 minutes for your security.
+                  Your code is encrypted and will expire in 2 minutes for your security. <br />
+                  Don't share your OTP for third party
                 </p>
               </div>
             </div>
