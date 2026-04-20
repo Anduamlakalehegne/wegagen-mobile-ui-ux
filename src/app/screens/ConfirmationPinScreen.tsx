@@ -1,4 +1,4 @@
-import { Delete, LogIn, ChevronLeft } from 'lucide-react';
+import { Delete, LogIn, ChevronLeft, Fingerprint } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, useReducedMotion } from 'motion/react';
@@ -281,7 +281,18 @@ export default function ConfirmationPinScreen() {
             >
               0
             </button>
-            <div className="w-16 h-16"></div>
+            <button
+              onClick={() => {
+                if (!isTransitioning) {
+                  setIsTransitioning(true);
+                  const transitionDurationMs = reduceMotion ? 0 : 260;
+                  window.setTimeout(() => navigate('/transfer-success'), transitionDurationMs);
+                }
+              }}
+              className="w-16 h-16 rounded-full flex items-center justify-center text-[#FF8F12] bg-[#fff6ec] hover:shadow-md transition-all duration-300 active:scale-90 active:bg-orange-100"
+            >
+              <Fingerprint size={28} strokeWidth={2.5} />
+            </button>
           </div>
 
           {/* Security Subtext */}

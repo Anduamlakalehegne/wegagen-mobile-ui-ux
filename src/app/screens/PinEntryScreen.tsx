@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Delete, ChevronLeft } from 'lucide-react';
+import { Delete, ChevronLeft, Fingerprint } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import svgPaths from "../../imports/svg-agh5fqnfsc";
 
@@ -287,7 +287,18 @@ export default function PinEntryScreen() {
             >
               0
             </button>
-            <div className="w-16 h-16"></div>
+            <button
+              onClick={() => {
+                if (!isTransitioning) {
+                  setIsTransitioning(true);
+                  const transitionDurationMs = reduceMotion ? 0 : 260;
+                  window.setTimeout(() => navigate('/home'), transitionDurationMs);
+                }
+              }}
+              className="w-16 h-16 rounded-full flex items-center justify-center text-[#FF8F12] bg-[#fff6ec] hover:shadow-md transition-all duration-300 active:scale-90 active:bg-orange-100"
+            >
+              <Fingerprint size={28} strokeWidth={2.5} />
+            </button>
           </div>
 
           {/* Security Subtext */}
